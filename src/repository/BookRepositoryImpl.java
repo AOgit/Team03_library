@@ -12,14 +12,15 @@ public class BookRepositoryImpl implements BookRepository {
     MyList<Book> books;
 
     // Объект, отвечающий за генерацию уникальных id
-    private final AtomicInteger currenId = new AtomicInteger(1);
+    private final AtomicInteger currentId = new AtomicInteger(1);
 
     private void addStartBooks() {
 
-        books.addAll(
-                new Book(currenId.getAndIncrement(), "Война и мир", "Толстой Л.Н.", 1983, 5876),
-                new Book(currenId.getAndIncrement(), "Зачарована Десна", "Довженко О.", 1983, 576),
-                new Book(currenId.getAndIncrement(), "Три товарища", "Ремарк", 1936, 480)
+        this.books.addAll(
+                new Book(currentId.getAndIncrement(), "Война и мир", "Толстой Л.Н.", 1983, 5876),
+                new Book(currentId.getAndIncrement(), "Зачарована Десна", "Довженко О.", 1983, 576),
+                new Book(currentId.getAndIncrement(), "Три товарища", "Ремарк", 1936, 480),
+                new Book(currentId.getAndIncrement(), "Вечера на хуторе близ Диканьки", "Гоголь Н.В.", 1961, 350)
         );
     }
 
@@ -30,46 +31,78 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book addBook(String title, String author, int year, int pages) {
-        return null;
+        Book book = new Book(currentId.getAndIncrement(), title, author, year, pages);
+        this.books.add(book);
+        return book;
     }
 
     @Override
     public MyList<Book> getAllBooks() {
-        return null;
+        return this.books;
     }
 
     @Override
     public Book getBookById(int id) {
+        for (Book book: this.books) {
+            if (book.getId() == id) return book;
+        }
         return null;
     }
 
     @Override
     public MyList<Book> getAvailableBooks() {
-        return null;
+        MyList<Book> availableBooks = new MyArrayList<>();
+        for (Book book: this.books) {
+            if (!book.isBusy()) availableBooks.add(book);
+        }
+        return availableBooks;
     }
 
     @Override
     public MyList<Book> getBorrowedBooks() {
-        return null;
+        MyList<Book> borrowedBooks = new MyArrayList<>();
+        for (Book book: this.books) {
+            if (book.isBusy()) borrowedBooks.add(book);
+        }
+        return borrowedBooks;
     }
 
     @Override
     public MyList<Book> getBooksByTitle(String title) {
-        return null;
+        MyList<Book> passedBooks = new MyArrayList<>();
+        for (Book book: this.books) {
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase())) passedBooks.add(book);
+        }
+        return passedBooks;
     }
 
     @Override
     public MyList<Book> getBooksByAuthor(String author) {
-        return null;
+        MyList<Book> passedBooks = new MyArrayList<>();
+        for (Book book: this.books) {
+            if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) passedBooks.add(book);
+        }
+        return passedBooks;
     }
 
     @Override
     public void saveBook(Book book) {
-
+        for (Book bk: this.books) {
+            if (book.getId() == bk.getId()){
+                bk = book;
+                return;
+            }
+        }
+        books.add(book);
     }
 
     @Override
     public void deleteById(int id) {
-
+        for (Book book: this.books) {
+            if(book.getId() == id) {
+              books.remove(book);
+              return;
+            }
+        }
     }
 }

@@ -20,16 +20,12 @@ public class Book {
         this.pages = pages;
     }
 
+    public Book(){};
+
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", year=" + year +
-                ", pages=" + pages +
-                ", isBusy=" + isBusy +
-                '}';
+        return String.format("Книга №%d. Название: %s, автор: %s, год издания: %s, кол-во страниц: %d,  доступна: %s"
+                , this.id, this.title, this.author, this.year, this.pages, this.isBusy ? "Нет" : "Да");
     }
 
 
