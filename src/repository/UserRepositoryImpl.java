@@ -1,5 +1,6 @@
 package repository;
 
+import model.Role;
 import model.User;
 import utils.MyArrayList;
 import utils.MyList;
@@ -16,35 +17,50 @@ public class UserRepositoryImpl implements UserRepository {
 
     private void addUsers() {
         User admin = new User("1", "1");
-        // Todo добавить роль админа
+        admin.setRole(Role.ADMIN);
+
         User user = new User("2", "2");
-        // Todo добавить роль пользователя
+        user.setRole(Role.USER);
+
         users.addAll(admin, user);
     }
 
 
     @Override
     public User addUser(String email, String password) {
-        return null;
+        User user = new User(email, password);
+        users.add(user);
+        return user;
     }
 
     @Override
     public User getUserByEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
         return null;
     }
 
     @Override
     public boolean updatePassword(String email, String newPassword) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getEmail().equals(email)) {
+                users.get(i).setPassword(newPassword);
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
-    public void saveUser(User user) {
-
-    }
-
-    @Override
     public void deleteUser(String email) {
-
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getEmail().equals(email)) {
+                users.remove(i);
+                return;
+            }
+        }
     }
 }
