@@ -56,9 +56,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void deleteUser(String email) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getEmail().equals(email)) {
-                users.remove(i);
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                users.remove(user);
                 return;
             }
         }
