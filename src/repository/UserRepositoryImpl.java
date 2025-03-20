@@ -1,5 +1,6 @@
 package repository;
 
+import model.Book;
 import model.Role;
 import model.User;
 import utils.MyArrayList;
@@ -44,6 +45,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public MyList<Book> getUserBooksByEmail(String email) {
+        return null;
+    }
+
+    @Override
     public boolean updatePassword(String email, String newPassword) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getEmail().equals(email)) {
@@ -52,6 +58,11 @@ public class UserRepositoryImpl implements UserRepository {
             }
         }
         return false;
+    }
+
+    @Override
+    public void saveUser(User user) {
+
     }
 
     @Override
