@@ -1,6 +1,7 @@
 package repository;
 
 import model.Book;
+import utils.MyArrayList;
 import utils.MyList;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,6 +21,11 @@ public class BookRepositoryImpl implements BookRepository {
                 new Book(currenId.getAndIncrement(), "Зачарована Десна", "Довженко О.", 1983, 576),
                 new Book(currenId.getAndIncrement(), "Три товарища", "Ремарк", 1936, 480)
         );
+    }
+
+    public BookRepositoryImpl() {
+        this.books = new MyArrayList<>();
+        addStartBooks();
     }
 
     @Override
