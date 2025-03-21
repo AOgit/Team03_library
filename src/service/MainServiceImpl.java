@@ -2,6 +2,7 @@ package service;
 
 import model.Book;
 import model.User;
+import utils.MyList;
 
 public class MainServiceImpl implements MainService {
     @Override
@@ -30,12 +31,43 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public void editBook(Book book) {
+    public void editBook(String title, String author, int year, int pages) {
 
     }
 
     @Override
+    public MyList<Book> getBooksByTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> getBooksByAuthor(String author) {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> getAllBooks() {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> getAvailableBooks() {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> getBorrowedBooks() {
+        return null;
+    }
+
+
+    @Override
     public User getActiveUser() {
+        return null;
+    }
+
+    @Override
+    public Book addBook(String title, String author, int year, int pages) {
         return null;
     }
 }
