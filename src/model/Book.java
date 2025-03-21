@@ -13,12 +13,14 @@ public class Book {
     private boolean isBorrowed;
     private User reader;
 
-    public Book(int id, String title, String author, int year, int pages) {
+    public Book(int id, String title, String author, int year, int pages, String genre) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.year = year;
         this.pages = pages;
+        this.genre =genre;
+
 
     }
 
@@ -98,7 +100,27 @@ public class Book {
         return isBorrowed;
     }
 
+    public void setBorrowed(boolean borrowed) {
+        isBorrowed = borrowed;
+    }
+
     public void setAvailable(boolean available) {
         isBorrowed = available;
+    }
+
+    public User getReader() {
+        return reader;
+    }
+
+    public void setReader(User reader) {
+        this.reader = reader;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 }

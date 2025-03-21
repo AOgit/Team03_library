@@ -5,7 +5,7 @@ import utils.MyList;
 
 public interface BookRepository {
 
-    Book addBook(String title, String author, int year, int pages);
+    Book addBook(String title, String author, int year, int pages, String genre);
 
     // получить список всех книг
     MyList<Book> getAllBooks();
@@ -29,8 +29,12 @@ public interface BookRepository {
     // Сохранить обновленный объект
     void saveBook(Book book);
 
+    // получить читателя по книге
+    void getCurrentReader(int id);
+
     // Delete
     void deleteById(int id);
+
 
 
 

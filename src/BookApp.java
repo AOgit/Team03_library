@@ -1,3 +1,4 @@
+import model.Book;
 import repository.BookRepository;
 import repository.BookRepositoryImpl;
 import repository.UserRepository;
