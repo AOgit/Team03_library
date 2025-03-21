@@ -1,6 +1,9 @@
 package repository;
 
+import model.Book;
+import model.Role;
 import model.User;
+import utils.MyList;
 
 public interface UserRepository {
 
@@ -10,8 +13,14 @@ public interface UserRepository {
     // Read
     User getUserByEmail(String email);
 
+    // Какие книги у пользователя
+    MyList<Book> getUserBooksByEmail(String email);
+
     // Update by email and password
     boolean updatePassword(String email, String newPassword);
+
+    // Сохранить изменения о пользователе
+    void saveUser(User user);
 
     // Delete User
     void deleteUser(String email);
