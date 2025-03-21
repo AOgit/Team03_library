@@ -10,7 +10,8 @@ public class Book {
     private int pages;
     // TODO написать реализацию жанра книги
     private String genre;
-    private boolean isBusy;
+    private boolean isBorrowed;
+    private User reader;
 
     public Book(int id, String title, String author, int year, int pages) {
         this.id = id;
@@ -18,26 +19,40 @@ public class Book {
         this.author = author;
         this.year = year;
         this.pages = pages;
+
     }
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", year=" + year +
-                ", pages=" + pages +
-                ", isBusy=" + isBusy +
+        return "Book {" +
+                "id = " + id +
+                ", title = '" + title + '\'' +
+                ", author = '" + author + '\'' +
+                ", year = " + year +
+                ", pages = " + pages +
+                ", isBorrowed = " + isBorrowed +
                 '}';
     }
 
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Book book)) return false;
-        return getId() == book.getId() && getYear() == book.getYear() && getPages() == book.getPages() && isBusy() == book.isBusy() && Objects.equals(getTitle(), book.getTitle()) && Objects.equals(getAuthor(), book.getAuthor());
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return id == book.id
+                && year == book.year
+                && pages == book.pages
+                && isBorrowed == book.isBorrowed
+                && Objects.equals(title, book.title)
+                && Objects.equals(author, book.author)
+                && Objects.equals(genre, book.genre);
     }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (!(o instanceof Book book)) return false;
+//        return getId() == book.getId() && getYear() == book.getYear() && getPages() == book.getPages() && isBusy() == book.isBusy() && Objects.equals(getTitle(), book.getTitle()) && Objects.equals(getAuthor(), book.getAuthor());
+//    }
+
 
     public int getId() {
         return id;
@@ -79,11 +94,11 @@ public class Book {
         this.pages = pages;
     }
 
-    public boolean isBusy() {
-        return isBusy;
+    public boolean isBorrowed() {
+        return isBorrowed;
     }
 
-    public void setBusy(boolean busy) {
-        isBusy = busy;
+    public void setAvailable(boolean available) {
+        isBorrowed = available;
     }
 }
