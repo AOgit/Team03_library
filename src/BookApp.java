@@ -12,10 +12,10 @@ public class BookApp {
         BookRepository bookRepository = new BookRepositoryImpl();
         UserRepository userRepository = new UserRepositoryImpl();
 
-//        MainService service = new MainServiceImpl(bookRepository, userRepository);
+        MainService service = new MainServiceImpl(bookRepository, userRepository);
 
-//        Menu menu = new Menu(service);
+        Menu menu = new Menu(service);
 
-//        menu.start();
+        menu.start();
     }
 }

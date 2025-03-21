@@ -20,8 +20,8 @@ public class Menu {
     private void showMenu() {
         while (true) {
             System.out.println("Добро пожаловать в меню");
-            System.out.println("1. Список всех книг");
-            System.out.println("2. Добавить новую книгy");
+            System.out.println("1. Меню книг");
+            System.out.println("2. Меню пользователя");
             System.out.println("3. Меню администратора");
             System.out.println("0. Выход");
 
@@ -38,36 +38,12 @@ public class Menu {
         }
     }
 
-
-
-//    private void showMenu() {
-//        while (true) {
-//            System.out.println("Добро пожаловать в меню");
-//            System.out.println("1. Меню библиотеки");
-//            System.out.println("2. Меню пользователя");
-//            System.out.println("3. Меню администратора");
-//            System.out.println("0. Выход");
-//
-//            int choice = scanner.nextInt();
-//            scanner.nextLine();
-//
-//            if (choice == 0) {
-//                System.out.println("До свидания!");
-//                // Завершение работы приложения
-//                System.exit(0);
-//            }
-//
-//            showSubMenu(choice);
-//        }
-//    }
-
     private void showSubMenu(int choice) {
         switch (choice) {
             case 1:
-                // Todo show car menu
+                showBookMenu();
                 break;
             case 2:
-                // Todo show User Menu
                 showUserMenu();
                 break;
             case 3:
@@ -153,7 +129,33 @@ public class Menu {
     }
 
 
+    private void showBookMenu() {
+        while (true) {
+            System.out.println("Добро пожаловать в меню");
+            System.out.println("1. Список всех книг");
+            System.out.println("2. Список всех свободных книг");
+            System.out.println("3. Найти книгу по названию");
+            System.out.println("4. Найти книгу по автору");
+            System.out.println("5. Отдать книгу из библиотеки");
+            System.out.println("6. Вернуть книгу в библиотеку");
+//            System.out.println("7. Список всех отданных читателям книг"); ADMIN
+//            System.out.println("8. Добавить новую книгу"); ADMIN
+//            System.out.println("9. Редактировать книгу"); ADMIN
 
+            System.out.println("0. Выход");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 0) {
+                System.out.println("До свидания!");
+                // Завершение работы приложения
+                System.exit(0);
+            }
+
+//            handleBookMenuInput(choice);
+        }
+    }
 
 
     private void waitRead() {

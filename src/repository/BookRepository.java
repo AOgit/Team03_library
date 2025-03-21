@@ -26,6 +26,7 @@ public interface BookRepository {
     MyList<Book> getBooksByAuthor(String author);
 
     // Update
+    boolean updateBook(Book book);
     // Сохранить обновленный объект
     void saveBook(Book book);
 
