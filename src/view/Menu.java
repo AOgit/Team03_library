@@ -74,6 +74,10 @@ public class Menu {
         }
     }
 
+    private  void  test() {
+
+    }
+
     private void handleUserMenuInput(int input) {
 
         switch (input) {
