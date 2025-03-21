@@ -2,6 +2,8 @@ package view;
 
 import model.User;
 import service.MainService;
+import utils.ColorMe.Color;
+import utils.ColorMe.ColorMe;
 
 import java.util.Scanner;
 
@@ -19,7 +21,7 @@ public class Menu {
     }
     private void showMenu() {
         while (true) {
-            System.out.println("Добро пожаловать в меню");
+            System.out.println(ColorMe.text(Color.PURPLE, "Добро пожаловать в меню"));
             System.out.println("1. Меню книг");
             System.out.println("2. Меню пользователя");
             System.out.println("3. Меню администратора");
