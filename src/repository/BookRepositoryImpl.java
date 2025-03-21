@@ -4,6 +4,7 @@ import model.Book;
 import utils.MyArrayList;
 import utils.MyList;
 
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,6 +15,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     // Объект, отвечающий за генерацию уникальных id
     private final AtomicInteger currentId = new AtomicInteger(1);
+
+//    public BookRepositoryImpl(MyList<Book> books) {
+//        this.books = books;
+//    }
 
     private void addStartBooks() {
 
@@ -56,13 +61,10 @@ public class BookRepositoryImpl implements BookRepository {
     public MyList<Book> getAvailableBooks() {
         MyList<Book> availableBooks = new MyArrayList<>();
         for (Book book : books) {
-        if (book.isAvailable()) {
+        if (book.isBorrowed()) {
             availableBooks.add(book);
-        return availableBooks;
         }
-//        if (books == null) {
-//            return null;
-//        }
+        return availableBooks;
     }
         return null;
     }
@@ -71,57 +73,66 @@ public class BookRepositoryImpl implements BookRepository {
     public MyList<Book> getBorrowedBooks() {
         MyList<Book> borrowedBooks = new MyArrayList<>();
         for (Book book : books) {
-            if (!book.isAvailable()) {
+            if (!book.isBorrowed()) {
                 borrowedBooks.add(book);
-                return borrowedBooks;
             }
         }
-        return null;
+        return borrowedBooks;
     }
 
     @Override
     public MyList<Book> getBooksByTitle(String title) {
         MyList<Book> matchingBooks = new MyArrayList<>();
         for(Book book : books) {
-            if(book.getTitle().equalsIgnoreCase(title)) {
-                return matchingBooks;
+            if(book.getTitle().contains(title)) {
+                matchingBooks.add(book);
             }
         }
-        return null;
+        return matchingBooks;
     }
-
+// TODO добавить инфо о читателе
     @Override
     public MyList<Book> getBooksByAuthor(String author) {
         MyList<Book> matchingAuthorBooks = new MyArrayList<>();
         for (Book book : books) {
-            if(book.getAuthor().equalsIgnoreCase(author)) {
-                return matchingAuthorBooks;
+            if(book.getAuthor().contains(author)) {
+                matchingAuthorBooks.add(book);
             }
         }
-        return null;
+        return matchingAuthorBooks;
+
     }
-// TODO сохранение книги
+
    @Override
- public void saveBook(Book book) {
-//        int id = currentId.getAndIncrement();
-//        if (book == null)
-//
-        }
-//
-//
-//
+    public void saveBook(Book book) {
+       if (book == null) {
+           System.out.println("Ошибка: неизвестная книга.");
+           return;
+       }
+       for (int i = 0; i < books.size(); i++) {
+           Book bk = books.get(i);
+           if (bk.getId() == book.getId()) {
+               books.set(i, book); // Обновляем книгу по индексу
+               return;
+           }
+       }
+       books.add(book);
+    }
 
     @Override
     public void deleteById(int id) {
-        for (int i = 0; i < books.size(); i++) {
-            if (Objects.equals(books.get(i).getId(), id)) {
-                books.remove(i);
-                i--;
 
+        Iterator<Book> iterator = books.iterator();
+        while (iterator.hasNext()) {
+            if(Objects.equals(iterator.next().getId(), id)) {
+                iterator.remove();
             }
-
         }
-
-
+//        for (int i = 0; i < books.size(); i++) {
+//            if (Objects.equals(books.get(i).getId(), id)) {
+//                books.remove(i);
+//                i--;
+//           }
+//      }
     }
 }
