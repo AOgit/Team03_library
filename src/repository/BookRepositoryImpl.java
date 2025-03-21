@@ -12,15 +12,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BookRepositoryImpl implements BookRepository {
 
     // Все книги будут храниться в памяти нашего приложения
-    MyList<Book> books = new MyArrayList<>();
+    private final MyList<Book> books;
 
     // Объект, отвечающий за генерацию уникальных id
     private final AtomicInteger currentId = new AtomicInteger(1);
 
-//    public BookRepositoryImpl(MyList<Book> books) {
-//        this.books = books;
-//        addStartBooks():
-//    }
+    public BookRepositoryImpl() {
+        this.books = new MyArrayList<>();
+        addStartBooks();
+    }
 
     private void addStartBooks() {
 
@@ -37,8 +37,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book addBook(String title, String author, int year, int pages, String genre) {
-        int id = currentId.getAndIncrement();
-        Book newBook = new Book(id, title, author, year, pages, genre);
+        Book newBook = new Book(currentId.getAndIncrement(), title, author, year, pages, genre);
         books.add(newBook);
         return newBook;
     }
@@ -50,16 +49,11 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book getBookById(int id) {
-        if (books == null) {
-            System.out.println("Нет книг для поиска");
-            return null;
-        }
         for (Book book : books) {
             if (Objects.equals(book.getId(), id)) {
                 return book;
             }
         }
-        System.out.println("Книга не найдена");
         return null;
     }
 
@@ -70,9 +64,8 @@ public class BookRepositoryImpl implements BookRepository {
             if (!book.isBorrowed()) {
                 availableBooks.add(book);
             }
-            return availableBooks;
         }
-        return null;
+        return availableBooks;
     }
 
     @Override
@@ -88,56 +81,45 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public MyList<Book> getBooksByTitle(String title) {
-        if (title == null) {
-            System.out.println("Книга не найдена");
-            return new MyArrayList<>();
-        }
         MyList<Book> matchingBooks = new MyArrayList<>();
-        for (Book book : books) {
-            if (book.getTitle().contains(title)) {
-                matchingBooks.add(book);
-            }
+        for (Book book : this.books) {
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase())) matchingBooks.add(book);
         }
         return matchingBooks;
     }
 
     @Override
     public MyList<Book> getBooksByAuthor(String author) {
-        if (author == null) {
-            System.out.println("Автор не найден");
-            return new MyArrayList<>();
-        }
         MyList<Book> matchingAuthorBooks = new MyArrayList<>();
         for (Book book : books) {
-            if (book.getAuthor().contains(author)) {
-                matchingAuthorBooks.add(book);
-            }
+            if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) matchingAuthorBooks.add(book);
         }
         return matchingAuthorBooks;
-
     }
 
     public MyList<Book> getBookByGenre (String genre) {
-        if (genre == null) {
-            System.out.println("Жанр не найден");
-            return new MyArrayList<>();
-        }
         MyList<Book> matchingBooksByGenre = new MyArrayList<>();
         for (Book book : books) {
-            if (book.getGenre().contains(genre)) {
-                matchingBooksByGenre.add(book);
-            }
+            if (book.getGenre().toLowerCase().contains(genre.toLowerCase())) matchingBooksByGenre.add(book);
         }
         return matchingBooksByGenre;
+    }
+    @Override
+    public boolean updateBook(Book book) {
+        if (book == null) return false;
+        for (int i = 0; i < books.size(); i++) {
+            Book bk = books.get(i);
+            if (bk.getId() == book.getId()) {
+                books.set(i, book); // Обновляем книгу по индексу
+                return true;
+            }
+        }
+        return false;
     }
 
 
     @Override
     public void saveBook(Book book) {
-        if (book == null) {
-            System.out.println("Ошибка: неизвестная книга.");
-            return;
-        }
         for (int i = 0; i < books.size(); i++) {
             Book bk = books.get(i);
             if (bk.getId() == book.getId()) {
@@ -166,19 +148,20 @@ public class BookRepositoryImpl implements BookRepository {
 //      }
     }
 
-    public void getCurrentReader(int id) {
+    public String getCurrentReader(int id) {
         for (Book book : books) {
             if (Objects.equals(book.getId(), id)) {
                 if (book.isBorrowed() && book.getReader() != null) {
-                    User reader = book.getReader();
-                    System.out.printf("Книга: %s (%d); читатель: %s\n", book.getTitle(), book.getId(), reader.getEmail());
+                    return book.getReader().getEmail();
+     //               System.out.printf("Книга: %s (%d); читатель: %s\n", book.getTitle(), book.getId(), reader.getEmail());
                 } else {
-                    System.out.printf("Книга: %s (%d) доступна\n", book.getTitle(), book.getId());
+                    return null;
+    //                System.out.printf("Книга: %s (%d) доступна\n", book.getTitle(), book.getId());
                 }
-                return;
             }
         }
-        System.out.println("Книга не найдена");
+//        System.out.println("Книга не найдена");
+        return null;
     }
 }
 

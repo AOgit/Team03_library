@@ -1,6 +1,7 @@
 package repository;
 
 import model.Book;
+import model.User;
 import utils.MyList;
 
 public interface BookRepository {
@@ -26,11 +27,12 @@ public interface BookRepository {
     MyList<Book> getBooksByAuthor(String author);
 
     // Update
+    boolean updateBook(Book book);
     // Сохранить обновленный объект
     void saveBook(Book book);
 
     // получить читателя по книге
-    void getCurrentReader(int id);
+    String getCurrentReader(int id);
 
     // Delete
     void deleteById(int id);

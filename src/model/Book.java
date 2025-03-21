@@ -8,7 +8,6 @@ public class Book {
     private String author;
     private int year;
     private int pages;
-    // TODO написать реализацию жанра книги
     private String genre;
     private boolean isBorrowed;
     private User reader;
