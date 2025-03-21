@@ -2,6 +2,7 @@ package service;
 
 import model.Book;
 import model.User;
+import utils.MyList;
 
 public interface MainService {
 
@@ -11,12 +12,27 @@ public interface MainService {
 
     void logout();
 
+    User getActiveUser();
+
+    // Может все-таки стоит вместо boolean isBusy, в модель Book добавить поле BorrowedBy??
+    // С типом User?
+    Book addBook (String title, String author, int year, int pages);
+
+    boolean editBook(int id, String title, String author, int year, int pages);
+
     boolean borrowBook(int bookId);
 
     boolean returnBook(int bookId);
 
-    void editBook(Book book);
+    MyList<Book> getBooksByTitle(String title);
 
-    User getActiveUser();
+    // получить список книг по автору
+    MyList<Book> getBooksByAuthor(String author);
+
+    MyList<Book> getAllBooks();
+
+    MyList<Book> getAvailableBooks();
+
+    MyList<Book> getBorrowedBooks();
 
 }

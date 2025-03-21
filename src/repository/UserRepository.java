@@ -1,27 +1,39 @@
 package repository;
 
+import model.Book;
+import model.Role;
 import model.User;
+import utils.MyList;
 
 public interface UserRepository {
+
     // create
     User addUser(String email, String password);
 
     // Read
     User getUserByEmail(String email);
 
+    Role[] getAllRoles();
+
+    // Какие книги у пользователя
+    MyList<Book> getUserBooksByEmail(String email);
+
     // Update by email and password
     boolean updatePassword(String email, String newPassword);
 
-    // Update User
-    void saveUser(User user);
-
+    // Сохранить изменения о пользователе
+    boolean updateRole(String email, Role newrole);
     // Delete User
     void deleteUser(String email);
 
+
+
+    // Обсуждаемые методы:
+
 //    boolean isEmailExist(String email);
 
-
-
+    // Update User
+//    void saveUser(User user);
 
 
 
