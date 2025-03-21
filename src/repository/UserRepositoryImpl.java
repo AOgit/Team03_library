@@ -46,14 +46,17 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public MyList<Book> getUserBooksByEmail(String email) {
+        if (getUserByEmail(email) != null) {
+            return getUserByEmail(email).getUserBooks();
+        }
         return null;
     }
 
     @Override
     public boolean updatePassword(String email, String newPassword) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getEmail().equals(email)) {
-                users.get(i).setPassword(newPassword);
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                user.setPassword(newPassword);
                 return true;
             }
         }
@@ -62,7 +65,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void saveUser(User user) {
-
+        for (User us : users) {
+            if (user.getEmail().equals(us.getEmail())) {
+                us = user;
+                return;
+            }
+        }
+        users.add(user);
     }
 
     @Override
