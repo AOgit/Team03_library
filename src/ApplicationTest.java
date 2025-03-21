@@ -1,13 +1,11 @@
-import model.Book;
 import repository.BookRepository;
 import repository.BookRepositoryImpl;
 import repository.UserRepository;
 import repository.UserRepositoryImpl;
 import service.MainService;
 import service.MainServiceImpl;
-import utils.MyList;
 
-public class Test {
+public class ApplicationTest {
     public static void main(String[] args) {
 
         BookRepository bookRepository = new BookRepositoryImpl();
@@ -24,6 +22,5 @@ public class Test {
         System.out.println(result);
 
         System.out.println(service.getAllBooks());
-
     }
 }

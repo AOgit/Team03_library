@@ -10,6 +10,7 @@ public class User {
     private String password;
     private  MyList<Book> userBooks;
     private Role role;
+    private boolean blocked;
 
     public User(String email, String password) {
         this.email = email;
@@ -21,7 +22,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("User => email: %s, password: %s. userBooks: %d, role: %s", email, password, userBooks.size(), role);
+        return String.format("User => email: %s, password: %s. userBooks: %d, role: %s. %s", email, password, userBooks.size(), role, blocked);
     }
 
     @Override
@@ -62,4 +63,11 @@ public class User {
         this.role = role;
     }
 
+    public boolean isActive() {
+        return blocked;
+    }
+
+    public void setActive(boolean active) {
+        this.blocked = active;
+    }
 }

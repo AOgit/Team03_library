@@ -154,14 +154,18 @@ public class Menu {
 
     private void showAdminMenu() {
         while (true) {
-            System.out.println("1. ");
-            System.out.println("2. ");
-            System.out.println("3. ");
-            System.out.println("4. ");
-            System.out.println("5. ");
-            System.out.println("6. Список всех отданных читателям книг");
-            System.out.println("7. Добавить новую книгу");
-            System.out.println("8. Редактировать книгу");
+            // TODO добавить роль супер админа, который может менять роли всех остальных
+            // Alex
+            System.out.println("1. Посмотреть список пользователей");
+            System.out.println("2. Посмотреть список читателей");
+            System.out.println("3. Заблокировать пользователя"); //TODO добавить поле boolean active user
+            System.out.println("4. Посмотреть взятые книги у читателя");
+
+            // Kostia
+            System.out.println("5. Список всех отданных читателям книг");
+            System.out.println("6. Добавить новую книгу");
+            System.out.println("7. Редактировать книгу");
+            System.out.println("8. Удалить книгу");
             System.out.println("0. Вернутся в предыдущее меню");
 
             System.out.println("\nВыберите номер пункта меню");

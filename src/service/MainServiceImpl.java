@@ -43,6 +43,7 @@ public class MainServiceImpl implements MainService {
     public boolean loginUser(String email, String password) {
         User user = userRepository.getUserByEmail(email);
         if (user == null) return false;
+        // TODO isBlocked
 
         if (user.getPassword().equals(password)) {
             this.activeUser = user;

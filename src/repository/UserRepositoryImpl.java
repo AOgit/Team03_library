@@ -64,14 +64,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void saveUser(User user) {
-        for (User us : users) {
-            if (user.getEmail().equals(us.getEmail())) {
-                us = user;
-                return;
+    public boolean updateRole(String email, Role newrole) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                user.setRole(newrole);
+                return true;
             }
         }
-        users.add(user);
+        return false;
+    }
+
+    @Override
+    public Role[] getAllRoles() {
+        return new Role[0];
     }
 
     @Override
