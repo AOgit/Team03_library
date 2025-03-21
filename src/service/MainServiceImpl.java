@@ -64,16 +64,16 @@ public class MainServiceImpl implements MainService {
     @Override
     public boolean borrowBook(int bookId) {
         Book book =  bookRepository.getBookById(bookId);
-        if (book == null || book.isBusy()) return false;
-        book.setBusy(true);
+        if (book == null || book.isBorrowed()) return false;
+        book.setIsBorrowed(true);
         return true;
     }
 
     @Override
     public boolean returnBook(int bookId) {
         Book book =  bookRepository.getBookById(bookId);
-        if (book == null || !book.isBusy()) return false;
-        book.setBusy(false);
+        if (book == null || !book.isBorrowed()) return false;
+        book.setIsBorrowed(false);
         return true;
     }
 
@@ -114,10 +114,9 @@ public class MainServiceImpl implements MainService {
 
         if (title != null) book.setTitle(title);
         if (author != null) book.setAuthor(author);
-        if (year != 0) book.setYear(year);
-        if (pages != 0) book.setPages(pages);
-        bookRepository.saveBook(book);
-        return true;
+        if (year > 0) book.setYear(year);
+        if (pages > 0) book.setPages(pages);
+        return bookRepository.updateBook(book);
     }
 
 }
