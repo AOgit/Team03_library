@@ -47,7 +47,7 @@ public class Menu {
                 showUserMenu();
                 break;
             case 3:
-                //Todo show admin menu
+                showAdminMenu();
                 break;
             default:
                 System.out.println("Сделайте корректный выбор");
@@ -55,12 +55,13 @@ public class Menu {
         }
     }
 
+
     private void showUserMenu() {
         while (true) {
             System.out.println("Меню пользователя:");
-            System.out.println("1. Login");
+            System.out.println("1. Войти");
             System.out.println("2. Регистрация нового пользователя");
-            System.out.println("3. Logout (разлогиниться)");
+            System.out.println("3. Выйти из системы");
             System.out.println("0. Вернуться в предыдущее меню");
 
             System.out.println("\nВыберите номер пункта меню");
@@ -85,6 +86,20 @@ public class Menu {
                 3. Получить ответ от сервисного слоя - прошел ли успешно login
                 4. Сообщить результат пользователю
                  */
+                System.out.println("Вход в систему");
+                System.out.println("Введите email: ");
+                String emailUser = scanner.nextLine();
+
+                System.out.println("Введите пароль: ");
+                String passwordUser = scanner.nextLine();
+
+                if (!service.loginUser(emailUser, passwordUser)) {
+                    System.out.println("Такого пользователя в системе нет!");
+                } else {
+                    System.out.println("Добро пожаловать!");
+                }
+
+                waitRead();
                 break;
             case 2:
                 // Регистрация
@@ -124,6 +139,53 @@ public class Menu {
                 System.out.println("Вы вышли из системы");
                 waitRead();
                 break;
+            default:
+                System.out.println("Сделайте корректный выбор");
+                waitRead();
+
+        }
+    }
+
+    private void showAdminMenu() {
+        while (true) {
+            System.out.println("1. ");
+            System.out.println("2. ");
+            System.out.println("3. ");
+            System.out.println("4. ");
+            System.out.println("5. ");
+            System.out.println("6. Список всех отданных читателям книг");
+            System.out.println("7. Добавить новую книгу");
+            System.out.println("8. Редактировать книгу");
+            System.out.println("0. Вернутся в предыдущее меню");
+
+            System.out.println("\nВыберите номер пункта меню");
+            int input = scanner.nextInt();
+            scanner.nextLine();
+
+            // Прерываю текущий цикл
+            if (input == 0) break;
+
+            handleAdminMenuInput(input);
+        }
+    }
+
+    private void handleAdminMenuInput(int input) {
+        switch (input) {
+            case 1:
+
+            case 2:
+
+            case 3:
+
+            case 4:
+
+            case 5:
+
+            case 6:
+
+            case 7:
+
+            case 8:
 
         }
     }
