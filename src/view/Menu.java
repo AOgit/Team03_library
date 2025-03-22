@@ -162,14 +162,15 @@ public class Menu {
             System.out.println("1. Посмотреть список пользователей");
             System.out.println("2. Посмотреть список читателей");
             System.out.println("3. Заблокировать пользователя"); //TODO добавить поле boolean active user
-            System.out.println("4. Посмотреть взятые книги у читателя");
+            System.out.println("4. Разблокировать пользователя");
+            System.out.println("5. Посмотреть взятые книги у читателя");
 
             // Kostia
-            System.out.println("5. Список всех отданных читателям книг");
-            System.out.println("6. Добавить новую книгу");
-            System.out.println("7. Редактировать книгу");
-            System.out.println("8. Удалить книгу");
-            System.out.println("9. Список всех свободных книг");
+            System.out.println("6. Список всех отданных читателям книг");
+            System.out.println("7. Добавить новую книгу");
+            System.out.println("8. Редактировать книгу");
+            System.out.println("9. Удалить книгу");
+            System.out.println("10. Список всех свободных книг");
             System.out.println("0. Вернутся в предыдущее меню");
 
             System.out.println("\nВыберите номер пункта меню");
@@ -186,14 +187,87 @@ public class Menu {
     private void handleAdminMenuInput(int input) {
         switch (input) {
             case 1:
+                System.out.println("Посмотреть список пользователей");
+
+                MyList<User> allUsers = null; // TODO service.getAllUsers();
+
+                if (allUsers == null) {
+                    System.out.println("Зарегистрированных пользователей нет");
+                } else {
+                    System.out.println(allUsers);
+                }
+
+                waitRead();
+                break;
 
             case 2:
+                System.out.println("Посмотреть список читателей");
+
+                MyList<User> allReaders = null; // TODO service.geAllReaders();
+
+                if (allReaders == null) {
+                    System.out.println("Нет ни одного читателя");
+                } else {
+                    System.out.println(allReaders);
+                }
+
+                waitRead();
+                break;
 
             case 3:
+                System.out.println("Заблокировать пользователя");
 
+                System.out.println("Введите email пользователя, которого хотите заблокировать");
+                String emailForBlock = scanner.nextLine();
+
+                if (true /* TODO service.getUserByEmail(email) == null*/) {
+                    System.out.println("Такого пользователя нет!");
+                } else if (true /* TODO service.blockUser(emailForBlock)*/) {
+                    System.out.println("Не удалось заблокировать пользователя!");
+                } else {
+                    System.out.println("Пользователь " + emailForBlock + " успешно заблокирован!");
+                }
+
+                waitRead();
+                break;
             case 4:
+                System.out.println("Разблокировать пользователя");
+
+                System.out.println("Введите email пользователя, которого хотите заблокировать");
+                String emailForActive = scanner.nextLine();
+
+                if (true /* TODO service.getUserByEmail(email) == null*/) {
+                    System.out.println("Такого пользователя нет!");
+                } else if (true /* TODO service.unblockUser(emailForBlock)*/) {
+                    System.out.println("Не удалось разблокировать пользователя!");
+                } else {
+                    System.out.println("Пользователь " + emailForBlock + "  разблокирован!");
+                }
+
+                waitRead();
+                break;
+
 
             case 5:
+                System.out.println("Посмотреть взятые книги у читателя");
+
+                System.out.println("Введите email пользователя, у которого нужно посмотреть книги");
+                String email = scanner.nextLine();
+
+                MyList<Book> booksByReader = null; // TODO service.getUserBooks(email);
+
+                if (true /* TODO service.getUserByEmail(email) == null*/) {
+                    System.out.println("Такого пользователя нет!");
+                } else if (booksByReader == null) {
+                    System.out.println("У этого читателя нет книг");
+                } else {
+                    System.out.println(booksByReader);
+                }
+
+                waitRead();
+                break;
+
+            case 6:
                 // Список всех занятых книг
                 System.out.println("Cписок книг у читателей");
                 MyList<Book> borrowedBooks = service.getBorrowedBooks();
@@ -208,7 +282,7 @@ public class Menu {
                 waitRead();
                 break;
 
-            case 6:
+            case 7:
                 System.out.println("Добавление новой книги");
                 System.out.println("Введите название книги:");
                 String title = scanner.nextLine();
@@ -236,11 +310,11 @@ public class Menu {
                 break;
 
 
-            case 7:
+            case 8:
                 System.out.println("Редактирование книг");
                 // TODO отдельное меню редактирования книг (ВОЗМОЖНО) На обсуждение
 
-            case 8:
+            case 9:
                 System.out.println("Удаление книг");
                 System.out.println("Введите id книги, которую хотите удалить из библиотеки");
                 int bookToDelete = scanner.nextInt();
@@ -265,7 +339,7 @@ public class Menu {
                 break;
 
 
-            case 9:
+            case 10:
                 System.out.println("Список всех свободных книг");
 
                 System.out.println("Cписок книг которые сейчас находятся в библиотеке");
@@ -292,18 +366,18 @@ public class Menu {
 
     private void showBookMenu() {
         while (true) {
-            System.out.println("Добро пожаловать в меню");
+            System.out.println("Меню книг");
             System.out.println("1. Список всех книг");
             System.out.println("2. Список всех свободных книг");
-            System.out.println("3. Найти книгу по названию");
-            System.out.println("4. Найти книгу по автору");
-            System.out.println("5. Отдать книгу из библиотеки");
+            System.out.println("3. Найти книги по названию");
+            System.out.println("4. Найти книги по автору");
+            System.out.println("5. Взять книгу из библиотеки");
             System.out.println("6. Вернуть книгу в библиотеку");
 //            System.out.println("7. Список всех отданных читателям книг"); ADMIN
 //            System.out.println("8. Добавить новую книгу"); ADMIN
 //            System.out.println("9. Редактировать книгу"); ADMIN
 
-            System.out.println("0. Выход");
+            System.out.println("0. Вернуться в предыдущее меню");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -314,7 +388,108 @@ public class Menu {
                 System.exit(0);
             }
 
-//            handleBookMenuInput(choice);
+            handleBookMenuInput(choice);
+        }
+    }
+
+    private void handleBookMenuInput(int choice) {
+        switch (choice) {
+            case 1:
+                MyList<Book> allBooks = service.getAllBooks();
+
+                if (allBooks == null) {
+                    System.out.println("В библиотеке нет ни одной книги!");
+                } else {
+                    System.out.println(allBooks);
+                }
+
+                waitRead();
+                break;
+
+            case 2:
+                System.out.println("Список всех свободных книг");
+
+                MyList<Book> availableBooks = service.getAvailableBooks();
+
+                if (availableBooks == null) {
+                    System.out.println("Свободных книг сейчас нет");
+
+                    waitRead();
+                    break;
+                }
+                System.out.println(availableBooks);
+
+                waitRead();
+                break;
+
+            case 3:
+                System.out.println("Поиск книг по названию");
+                System.out.println("Введите название книг которые хотите найти");
+                String title = scanner.nextLine();
+
+                MyList<Book> booksByTitle = service.getBooksByTitle(title);
+
+                if (booksByTitle == null) {
+                    System.out.println("Не удалось найти книги");
+                } else {
+                    System.out.println(booksByTitle);
+                }
+
+                waitRead();
+                break;
+
+
+            case 4:
+                System.out.println("Поиск книг по автору");
+                System.out.println("Введите автора");
+                String author = scanner.nextLine();
+
+                MyList<Book> booksByAuthor = service.getBooksByTitle(author);
+
+                if (booksByAuthor == null) {
+                    System.out.println("Не удалось найти книги");
+                } else {
+                    System.out.println(booksByAuthor);
+                }
+
+                waitRead();
+                break;
+
+            case 5:
+                System.out.println("Взять книгу из библиотеки");
+
+                System.out.println("Введите id книги, которую хотите забрать");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+
+                if (!service.borrowBook(id)) {
+                    System.out.println("Не удалось забрать книгу");
+                } else {
+                    System.out.println("Вы забрали книгу!");
+                }
+
+                waitRead();
+                break;
+
+            case 6:
+                System.out.println("Вернуть книгу в библиотеку");
+
+                System.out.println("Введите id книги, которую хотите вернуть");
+                int idBook = scanner.nextInt();
+                scanner.nextLine();
+
+                if (!service.returnBook(idBook)) {
+                    System.out.println("Не удалось вернуть книгу");
+                } else {
+                    System.out.println("Вы вернули книгу!");
+                }
+
+                waitRead();
+                break;
+
+            default:
+                System.out.println("Сделайте корректный выбор");
+                waitRead();
         }
     }
 
