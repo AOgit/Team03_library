@@ -1,10 +1,13 @@
 package view;
 
+import model.Book;
 import model.User;
 import service.MainService;
 import utils.ColorMe.Color;
 import utils.ColorMe.ColorMe;
+import utils.MyList;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.Scanner;
 
 public class Menu {
@@ -116,7 +119,7 @@ public class Menu {
                 4. Сообщить результат пользователю
                  */
                 System.out.println("Регистрация нового пользователя");
-                System.out.println("Введи email:");
+                System.out.println("Введите email:");
                 String email = scanner.nextLine();
 
                 System.out.println("Введите пароль:");
@@ -166,6 +169,7 @@ public class Menu {
             System.out.println("6. Добавить новую книгу");
             System.out.println("7. Редактировать книгу");
             System.out.println("8. Удалить книгу");
+            System.out.println("9. Список всех свободных книг");
             System.out.println("0. Вернутся в предыдущее меню");
 
             System.out.println("\nВыберите номер пункта меню");
@@ -190,12 +194,97 @@ public class Menu {
             case 4:
 
             case 5:
+                // Список всех занятых книг
+                System.out.println("Cписок книг у читателей");
+                MyList<Book> borrowedBooks = service.getBorrowedBooks();
+                if (borrowedBooks == null) {
+                    System.out.println("Занятых книг пока нет");
+
+                    waitRead();
+                    break;
+                }
+                System.out.println(borrowedBooks);
+
+                waitRead();
+                break;
 
             case 6:
+                System.out.println("Добавление новой книги");
+                System.out.println("Введите название книги:");
+                String title = scanner.nextLine();
+
+                System.out.println("Введите автора:");
+                String author = scanner.nextLine();
+
+                System.out.println("Введите год книги:");
+                int year = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("Введите количество страниц:");
+               int pages = scanner.nextInt();
+               scanner.nextLine();
+
+                Book book = service.addBook(title, author, year, pages);
+                if (book == null) {
+                    System.out.println("Не удалось добавить книгу");
+                    break;
+                } else {
+                    System.out.println("Книга" + book + " успешно добавлена!");
+                }
+
+                waitRead();
+                break;
+
 
             case 7:
+                System.out.println("Редактирование книг");
+                // TODO отдельное меню редактирования книг (ВОЗМОЖНО) На обсуждение
 
             case 8:
+                System.out.println("Удаление книг");
+                System.out.println("Введите id книги, которую хотите удалить из библиотеки");
+                int bookToDelete = scanner.nextInt();
+                scanner.nextLine();
+
+                if (/*TODO service.geBookById(bookToDelete) == null || */ service.borrowBook(bookToDelete)) {
+                    System.out.println("Операция провалена");
+
+                    waitRead();
+                    break;
+                }
+
+                if (true /*TODO !service.deleteBookById(bookToDelete)*/) {
+                    System.out.println("Не удалось удалить эту книгу");
+
+                    break;
+                } else {
+                    System.out.println("Вы успешно удалили книгу " + bookToDelete);
+                }
+
+                waitRead();
+                break;
+
+
+            case 9:
+                System.out.println("Список всех свободных книг");
+
+                System.out.println("Cписок книг которые сейчас находятся в библиотеке");
+                MyList<Book> availableBooks = service.getAvailableBooks();
+
+                if (availableBooks == null) {
+                    System.out.println("Свободных книг сейчас нет");
+
+                    waitRead();
+                    break;
+                }
+                System.out.println(availableBooks);
+
+                waitRead();
+                break;
+
+            default:
+                System.out.println("Сделайте корректный выбор");
+                waitRead();
 
         }
     }
