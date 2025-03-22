@@ -50,7 +50,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book getBookById(int id) {
         for (Book book : books) {
-            if (Objects.equals(book.getId(), id)) {
+            if (book.getId() == id) {
                 return book;
             }
         }
@@ -82,7 +82,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public MyList<Book> getBooksByTitle(String title) {
         MyList<Book> matchingBooks = new MyArrayList<>();
-        for (Book book : this.books) {
+        for (Book book : books) {
             if (book.getTitle().toLowerCase().contains(title.toLowerCase())) matchingBooks.add(book);
         }
         return matchingBooks;
@@ -106,7 +106,6 @@ public class BookRepositoryImpl implements BookRepository {
     }
     @Override
     public boolean updateBook(Book book) {
-        if (book == null) return false;
         for (int i = 0; i < books.size(); i++) {
             Book bk = books.get(i);
             if (bk.getId() == book.getId()) {
