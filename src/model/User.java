@@ -67,7 +67,11 @@ public class User {
         return blocked;
     }
 
-    public void setActive(boolean active) {
-        this.blocked = active;
+    public void setActive() {
+        this.blocked = false;
+    }
+
+    public void setBlocked() {
+        this.blocked = true;
     }
 }
