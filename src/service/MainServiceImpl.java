@@ -18,9 +18,8 @@ public class MainServiceImpl implements MainService {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
     }
+  
     // ==================USERS========================
-
-
 
     @Override
     public User registerUser(String email, String password) {
@@ -64,15 +63,56 @@ public class MainServiceImpl implements MainService {
     public User getActiveUser() {
         return this.activeUser;
     }
+  
+    @Override
+    public MyList<User> getAllUsers() {
+        return null;
+    }
 
+    @Override
+    public MyList<User> getAllReaders() {
+        return null;
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return null;
+    }
+
+    @Override
+    public boolean blockUser(String email) {
+        return false;
+    }
+
+    @Override
+    public boolean unblockUser(String email) {
+        return false;
+    }
+
+    @Override
+    public MyList<Book> getUserBooks(String email) {
+        return null;
+    }
+
+    @Override
+    public boolean borrowBook(int bookId) {
+        Book book =  bookRepository.getBookById(bookId);
+        if (book == null || book.isBorrowed()) return false;
+        book.setIsBorrowed(true);
+        return bookRepository.updateBook(book);
+    }
+  
+    @Override
     public boolean isLoggedIn(){
         return this.activeUser != null;
     }
-
+  
+    @Override
     public boolean isAdmin() {
         return isLoggedIn() && activeUser.getRole() == Role.ADMIN;
     }
-
+  
+    @Override
     public boolean isSuperAdmin() {
         return isLoggedIn() && activeUser.getRole() == Role.SUPER_ADMIN;
     }
@@ -100,6 +140,11 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public MyList<Book> getBookByGenre(String genre) {
+        return bookRepository.getBookByGenre(genre);
+    }
+
+    @Override
     public MyList<Book> getAllBooks() {
         return bookRepository.getAllBooks();
     }
@@ -115,17 +160,28 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public Book geBookById(int bookId) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteBookById(int bookId) {
+        return false;
+    }
+
+    @Override
     public Book addBook(String title, String author, int year, int pages, String genre) {
         return bookRepository.addBook(title, author, year, pages, genre);
     }
 
     @Override
-    public boolean editBook(int id, String title, String author, int year, int pages) {
+    public boolean editBook(int id, String title, String author, int year, int pages, String genre) {
         Book book = bookRepository.getBookById(id);
         if (book == null) return false;
 
         if (title != null) book.setTitle(title);
         if (author != null) book.setAuthor(author);
+        if (genre != null) book.setGenre(genre);
         if (year > 0) book.setYear(year);
         if (pages > 0) book.setPages(pages);
         return bookRepository.updateBook(book);

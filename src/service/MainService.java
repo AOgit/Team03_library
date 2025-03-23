@@ -8,6 +8,13 @@ import utils.MyList;
 public interface MainService {
 
     // ==================USERS========================
+  
+    public  boolean isLoggedIn();
+
+    public boolean isAdmin();
+
+    public boolean isSuperAdmin();
+  
     User registerUser(String email, String password);
 
     boolean loginUser(String email, String password);
@@ -15,18 +22,25 @@ public interface MainService {
     void logout();
 
     User getActiveUser();
+  
+    MyList<User> getAllUsers();
 
-    public  boolean isLoggedIn();
+    MyList<User> getAllReaders();
 
-    public boolean isAdmin();
+    User getUserByEmail(String email);
 
-    public boolean isSuperAdmin();
+    boolean blockUser(String email);
 
+    boolean unblockUser(String email);
+
+    MyList<Book> getUserBooks(String email);
+  
     // ==================USERS========================
     // ==================BOOKS========================
+
     Book addBook (String title, String author, int year, int pages, String genre);
 
-    boolean editBook(int id, String title, String author, int year, int pages);
+    boolean editBook(int id, String title, String author, int year, int pages, String genre);
 
     boolean borrowBook(int bookId);
 
@@ -38,11 +52,18 @@ public interface MainService {
 
     MyList<Book> getBooksByAuthor(String author);
 
+    MyList<Book> getBookByGenre(String genre);
+
     MyList<Book> getAllBooks();
 
     MyList<Book> getAvailableBooks();
 
     MyList<Book> getBorrowedBooks();
+  
+    Book geBookById(int bookId);
 
-    // ==================BOOKS========================
+    boolean deleteBookById(int bookId);
+   
+  // ==================BOOKS========================
+
 }

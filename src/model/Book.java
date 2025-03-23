@@ -18,13 +18,13 @@ public class Book {
         this.author = author;
         this.year = year;
         this.pages = pages;
-        this.genre =genre;
+        this.genre = genre;
     }
 
     @Override
     public String toString() {
-        return String.format("Книга №%d. Название: %s, автор: %s, год издания: %s, " +
-                        "количество страниц: %s, жанр: %s. Доступна: %s\n",
+        return String.format("Книга №%d. Название: %s  |  Автор: %s  |  Год издания: %s  |  " +
+                        "Количество страниц: %s  |  Жанр: %s  //  Доступна: %s\n",
                         id, title, author, year, pages, genre, isBorrowed ? "Нет" : "Да");
     }
 
