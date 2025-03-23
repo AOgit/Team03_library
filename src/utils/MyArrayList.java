@@ -231,6 +231,15 @@ public class MyArrayList<T> implements MyList<T> {
         return true;
     }
 
+    @Override
+    public boolean update(T value) {
+        int index = indexOf(value);
+        if (index < 0) return false;
+
+        array[index] = value;
+
+        return true;
+    }
 
     @Override
     @SuppressWarnings("unchecked")

@@ -64,6 +64,9 @@ public interface MyList<T> extends Iterable<T> {
      */
     boolean remove(T value);
 
+    boolean update(T value);
+
+
 
     /**
      * Удаляет элемент по индексу.
