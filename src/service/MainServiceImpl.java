@@ -39,6 +39,7 @@ public class MainServiceImpl implements MainService {
         }
 
         User user = userRepository.addUser(email, password);
+
         return user;
     }
 
@@ -80,13 +81,15 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public boolean blockUser(String email) {
-        return false;
+    public boolean blockUser(User user) {
+        user.setBlocked(true);
+        return userRepository.update(user);
     }
 
     @Override
-    public boolean unblockUser(String email) {
-        return false;
+    public boolean unblockUser(User user) {
+        user.setBlocked(false);
+        return userRepository.update(user);
     }
 
     @Override
@@ -110,6 +113,7 @@ public class MainServiceImpl implements MainService {
     public boolean isSuperAdmin() {
         return isLoggedIn() && activeUser.getRole() == Role.SUPER_ADMIN;
     }
+
 
     // ==================USERS========================
     // ==================BOOKS========================
