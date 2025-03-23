@@ -114,12 +114,13 @@ public class MainServiceImpl implements MainService {
 
 
     @Override
-    public boolean editBook(int id, String title, String author, int year, int pages) {
+    public boolean editBook(int id, String title, String author, int year, int pages, String genre) {
         Book book = bookRepository.getBookById(id);
         if (book == null) return false;
 
         if (title != null) book.setTitle(title);
         if (author != null) book.setAuthor(author);
+        if (genre != null) book.setGenre(genre);
         if (year > 0) book.setYear(year);
         if (pages > 0) book.setPages(pages);
         return bookRepository.updateBook(book);
