@@ -66,12 +66,12 @@ public class MainServiceImpl implements MainService {
   
     @Override
     public MyList<User> getAllUsers() {
-        return null;
+        return userRepository.getAllUsers();
     }
 
     @Override
     public MyList<User> getAllReaders() {
-        return null;
+        return userRepository.getAllReaders();
     }
 
     @Override
@@ -115,8 +115,6 @@ public class MainServiceImpl implements MainService {
     // ==================BOOKS========================
 
 
-    // Какие книги у пользователя
-
 
     @Override
     public MyList<Book> getBooksByTitle(String title) {
@@ -125,6 +123,9 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public MyList<Book> getUserBooksByEmail(String email) {
+        if (getUserByEmail(email) != null) {
+            return getUserByEmail(email).getUserBooks();
+        }
         return null;
     }
 
@@ -184,11 +185,12 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public boolean borrowBook(int bookId) {
+    public boolean borrowBook(User user, int bookId) {
         Book book =  bookRepository.getBookById(bookId);
-        if (book == null || book.isBorrowed()) return false;
+        if (user == null || book == null || book.isBorrowed()) return false;
+        user.addUserBook(book);
         book.setIsBorrowed(true);
-        return bookRepository.updateBook(book);
+        return userRepository.update(user) && bookRepository.updateBook(book);
     }
 
     @Override

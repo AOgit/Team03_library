@@ -129,19 +129,6 @@ public class BookRepositoryImpl implements BookRepository {
         return false;
     }
 
-
-    @Override
-    public void saveBook(Book book) {
-        for (int i = 0; i < books.size(); i++) {
-            Book bk = books.get(i);
-            if (bk.getId() == book.getId()) {
-                books.set(i, book); // Обновляем книгу по индексу
-                return;
-            }
-        }
-        books.add(book);
-    }
-
     @Override
     public boolean deleteById(int id) {
         // Ок, через метод итератор так через итератор

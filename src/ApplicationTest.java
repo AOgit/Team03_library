@@ -34,7 +34,7 @@ public class ApplicationTest {
         System.out.println(service.getBooksByAuthor("Чехов"));
         System.out.println(service.getBorrowedBooks());
         System.out.println(service.getAvailableBooks());
-        System.out.println("Borrow book №3: " + service.borrowBook(3));
+//        System.out.println("Borrow book №3: " + service.borrowBook(3));
         System.out.println(service.getBorrowedBooks());
         System.out.println(service.getAvailableBooks());
         System.out.println("Borrow book №11: " + service.returnBook(11));

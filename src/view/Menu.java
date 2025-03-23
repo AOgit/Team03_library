@@ -7,6 +7,7 @@ import utils.ColorMe.Color;
 import utils.ColorMe.ColorMe;
 import utils.MyList;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Menu {
@@ -21,6 +22,9 @@ public class Menu {
     public void start() {
         // Потом убрать, для тестов выставляю
         service.loginUser("admin@mail.de", "admin");
+        User reader = service.registerUser("reader@mail.ru", "R(12ader");
+//        System.out.println(reader);
+        service.borrowBook(reader, 1);
         showMenu();
     }
     private void showMenu() {
@@ -29,7 +33,7 @@ public class Menu {
             System.out.println(ColorMe.text(Color.PURPLE, "Добро пожаловать в меню"));
             System.out.println("1. Меню книг");
             System.out.println("2. Меню пользователя");
-            if (service.isAdmin())
+            if (service.isAdmin() || service.isSuperAdmin())
                 System.out.println("3. Меню администратора");
             System.out.println("0. Выход");
 
@@ -55,7 +59,6 @@ public class Menu {
                 showUserMenu();
                 break;
             case 3:
-
                 showAdminMenu();
                 break;
             default:
@@ -99,7 +102,7 @@ public class Menu {
                 }
                 break;
             case 2:
-                if (service.isLoggedIn())
+                if (!service.isLoggedIn())
                     registration();
                 break;
             default:
@@ -110,8 +113,7 @@ public class Menu {
 
     private void showAdminMenu() {
         while (true) {
-            // TODO добавить роль супер админа, который может менять роли всех остальных
-            if (!service.isAdmin()) break;
+            if (!service.isAdmin() && !service.isSuperAdmin()) break;
             userPrompt();
             System.out.println("1. Список всех пользователей");
             System.out.println("2. Список всех читателей");
@@ -140,31 +142,10 @@ public class Menu {
     private void handleAdminMenuInput(int input) {
         switch (input) {
             case 1:
-                System.out.println("Посмотреть список пользователей");
-
-                MyList<User> allUsers = null; // TODO service.getAllUsers();
-
-                if (allUsers == null) {
-                    System.out.println("Зарегистрированных пользователей нет");
-                } else {
-                    System.out.println(allUsers);
-                }
-
-                waitRead();
+                showAllUsers();
                 break;
-
             case 2:
-                System.out.println("Посмотреть список читателей");
-
-                MyList<User> allReaders = null; // TODO service.geAllReaders();
-
-                if (allReaders == null) {
-                    System.out.println("Нет ни одного читателя");
-                } else {
-                    System.out.println(allReaders);
-                }
-
-                waitRead();
+                showAllReaders();
                 break;
 
             case 3:
@@ -275,13 +256,14 @@ public class Menu {
                 System.out.println("Введите id книги, которую хотите удалить из библиотеки");
                 int bookToDelete = scanner.nextInt();
                 scanner.nextLine();
-
-                if (/*TODO service.getBookById(bookToDelete) == null || */ service.borrowBook(bookToDelete)) {
-                    System.out.println("Операция провалена");
-
-                    waitRead();
-                    break;
-                }
+//
+//                if (
+//                        service.borrowBook(bookToDelete)) {
+//                    System.out.println("Операция провалена");
+//
+//                    waitRead();
+//                    break;
+//                }
 
                 if (true /*TODO !service.deleteBookById(bookToDelete)*/) {
                     System.out.println("Не удалось удалить эту книгу");
@@ -431,11 +413,11 @@ public class Menu {
                 int id = scanner.nextInt();
                 scanner.nextLine();
 
-                if (!service.borrowBook(id)) {
-                    System.out.println("Не удалось взять книгу");
-                } else {
-                    System.out.println("Вы забрали книгу!");
-                }
+//                if (!service.borrowBook(id)) {
+//                    System.out.println("Не удалось взять книгу");
+//                } else {
+//                    System.out.println("Вы забрали книгу!");
+//                }
 
                 waitRead();
                 break;
@@ -508,6 +490,30 @@ public class Menu {
             System.out.println("Регистрация провалена");
         } else {
             System.out.println("Вы успешно зарегистрировались в системе!");
+        }
+        waitRead();
+    }
+
+    private void showAllUsers () {
+        System.out.println("Список пользователей библиотеки:");
+        MyList<User> users = service.getAllUsers();
+        if (!users.isEmpty()) {
+            for (User user: users)
+                System.out.println(user);
+        } else {
+            System.out.println("Зарегистрированных пользователей нет");
+        }
+        waitRead();
+    }
+
+    private void showAllReaders () {
+        System.out.println("Список читателей библиотеки:");
+        MyList<User> readers = service.getAllReaders();
+        if (!readers.isEmpty()) {
+            for (User reader: readers)
+                System.out.println(reader);
+        } else {
+            System.out.println("Читателей в библиотеке нет ;(");
         }
         waitRead();
     }

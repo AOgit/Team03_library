@@ -55,6 +55,10 @@ public class User {
         this.userBooks = userBooks;
     }
 
+    public void addUserBook(Book book) {
+        this.userBooks.add(book);
+    }
+
     public Role getRole() {
         return role;
     }

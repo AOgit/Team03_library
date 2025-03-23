@@ -11,11 +11,12 @@ public interface UserRepository {
     User addUser(String email, String password);
 
     // Read
-
+    MyList<User> getAllUsers();
+    MyList<User> getAllReaders();
     User getUserByEmail(String email);
 
-    // Какие книги у пользователя
-    MyList<Book> getUserBooksByEmail(String email);
+    // Update
+    boolean update(User user);
 
     // Update by email and password
     boolean updatePassword(String email, String newPassword);
@@ -25,17 +26,5 @@ public interface UserRepository {
 
     // Delete User
     boolean deleteUser(String email);
-
-
-
-    // Обсуждаемые методы:
-
-//    boolean isEmailExist(String email);
-
-    // Update User
-//    void saveUser(User user);
-
-
-
 
 }

@@ -42,7 +42,7 @@ public interface MainService {
 
     boolean editBook(int id, String title, String author, int year, int pages, String genre);
 
-    boolean borrowBook(int bookId);
+    boolean borrowBook(User user, int bookId);
 
     boolean returnBook(int bookId);
 
