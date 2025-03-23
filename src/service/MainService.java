@@ -16,7 +16,7 @@ public interface MainService {
 
     // Может все-таки стоит вместо boolean isBusy, в модель Book добавить поле BorrowedBy??
     // С типом User?
-    Book addBook (String title, String author, int year, int pages);
+    Book addBook (String title, String author, int year, int pages, String genre);
 
     boolean editBook(int id, String title, String author, int year, int pages);
 

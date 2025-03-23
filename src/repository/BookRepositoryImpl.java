@@ -104,6 +104,7 @@ public class BookRepositoryImpl implements BookRepository {
         }
         return matchingBooksByGenre;
     }
+
     @Override
     public boolean updateBook(Book book) {
         for (int i = 0; i < books.size(); i++) {
@@ -118,7 +119,6 @@ public class BookRepositoryImpl implements BookRepository {
 
 
     @Override
-
     public void saveBook(Book book) {
         for (int i = 0; i < books.size(); i++) {
             Book bk = books.get(i);
@@ -132,25 +132,19 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void deleteById(int id) {
-
+        // Ок, через метод итератор так через итератор
         Iterator<Book> iterator = books.iterator();
         while (iterator.hasNext()) {
-            if (Objects.equals(iterator.next().getId(), id)) {
+            if (iterator.next().getId() == id) {
                 iterator.remove();
                 return;
             }
         }
-//        for (int i = 0; i < books.size(); i++) {
-//            if (Objects.equals(books.get(i).getId(), id)) {
-//                books.remove(i);
-//                i--;
-//           }
-//      }
     }
 
     public String getCurrentReader(int id) {
         for (Book book : books) {
-            if (Objects.equals(book.getId(), id)) {
+            if (book.getId() == id) {
                 if (book.isBorrowed() && book.getReader() != null) {
                     return book.getReader().getEmail();
      //               System.out.printf("Книга: %s (%d); читатель: %s\n", book.getTitle(), book.getId(), reader.getEmail());
