@@ -89,6 +89,11 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public MyList<Book> getBookByGenre(String genre) {
+        return bookRepository.getBookByGenre(genre);
+    }
+
+    @Override
     public MyList<Book> getAllBooks() {
         return bookRepository.getAllBooks();
     }

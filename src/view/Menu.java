@@ -461,7 +461,7 @@ public class Menu {
                 System.out.println("Введите название жанра");
                 String genre = scanner.nextLine();
 
-                MyList<Book> booksByGenre = service.getBooksByAuthor(genre);
+                MyList<Book> booksByGenre = service.getBookByGenre(genre);
 
                 if (booksByGenre == null) {
                     System.out.println("Не удалось найти книгу");

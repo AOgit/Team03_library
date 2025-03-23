@@ -29,6 +29,8 @@ public interface MainService {
     // получить список книг по автору
     MyList<Book> getBooksByAuthor(String author);
 
+    MyList<Book> getBookByGenre(String genre);
+
     MyList<Book> getAllBooks();
 
     MyList<Book> getAvailableBooks();
