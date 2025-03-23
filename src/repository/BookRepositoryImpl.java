@@ -143,15 +143,16 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public void deleteById(int id) {
+    public boolean deleteById(int id) {
         // Ок, через метод итератор так через итератор
         Iterator<Book> iterator = books.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().getId() == id) {
                 iterator.remove();
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public String getCurrentReader(int id) {

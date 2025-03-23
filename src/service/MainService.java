@@ -49,7 +49,7 @@ public interface MainService {
 
     MyList<Book> getBorrowedBooks();
 
-    Book geBookById(int bookId);
+    Book getBookById(int bookId);
 
     boolean deleteBookById(int bookId);
 

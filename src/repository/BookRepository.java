@@ -39,7 +39,7 @@ public interface BookRepository {
     String getCurrentReader(int id);
 
     // Delete
-    void deleteById(int id);
+    boolean deleteById(int id);
 
 
 
