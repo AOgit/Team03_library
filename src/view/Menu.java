@@ -372,14 +372,11 @@ public class Menu {
             System.out.println("Меню книг");
             System.out.println("1. Список всех книг");
             System.out.println("2. Список всех свободных книг");
-            System.out.println("3. Найти книги по названию");
-            System.out.println("4. Найти книги по автору");
-            System.out.println("5. Взять книгу из библиотеки");
-            System.out.println("6. Вернуть книгу в библиотеку");
-//            System.out.println("7. Список всех отданных читателям книг"); ADMIN
-//            System.out.println("8. Добавить новую книгу"); ADMIN
-//            System.out.println("9. Редактировать книгу"); ADMIN
-
+            System.out.println("3. Найти книгу по названию");
+            System.out.println("4. Найти книгу по автору");
+            System.out.println("5. Найти книгу по жанру");
+            System.out.println("6. Взять книгу из библиотеки");
+            System.out.println("7. Вернуть книгу в библиотеку");
             System.out.println("0. Вернуться в предыдущее меню");
 
             int choice = scanner.nextInt();
@@ -427,13 +424,13 @@ public class Menu {
 
             case 3:
                 System.out.println("Поиск книг по названию");
-                System.out.println("Введите название книг которые хотите найти");
+                System.out.println("Введите название книги, которую хотите найти");
                 String title = scanner.nextLine();
 
                 MyList<Book> booksByTitle = service.getBooksByTitle(title);
 
                 if (booksByTitle == null) {
-                    System.out.println("Не удалось найти книги");
+                    System.out.println("Не удалось найти книгу");
                 } else {
                     System.out.println(booksByTitle);
                 }
@@ -441,32 +438,45 @@ public class Menu {
                 waitRead();
                 break;
 
-
             case 4:
                 System.out.println("Поиск книг по автору");
-                System.out.println("Введите автора");
+                System.out.println("Введите фамилию автора");
                 String author = scanner.nextLine();
 
-                MyList<Book> booksByAuthor = service.getBooksByTitle(author);
+                MyList<Book> booksByAuthor = service.getBooksByAuthor(author);
 
                 if (booksByAuthor == null) {
-                    System.out.println("Не удалось найти книги");
+                    System.out.println("Не удалось найти книгу");
                 } else {
                     System.out.println(booksByAuthor);
                 }
 
                 waitRead();
                 break;
-
             case 5:
+                System.out.println("Поиск книг по жанру");
+                System.out.println("Введите название жанра");
+                String genre = scanner.nextLine();
+
+                MyList<Book> booksByGenre = service.getBooksByAuthor(genre);
+
+                if (booksByGenre == null) {
+                    System.out.println("Не удалось найти книгу");
+                } else {
+                    System.out.println(booksByGenre);
+                }
+
+                waitRead();
+                break;
+            case 6:
                 System.out.println("Взять книгу из библиотеки");
 
-                System.out.println("Введите id книги, которую хотите забрать");
+                System.out.println("Введите id книги, которую хотите взять");
                 int id = scanner.nextInt();
                 scanner.nextLine();
 
                 if (!service.borrowBook(id)) {
-                    System.out.println("Не удалось забрать книгу");
+                    System.out.println("Не удалось взять книгу");
                 } else {
                     System.out.println("Вы забрали книгу!");
                 }
@@ -474,7 +484,7 @@ public class Menu {
                 waitRead();
                 break;
 
-            case 6:
+            case 7:
                 System.out.println("Вернуть книгу в библиотеку");
 
                 System.out.println("Введите id книги, которую хотите вернуть");
