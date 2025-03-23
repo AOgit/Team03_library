@@ -377,6 +377,9 @@ public class Menu {
             System.out.println("5. Найти книгу по жанру");
             System.out.println("6. Взять книгу из библиотеки");
             System.out.println("7. Вернуть книгу в библиотеку");
+//            System.out.println("7. Список всех отданных читателям книг"); ADMIN
+//            System.out.println("8. Добавить новую книгу"); ADMIN
+//            System.out.println("9. Редактировать книгу"); ADMIN
             System.out.println("0. Вернуться в предыдущее меню");
 
             int choice = scanner.nextInt();
