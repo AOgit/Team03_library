@@ -160,13 +160,15 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Book geBookById(int bookId) {
-        return null;
+    public Book getBookById(int bookId) {
+        if (bookId < 0) return null;
+        return bookRepository.getBookById(bookId);
     }
 
     @Override
     public boolean deleteBookById(int bookId) {
-        return false;
+        if (bookId < 0) return false;
+        return bookRepository.deleteById(bookId);
     }
 
     @Override
