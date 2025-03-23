@@ -20,11 +20,15 @@ public interface BookRepository {
     // Получить список всех занятых книг
     MyList<Book> getBorrowedBooks();
 
+    MyList<Book> findBooksByTitleOrAuthor(String search);
+
     // получить список книг по названию
     MyList<Book> getBooksByTitle(String title);
 
     // получить список книг по автору
     MyList<Book> getBooksByAuthor(String author);
+
+    MyList<Book> getBookByGenre (String genre);
 
     // Update
     boolean updateBook(Book book);
