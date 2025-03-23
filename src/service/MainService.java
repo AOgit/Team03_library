@@ -18,7 +18,7 @@ public interface MainService {
     // С типом User?
     Book addBook (String title, String author, int year, int pages, String genre);
 
-    boolean editBook(int id, String title, String author, int year, int pages);
+    boolean editBook(int id, String title, String author, int year, int pages, String genre);
 
     boolean borrowBook(int bookId);
 

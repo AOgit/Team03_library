@@ -25,12 +25,13 @@ public class BookRepositoryImpl implements BookRepository {
     private void addStartBooks() {
 
         books.addAll(
-                new Book(currentId.getAndIncrement(), "Война и мир", "Толстой Л.Н.", 1983, 5876, "роман"),
-                new Book(currentId.getAndIncrement(), "Зачарована Десна", "Довженко О.", 1983, 576, "автобиографическая повесть"),
-                new Book(currentId.getAndIncrement(), "Грозовой перевал", "Бронте Э.", 1847, 384, "роман"),
-                new Book(currentId.getAndIncrement(), "Сто лет одиночества", "Маркес Г.Г.", 1967, 480, "роман"),
-                new Book(currentId.getAndIncrement(), "Три товарища", "Ремарк Э.М.", 1936, 480, "роман"),
-                new Book(currentId.getAndIncrement(), "Повелитель мух", "Голдинг У.", 1954, 320, "роман-антиутопия")
+                new Book(currentId.getAndIncrement(), "\"Java для чайников\"", "Берд Б.", 2013, 368, "сказка"),
+                new Book(currentId.getAndIncrement(), "\"Война и мир\"", "Толстой Л.Н.", 1983, 5876, "роман"),
+                new Book(currentId.getAndIncrement(), "\"Зачарована Десна\"", "Довженко О.", 1983, 576, "автобиографическая повесть"),
+                new Book(currentId.getAndIncrement(), "\"Грозовой перевал\"", "Бронте Э.", 1847, 384, "роман"),
+                new Book(currentId.getAndIncrement(), "\"Сто лет одиночества\"", "Маркес Г.Г.", 1967, 480, "роман"),
+                new Book(currentId.getAndIncrement(), "\"Три товарища\"", "Ремарк Э.М.", 1936, 480, "роман"),
+                new Book(currentId.getAndIncrement(), "\"Повелитель мух\"", "Голдинг У.", 1954, 320, "роман-антиутопия")
 
         );
     }
