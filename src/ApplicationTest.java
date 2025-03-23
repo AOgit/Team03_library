@@ -16,7 +16,7 @@ public class ApplicationTest {
 
         MainService service = new MainServiceImpl(bookRepository, userRepository);
 
-//        System.out.println(Arrays.toString(Role.values()));
+        System.out.println(Arrays.toString(Role.values()));
 
         service.addBook("\"Мы закончили этот проект\"", "Алекс, Костя, Ева, Лена", 2025, 1, "фантастика");
 

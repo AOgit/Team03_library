@@ -120,14 +120,15 @@ public class Menu {
             System.out.println("2. Список всех читателей");
             System.out.println("3. Заблокировать/разблокировать пользователя");
             System.out.println("4. Изменить роль пользователя");
+            System.out.println("5. Удалить пользователя");
             System.out.println("============================");
-            System.out.println("5. Список книг в наличии");
-            System.out.println("6. Список книг на абонементе");
-            System.out.println("7. Список книг у определенного читателя");
+            System.out.println("6. Список книг в наличии");
+            System.out.println("7. Список книг на абонементе");
+            System.out.println("8. Список книг у определенного читателя");
             System.out.println("============================");
-            System.out.println("8. Добавить новую книгу");
-            System.out.println("9. Редактировать книгу");
-            System.out.println("10. Удалить книгу");
+            System.out.println("9. Добавить новую книгу");
+            System.out.println("10. Редактировать книгу");
+            System.out.println("11. Удалить книгу");
             System.out.println("============================");
             System.out.println("0. Вернутся в предыдущее меню");
             System.out.println("\nВыберите номер пункта меню");
@@ -153,42 +154,11 @@ public class Menu {
                 blockUnblokUser();
                 break;
             case 4:
-                System.out.println("Изменить роль пользователя");
-                System.out.println("Введите email пользователя, которому хотите изменить роль");
-                String email = scanner.nextLine();
-
-                User user = service.getUserByEmail(email.trim());
-                if (user == null) {
-                    System.out.println("Пользователя с таким email не существует");
-                } else {
-                    System.out.println("Текущая роль пользователя: " + user.getRole().toString());
-
-//                    System.out.println("Укажите новую роль: " + Role.values());
-                }
-
-                waitRead();
+                changeUserRole();
                 break;
-
-
             case 5:
-                System.out.println("Посмотреть взятые книги у читателя");
-
-                System.out.println("Введите email пользователя, у которого нужно посмотреть книги");
-//                String email = scanner.nextLine();
-
-                MyList<Book> booksByReader = null; // TODO service.getUserBooks(email);
-
-                if (true /* TODO service.getUserByEmail(email) == null*/) {
-                    System.out.println("Такого пользователя нет!");
-                } else if (booksByReader == null) {
-                    System.out.println("У этого читателя нет книг");
-                } else {
-                    System.out.println(booksByReader);
-                }
-
-                waitRead();
+                deleteUser();
                 break;
-
             case 6:
                 // Список всех занятых книг
                 System.out.println("Cписок книг у читателей");
@@ -467,12 +437,12 @@ public class Menu {
     private void registration() {
         System.out.println("Регистрация нового пользователя");
         System.out.println("Введите email:");
-        String email = scanner.nextLine();
+        String emailInput = scanner.nextLine();
 
         System.out.println("Введите пароль:");
-        String password = scanner.nextLine();
+        String passwordInput = scanner.nextLine();
 
-        User user = service.registerUser(email, password);
+        User user = service.registerUser(emailInput, passwordInput);
 
         if (user == null) {
             System.out.println("Регистрация провалена");
@@ -507,33 +477,77 @@ public class Menu {
     }
 
    private void blockUnblokUser () {
-       System.out.println("Заблокировать пользователя");
-       System.out.println("Введите email пользователя, которого хотите заблокировать");
-       String email = scanner.nextLine();
+       System.out.println("Смена статуса пользователя");
+       System.out.println("Введите email пользователя, для смены статуса");
+       String emailInput = scanner.nextLine();
 
-       User user = service.getUserByEmail(email.trim());
+       User user = service.getUserByEmail(emailInput.trim());
        if (user == null) {
            System.out.println("Пользователя с таким email не существует");
        } else {
            if (user.isBlocked()) {
-               System.out.println("Пользователь заблокирован. Разблокировать? Да/Нет");
-               String answer = scanner.nextLine();
-               if (answer.trim().equalsIgnoreCase("да"))
+               System.out.println("Статус пользователя: заблокирован. Разблокировать? Да/Нет");
+               String answerInput = scanner.nextLine();
+               if (answerInput.trim().equalsIgnoreCase("да"))
                    if (service.unblockUser(user))
                        System.out.println("Пользователь успешно разблокирован");
                    else
-                       System.out.println("Пользователь остался заблокирован");
+                       System.out.println("Статус пользователя не изменен");
            } else {
-               System.out.println("Заблокировать пользователя? Да/Нет");
+               System.out.println("Статус пользователя: активный. Заблокировать? Да/Нет");
                String answer = scanner.nextLine();
                if (answer.trim().equalsIgnoreCase("да"))
                    if (service.blockUser(user))
                        System.out.println("Пользователь заблокирован");
                    else
-                       System.out.println("Пользователь остался не заблокирован");
+                       System.out.println("Статус пользователя не изменен");
            }
        }
       waitRead();
    }
+
+  private void changeUserRole() {
+        if (!service.isSuperAdmin())
+            System.out.println("Только пользователь с ролью Супер администраторa имеет право менять роли");
+      System.out.println("Изменить роль пользователя");
+      System.out.println("Введите email пользователя, которому хотите изменить роль");
+      String email = scanner.nextLine();
+
+      User user = service.getUserByEmail(email.trim());
+      if (user == null) {
+          System.out.println("Пользователя с таким email не существует");
+      } else {
+          System.out.println("Текущая роль пользователя: " + user.getRole().toString());
+          System.out.println("Укажите новую роль: " + Arrays.toString(Role.values()));
+          String roleInput = scanner.nextLine();
+          try {
+              Role role = Role.valueOf(roleInput.toUpperCase()); // Преобразуем в верхний регистр для удобства
+              if (service.changeUserRole(user, role))
+                  System.out.println("Новая роль успешно установлена");
+              else
+                  System.out.println("Недостаточно прав для смены роли");
+          } catch (IllegalArgumentException e) {
+              System.out.println("Ошибка: некорректная роль");
+          }
+      }
+
+      waitRead();
+  }
+
+ private void deleteUser() {
+     System.out.println("Введите email пользователя, которого нужно удалить");
+     String emailInput = scanner.nextLine();
+     User user = service.getUserByEmail(emailInput.trim());
+     if (user == null) {
+         System.out.println("Пользователя с таким email не существует");
+     } else {
+         if (service.deleteUser(user))
+             System.out.println("Пользователь успешно удален");
+         else
+             System.out.println("Ошибка удаления пользователя!");
+     }
+     waitRead();
+ }
+
 
 }

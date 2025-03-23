@@ -15,6 +15,8 @@ public interface MainService {
 
     public boolean isSuperAdmin();
 
+    public boolean changeUserRole(User user, Role role);
+
     User registerUser(String email, String password);
 
     boolean loginUser(String email, String password);
@@ -32,6 +34,8 @@ public interface MainService {
     boolean blockUser(User user);
 
     boolean unblockUser(User user);
+
+    boolean deleteUser(User user);
 
     MyList<Book> getUserBooks(String email);
   

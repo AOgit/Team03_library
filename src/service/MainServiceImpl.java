@@ -67,27 +67,32 @@ public class MainServiceImpl implements MainService {
   
     @Override
     public MyList<User> getAllUsers() {
+        if (!isAdmin() && !isSuperAdmin()) return null;
         return userRepository.getAllUsers();
     }
 
     @Override
     public MyList<User> getAllReaders() {
+        if (!isAdmin() && !isSuperAdmin()) return null;
         return userRepository.getAllReaders();
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return null;
+        if (!isAdmin() && !isSuperAdmin()) return null;
+        return userRepository.getUserByEmail(email);
     }
 
     @Override
     public boolean blockUser(User user) {
+        if (!isAdmin() && !isSuperAdmin()) return false;
         user.setBlocked(true);
         return userRepository.update(user);
     }
 
     @Override
     public boolean unblockUser(User user) {
+        if (!isAdmin() && !isSuperAdmin()) return false;
         user.setBlocked(false);
         return userRepository.update(user);
     }
@@ -98,12 +103,11 @@ public class MainServiceImpl implements MainService {
     }
 
 
-  
     @Override
     public boolean isLoggedIn(){
         return this.activeUser != null;
     }
-  
+
     @Override
     public boolean isAdmin() {
         return isLoggedIn() && activeUser.getRole() == Role.ADMIN;
@@ -114,6 +118,25 @@ public class MainServiceImpl implements MainService {
         return isLoggedIn() && activeUser.getRole() == Role.SUPER_ADMIN;
     }
 
+    public boolean changeUserRole(User user, Role role) {
+        if (!isSuperAdmin()) return false;
+        if (role == Role.SUPER_ADMIN) {
+            System.out.println("Супер администратор может быть в системе только один");
+            return false;
+        }
+        user.setRole(role);
+        return userRepository.update(user);
+    }
+
+    public boolean deleteUser(User user) {
+        Role role = user.getRole();
+        if (!isAdmin() && !isSuperAdmin()) return false;
+        if (isAdmin() && role != Role.USER ) {
+            System.out.println("Администраторы могут удалять только простых пользователей");
+            return false;
+        }
+        return userRepository.delete(user);
+    }
 
     // ==================USERS========================
     // ==================BOOKS========================
