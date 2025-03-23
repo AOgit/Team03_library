@@ -1,6 +1,7 @@
 package view;
 
 import model.Book;
+import model.Role;
 import model.User;
 import service.MainService;
 import utils.ColorMe.Color;
@@ -117,7 +118,8 @@ public class Menu {
             userPrompt();
             System.out.println("1. Список всех пользователей");
             System.out.println("2. Список всех читателей");
-            System.out.println("3. Редактировать пользователя");
+            System.out.println("3. Заблокировать/разблокировать пользователя");
+            System.out.println("4. Изменить роль пользователя");
             System.out.println("============================");
             System.out.println("5. Список книг в наличии");
             System.out.println("6. Список книг на абонементе");
@@ -147,35 +149,21 @@ public class Menu {
             case 2:
                 showAllReaders();
                 break;
-
             case 3:
-                System.out.println("Заблокировать пользователя");
-
-                System.out.println("Введите email пользователя, которого хотите заблокировать");
-                String emailForBlock = scanner.nextLine();
-
-                if (true /* TODO service.getUserByEmail(email) == null*/) {
-                    System.out.println("Такого пользователя нет!");
-                } else if (true /* TODO service.blockUser(emailForBlock)*/) {
-                    System.out.println("Не удалось заблокировать пользователя!");
-                } else {
-                    System.out.println("Пользователь " + emailForBlock + " успешно заблокирован!");
-                }
-
-                waitRead();
+                blockUnblokUser();
                 break;
             case 4:
-                System.out.println("Разблокировать пользователя");
+                System.out.println("Изменить роль пользователя");
+                System.out.println("Введите email пользователя, которому хотите изменить роль");
+                String email = scanner.nextLine();
 
-                System.out.println("Введите email пользователя, которого хотите заблокировать");
-                String emailForActive = scanner.nextLine();
-
-                if (true /* TODO service.getUserByEmail(email) == null*/) {
-                    System.out.println("Такого пользователя нет!");
-                } else if (true /* TODO service.unblockUser(emailForBlock)*/) {
-                    System.out.println("Не удалось разблокировать пользователя!");
+                User user = service.getUserByEmail(email.trim());
+                if (user == null) {
+                    System.out.println("Пользователя с таким email не существует");
                 } else {
-                    System.out.println("Пользователь " + emailForBlock + "  разблокирован!");
+                    System.out.println("Текущая роль пользователя: " + user.getRole().toString());
+
+//                    System.out.println("Укажите новую роль: " + Role.values());
                 }
 
                 waitRead();
@@ -186,7 +174,7 @@ public class Menu {
                 System.out.println("Посмотреть взятые книги у читателя");
 
                 System.out.println("Введите email пользователя, у которого нужно посмотреть книги");
-                String email = scanner.nextLine();
+//                String email = scanner.nextLine();
 
                 MyList<Book> booksByReader = null; // TODO service.getUserBooks(email);
 
@@ -464,7 +452,7 @@ public class Menu {
         String passwordUser = scanner.nextLine();
 
         if (!service.loginUser(emailUser, passwordUser)) {
-            System.out.println("Такого пользователя в системе нет!");
+            System.out.println("Ошибка аутентификации!");
             waitRead();
         }
     }
@@ -517,5 +505,35 @@ public class Menu {
         }
         waitRead();
     }
+
+   private void blockUnblokUser () {
+       System.out.println("Заблокировать пользователя");
+       System.out.println("Введите email пользователя, которого хотите заблокировать");
+       String email = scanner.nextLine();
+
+       User user = service.getUserByEmail(email.trim());
+       if (user == null) {
+           System.out.println("Пользователя с таким email не существует");
+       } else {
+           if (user.isBlocked()) {
+               System.out.println("Пользователь заблокирован. Разблокировать? Да/Нет");
+               String answer = scanner.nextLine();
+               if (answer.trim().equalsIgnoreCase("да"))
+                   if (service.unblockUser(user))
+                       System.out.println("Пользователь успешно разблокирован");
+                   else
+                       System.out.println("Пользователь остался заблокирован");
+           } else {
+               System.out.println("Заблокировать пользователя? Да/Нет");
+               String answer = scanner.nextLine();
+               if (answer.trim().equalsIgnoreCase("да"))
+                   if (service.blockUser(user))
+                       System.out.println("Пользователь заблокирован");
+                   else
+                       System.out.println("Пользователь остался не заблокирован");
+           }
+       }
+      waitRead();
+   }
 
 }

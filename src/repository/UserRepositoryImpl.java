@@ -7,6 +7,7 @@ import utils.MyArrayList;
 import utils.MyList;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class UserRepositoryImpl implements UserRepository {
 
@@ -36,6 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
         users.add(user);
         return user;
     }
+
 
     @Override
     public MyList<User> getAllUsers() {
@@ -73,38 +75,43 @@ public class UserRepositoryImpl implements UserRepository {
         return false;
     }
 
+//
+//    @Override
+//    public boolean updatePassword(String email, String newPassword) {
+//        for (User user : users) {
+//            if (user.getEmail().equals(email)) {
+//                user.setPassword(newPassword);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean updateRole(String email, Role newRole) {
+//        // Стараемся переиспользовать методы и не повторяться
+//        User user = getUserByEmail(email);
+//        if (user != null) {
+//            user.setRole(newRole);
+//            return true;
+//        }
+//        return false;
+//    }
+//
 
+//    @Override
+//    public boolean deleteUser(String email) {
+//        for (User user : users) {
+//            if (user.getEmail().equals(email)) {
+//                return users.remove(user);
+//            }
+//        }
+//        return false;
+//    }
     @Override
-    public boolean updatePassword(String email, String newPassword) {
-        for (User user : users) {
-            if (user.getEmail().equals(email)) {
-                user.setPassword(newPassword);
-                return true;
-            }
-        }
-        return false;
+    public boolean delete(User user) {
+        return this.users.remove(user);
     }
 
-    @Override
-    public boolean updateRole(String email, Role newRole) {
-        // Стараемся переиспользовать методы и не повторяться
-        User user = getUserByEmail(email);
-        if (user != null) {
-            user.setRole(newRole);
-            return true;
-        }
-        return false;
-    }
-
-
-    @Override
-    public boolean deleteUser(String email) {
-        for (User user : users) {
-            if (user.getEmail().equals(email)) {
-                return users.remove(user);
-            }
-        }
-        return false;
-    }
 
 }

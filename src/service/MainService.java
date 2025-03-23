@@ -14,7 +14,7 @@ public interface MainService {
     public boolean isAdmin();
 
     public boolean isSuperAdmin();
-  
+
     User registerUser(String email, String password);
 
     boolean loginUser(String email, String password);
@@ -29,9 +29,9 @@ public interface MainService {
 
     User getUserByEmail(String email);
 
-    boolean blockUser(String email);
+    boolean blockUser(User user);
 
-    boolean unblockUser(String email);
+    boolean unblockUser(User user);
 
     MyList<Book> getUserBooks(String email);
   

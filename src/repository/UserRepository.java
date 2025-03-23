@@ -18,13 +18,16 @@ public interface UserRepository {
     // Update
     boolean update(User user);
 
-    // Update by email and password
-    boolean updatePassword(String email, String newPassword);
+//    // Update by email and password
+//    boolean updatePassword(String email, String newPassword);
+//
+//    // Сохранить изменения о пользователе
+//    boolean updateRole(String email, Role newrole);
+//
+//    // Delete User
+//    boolean deleteUser(String email);
 
-    // Сохранить изменения о пользователе
-    boolean updateRole(String email, Role newrole);
-
-    // Delete User
-    boolean deleteUser(String email);
+    // Delete
+    boolean delete(User user);
 
 }
