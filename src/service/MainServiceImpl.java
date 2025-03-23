@@ -94,13 +94,7 @@ public class MainServiceImpl implements MainService {
         return null;
     }
 
-    @Override
-    public boolean borrowBook(int bookId) {
-        Book book =  bookRepository.getBookById(bookId);
-        if (book == null || book.isBorrowed()) return false;
-        book.setIsBorrowed(true);
-        return bookRepository.updateBook(book);
-    }
+
   
     @Override
     public boolean isLoggedIn(){
