@@ -1,6 +1,7 @@
 package service;
 
 import model.Book;
+import model.Role;
 import model.User;
 import repository.BookRepository;
 import repository.UserRepository;
@@ -17,6 +18,9 @@ public class MainServiceImpl implements MainService {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
     }
+    // ==================USERS========================
+
+
 
     @Override
     public User registerUser(String email, String password) {
@@ -61,25 +65,33 @@ public class MainServiceImpl implements MainService {
         return this.activeUser;
     }
 
-    @Override
-    public boolean borrowBook(int bookId) {
-        Book book =  bookRepository.getBookById(bookId);
-        if (book == null || book.isBorrowed()) return false;
-        book.setIsBorrowed(true);
-        return bookRepository.updateBook(book);
+    public boolean isLoggedIn(){
+        return this.activeUser != null;
     }
 
-    @Override
-    public boolean returnBook(int bookId) {
-        Book book =  bookRepository.getBookById(bookId);
-        if (book == null || !book.isBorrowed()) return false;
-        book.setIsBorrowed(false);
-        return bookRepository.updateBook(book);
+    public boolean isAdmin() {
+        return isLoggedIn() && activeUser.getRole() == Role.ADMIN;
     }
+
+    public boolean isSuperAdmin() {
+        return isLoggedIn() && activeUser.getRole() == Role.SUPER_ADMIN;
+    }
+
+    // ==================USERS========================
+    // ==================BOOKS========================
+
+
+    // Какие книги у пользователя
+
 
     @Override
     public MyList<Book> getBooksByTitle(String title) {
         return bookRepository.getBooksByTitle(title);
+    }
+
+    @Override
+    public MyList<Book> getUserBooksByEmail(String email) {
+        return null;
     }
 
     @Override
@@ -107,7 +119,6 @@ public class MainServiceImpl implements MainService {
         return bookRepository.addBook(title, author, year, pages, genre);
     }
 
-
     @Override
     public boolean editBook(int id, String title, String author, int year, int pages) {
         Book book = bookRepository.getBookById(id);
@@ -120,4 +131,21 @@ public class MainServiceImpl implements MainService {
         return bookRepository.updateBook(book);
     }
 
+    @Override
+    public boolean borrowBook(int bookId) {
+        Book book =  bookRepository.getBookById(bookId);
+        if (book == null || book.isBorrowed()) return false;
+        book.setIsBorrowed(true);
+        return bookRepository.updateBook(book);
+    }
+
+    @Override
+    public boolean returnBook(int bookId) {
+        Book book =  bookRepository.getBookById(bookId);
+        if (book == null || !book.isBorrowed()) return false;
+        book.setIsBorrowed(false);
+        return bookRepository.updateBook(book);
+    }
+
+    // ==================BOOKS========================
 }

@@ -1,11 +1,13 @@
 package service;
 
 import model.Book;
+import model.Role;
 import model.User;
 import utils.MyList;
 
 public interface MainService {
 
+    // ==================USERS========================
     User registerUser(String email, String password);
 
     boolean loginUser(String email, String password);
@@ -14,8 +16,14 @@ public interface MainService {
 
     User getActiveUser();
 
-    // Может все-таки стоит вместо boolean isBusy, в модель Book добавить поле BorrowedBy??
-    // С типом User?
+    public  boolean isLoggedIn();
+
+    public boolean isAdmin();
+
+    public boolean isSuperAdmin();
+
+    // ==================USERS========================
+    // ==================BOOKS========================
     Book addBook (String title, String author, int year, int pages, String genre);
 
     boolean editBook(int id, String title, String author, int year, int pages);
@@ -26,7 +34,8 @@ public interface MainService {
 
     MyList<Book> getBooksByTitle(String title);
 
-    // получить список книг по автору
+    MyList<Book> getUserBooksByEmail(String email);
+
     MyList<Book> getBooksByAuthor(String author);
 
     MyList<Book> getAllBooks();
@@ -35,4 +44,5 @@ public interface MainService {
 
     MyList<Book> getBorrowedBooks();
 
+    // ==================BOOKS========================
 }

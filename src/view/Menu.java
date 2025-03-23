@@ -3,12 +3,10 @@ package view;
 import model.Book;
 import model.User;
 import service.MainService;
-import utils.ClearTerminal;
 import utils.ColorMe.Color;
 import utils.ColorMe.ColorMe;
 import utils.MyList;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.Scanner;
 
 public class Menu {
@@ -21,6 +19,8 @@ public class Menu {
 
 
     public void start() {
+        // Потом убрать, для тестов выставляю
+        service.loginUser("admin@mail.de", "admin");
         showMenu();
     }
     private void showMenu() {
@@ -29,7 +29,8 @@ public class Menu {
             System.out.println(ColorMe.text(Color.PURPLE, "Добро пожаловать в меню"));
             System.out.println("1. Меню книг");
             System.out.println("2. Меню пользователя");
-            System.out.println("3. Меню администратора");
+            if (service.isAdmin())
+                System.out.println("3. Меню администратора");
             System.out.println("0. Выход");
 
             int choice = scanner.nextInt();
@@ -54,6 +55,7 @@ public class Menu {
                 showUserMenu();
                 break;
             case 3:
+
                 showAdminMenu();
                 break;
             default:
@@ -65,10 +67,9 @@ public class Menu {
 
     private void showUserMenu() {
         while (true) {
-            ClearTerminal.clear();
             userPrompt();
             System.out.println("Меню пользователя:");
-            if (service.getActiveUser() == null) {
+            if (!service.isLoggedIn()) {
                 System.out.println("1. Войти");
                 System.out.println("2. Регистрация нового пользователя");
             } else {
@@ -91,14 +92,14 @@ public class Menu {
     private void handleUserMenuInput(int input) {
         switch (input) {
             case 1:
-                if (service.getActiveUser() == null) {
+                if (!service.isLoggedIn()) {
                     login();
                 } else {
                     logout();
                 }
                 break;
             case 2:
-                if (service.getActiveUser() == null)
+                if (service.isLoggedIn())
                     registration();
                 break;
             default:
@@ -110,19 +111,20 @@ public class Menu {
     private void showAdminMenu() {
         while (true) {
             // TODO добавить роль супер админа, который может менять роли всех остальных
+            if (!service.isAdmin()) break;
             userPrompt();
             System.out.println("1. Список всех пользователей");
             System.out.println("2. Список всех читателей");
             System.out.println("3. Редактировать пользователя");
-            System.out.println("============================\n");
+            System.out.println("============================");
             System.out.println("5. Список книг в наличии");
             System.out.println("6. Список книг на абонементе");
             System.out.println("7. Список книг у определенного читателя");
-            System.out.println("============================\n");
+            System.out.println("============================");
             System.out.println("8. Добавить новую книгу");
             System.out.println("9. Редактировать книгу");
             System.out.println("10. Удалить книгу");
-            System.out.println("============================\n");
+            System.out.println("============================");
             System.out.println("0. Вернутся в предыдущее меню");
             System.out.println("\nВыберите номер пункта меню");
             int input = scanner.nextInt();
@@ -460,7 +462,6 @@ public class Menu {
     }
 
     private void login() {
-        System.out.println("Вход в систему");
         System.out.println("Введите email: ");
         String emailUser = scanner.nextLine();
 
@@ -469,10 +470,8 @@ public class Menu {
 
         if (!service.loginUser(emailUser, passwordUser)) {
             System.out.println("Такого пользователя в системе нет!");
-        } else {
-            System.out.println("Добро пожаловать!");
+            waitRead();
         }
-        waitRead();
     }
 
     private void logout() {

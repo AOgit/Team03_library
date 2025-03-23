@@ -11,6 +11,7 @@ public interface UserRepository {
     User addUser(String email, String password);
 
     // Read
+
     User getUserByEmail(String email);
 
     // Какие книги у пользователя
