@@ -31,18 +31,25 @@ public class Menu {
     private void showMenu() {
         while (true) {
             userPrompt();
-            System.out.println(ColorMe.text(Color.PURPLE, "Добро пожаловать в меню"));
-            System.out.println("1. Меню книг");
-            System.out.println("2. Меню пользователя");
+            System.out.println("=======================================");
+            System.out.println(ColorMe.text(Color.PURPLE, "🎉  ДОБРО ПОЖАЛОВАТЬ В БИБЛИОТЕКУ!  🎉"));
+            System.out.println("=======================================");
+
+            System.out.println("📚 1️⃣  Меню книг");
+            System.out.println("👤 2️⃣  Меню пользователя");
+
             if (service.isAdmin() || service.isSuperAdmin())
-                System.out.println("3. Меню администратора");
-            System.out.println("0. Выход");
+                System.out.println(ColorMe.text(Color.ORANGE, "🔧 3️⃣  Меню администратора"));
+            System.out.println("---------------------------------------");
+            System.out.println("❌ 0️⃣  Выход");
+            System.out.println("=======================================");
+            System.out.print("▶️  Введите номер пункта меню: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
             if (choice == 0) {
-                System.out.println("До свидания!");
+                System.out.println(ColorMe.text(Color.GREEN, "👋 До свидания! Спасибо за использование программы."));
                 // Завершение работы приложения
                 System.exit(0);
             }
@@ -63,7 +70,7 @@ public class Menu {
                 showAdminMenu();
                 break;
             default:
-                System.out.println("Сделайте корректный выбор");
+                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Сделайте корректный выбор!"));
                 waitRead();
         }
     }
@@ -72,17 +79,20 @@ public class Menu {
     private void showUserMenu() {
         while (true) {
             userPrompt();
-            System.out.println("Меню пользователя:");
+            System.out.println("=======================================");
+            System.out.println("         👤  МЕНЮ ПОЛЬЗОВАТЕЛЯ  👤      ");
+            System.out.println("=======================================");
             if (!service.isLoggedIn()) {
-                System.out.println("1. Войти");
-                System.out.println("2. Регистрация нового пользователя");
+                System.out.println("🔑 1️⃣  Войти");
+                System.out.println("🆕 2️⃣  Регистрация нового пользователя");
             } else {
-                System.out.println("1. Выйти из системы");
+                System.out.println("🚪 1️⃣  Выйти из системы");
             }
 
-            System.out.println("0. Вернуться в предыдущее меню");
-
-            System.out.println("\nВыберите номер пункта меню");
+            System.out.println("---------------------------------------");
+            System.out.println("🔙 0️⃣  Вернуться в предыдущее меню");
+            System.out.println("=======================================");
+            System.out.print("▶️  Введите номер пункта меню: ");
             int input = scanner.nextInt();
             scanner.nextLine();
 
@@ -107,7 +117,7 @@ public class Menu {
                     registration();
                 break;
             default:
-                System.out.println("Сделайте корректный выбор");
+                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Сделайте корректный выбор!"));
                 waitRead();
         }
     }
@@ -116,22 +126,28 @@ public class Menu {
         while (true) {
             if (!service.isAdmin() && !service.isSuperAdmin()) break;
             userPrompt();
-            System.out.println("1. Список всех пользователей");
-            System.out.println("2. Список всех читателей");
-            System.out.println("3. Заблокировать/разблокировать пользователя");
-            System.out.println("4. Изменить роль пользователя");
-            System.out.println("5. Удалить пользователя");
-            System.out.println("============================");
-            System.out.println("6. Список книг в наличии");
-            System.out.println("7. Список книг на абонементе");
-            System.out.println("8. Список книг у определенного читателя");
-            System.out.println("============================");
-            System.out.println("9. Добавить новую книгу");
-            System.out.println("10. Редактировать книгу");
-            System.out.println("11. Удалить книгу");
-            System.out.println("============================");
-            System.out.println("0. Вернутся в предыдущее меню");
-            System.out.println("\nВыберите номер пункта меню");
+
+            System.out.println("=======================================");
+            System.out.println(ColorMe.text(Color.PURPLE,"     🔧  АДМИНИСТРАТОРСКОЕ МЕНЮ  🔧     "));
+            System.out.println("=======================================");
+            System.out.println("👥 1️⃣  Список всех пользователей");
+            System.out.println("📖 2️⃣  Список всех читателей");
+            System.out.println("🚫 3️⃣  Заблокировать / разблокировать пользователя");
+            System.out.println("🔄 4️⃣  Изменить роль пользователя");
+            System.out.println("🗑️ 5️⃣. Удалить пользователя");
+            System.out.println("---------------------------------------");
+            System.out.println("📚 6️⃣  Список книг в наличии");
+            System.out.println("📜 7️⃣  Список книг на абонементе");
+            System.out.println("🔍 8️⃣  Список книг у определенного читателя");
+            System.out.println("---------------------------------------");
+            System.out.println("➕ 9️⃣    Добавить новую книгу");
+            System.out.println("✏️ 1️⃣0️⃣  Редактировать книгу");
+            System.out.println("🗑️ 1️⃣1️⃣  Удалить книгу");
+            System.out.println("---------------------------------------");
+            System.out.println("🔙 0️⃣  Вернуться в предыдущее меню");
+            System.out.println("=======================================");
+            System.out.print("▶️  Введите номер пункта меню: ");
+
             int input = scanner.nextInt();
             scanner.nextLine();
 
