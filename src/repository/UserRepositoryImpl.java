@@ -23,14 +23,14 @@ public class UserRepositoryImpl implements UserRepository {
        // Изначально в системе должен быть как минимум один SuperAdmin
         User superAdmin = new User("superAdmin@mail.de", "superAdmin");
         superAdmin.setRole(Role.SUPER_ADMIN);
-
         User admin = new User("admin@mail.de", "admin");
         admin.setRole(Role.ADMIN);
-
         User user = new User("user@mail.de", "user");
 
         users.addAll(superAdmin, admin, user);
     }
+
+    
 
 
     @Override
