@@ -241,7 +241,7 @@ public class Menu {
                 } else if (true /* TODO service.unblockUser(emailForBlock)*/) {
                     System.out.println("Не удалось разблокировать пользователя!");
                 } else {
-                    System.out.println("Пользователь " + emailForBlock + "  разблокирован!");
+                    System.out.println("Пользователь " + emailForActive + "  разблокирован!");
                 }
 
                 waitRead();
@@ -298,7 +298,10 @@ public class Menu {
                int pages = scanner.nextInt();
                scanner.nextLine();
 
-                Book book = service.addBook(title, author, year, pages);
+                System.out.println("Введите жанр:");
+                String genre = scanner.nextLine();
+
+                Book book = service.addBook(title, author, year, pages, genre);
                 if (book == null) {
                     System.out.println("Не удалось добавить книгу");
                     break;
@@ -382,11 +385,7 @@ public class Menu {
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            if (choice == 0) {
-                System.out.println("До свидания!");
-                // Завершение работы приложения
-                System.exit(0);
-            }
+            if (choice == 0) break;
 
             handleBookMenuInput(choice);
         }

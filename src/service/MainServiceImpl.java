@@ -66,7 +66,7 @@ public class MainServiceImpl implements MainService {
     public boolean borrowBook(int bookId) {
         Book book =  bookRepository.getBookById(bookId);
         if (book == null || book.isBorrowed()) return false;
-        book.setIsBorrowed(true);
+        book.setBorrowed(true);
         return true;
     }
 
@@ -74,7 +74,7 @@ public class MainServiceImpl implements MainService {
     public boolean returnBook(int bookId) {
         Book book =  bookRepository.getBookById(bookId);
         if (book == null || !book.isBorrowed()) return false;
-        book.setIsBorrowed(false);
+        book.setBorrowed(false);
         return true;
     }
 
@@ -104,8 +104,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Book addBook(String title, String author, int year, int pages) {
-        return bookRepository.addBook(title, author, year, pages);
+    public Book addBook(String title, String author, int year, int pages, String genre) {
+        return bookRepository.addBook(title, author, year, pages, genre);
     }
 
 

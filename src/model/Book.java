@@ -99,13 +99,8 @@ public class Book {
         return isBorrowed;
     }
 
-
     public void setBorrowed(boolean borrowed) {
         isBorrowed = borrowed;
-    }
-
-    public void setAvailable(boolean available) {
-        isBorrowed = available;
     }
 
     public User getReader() {

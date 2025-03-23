@@ -10,7 +10,7 @@ public class User {
     private String password;
     private  MyList<Book> userBooks;
     private Role role;
-    private boolean blocked;
+    private boolean isBlocked;
 
     public User(String email, String password) {
         this.email = email;
@@ -22,7 +22,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("User => email: %s, password: %s. userBooks: %d, role: %s. %s", email, password, userBooks.size(), role, blocked);
+        return String.format("User => email: %s, password: %s. userBooks: %d, role: %s. %s", email, password, userBooks.size(), role, isBlocked);
     }
 
     @Override
@@ -63,15 +63,11 @@ public class User {
         this.role = role;
     }
 
-    public boolean isActive() {
-        return blocked;
+    public boolean isBlocked() {
+        return isBlocked;
     }
 
-    public void setActive() {
-        this.blocked = false;
-    }
-
-    public void setBlocked() {
-        this.blocked = true;
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 }
