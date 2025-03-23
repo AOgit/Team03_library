@@ -274,7 +274,7 @@ public class Menu {
                 int bookToDelete = scanner.nextInt();
                 scanner.nextLine();
 
-                if (/*TODO service.geBookById(bookToDelete) == null || */ service.borrowBook(bookToDelete)) {
+                if (/*TODO service.getBookById(bookToDelete) == null || */ service.borrowBook(bookToDelete)) {
                     System.out.println("Операция провалена");
 
                     waitRead();
@@ -331,16 +331,12 @@ public class Menu {
 //            System.out.println("7. Список всех отданных читателям книг"); ADMIN
 //            System.out.println("8. Добавить новую книгу"); ADMIN
 //            System.out.println("9. Редактировать книгу"); ADMIN
-            System.out.println("0. Вернуться в предыдущее меню");
+            System.out.println("0. Вернуться в главное меню");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            if (choice == 0) {
-                System.out.println("До свидания!");
-                // Завершение работы приложения
-                System.exit(0);
-            }
+            if (choice == 0) break;
 
             handleBookMenuInput(choice);
         }
