@@ -14,6 +14,18 @@ public interface MainService {
 
     User getActiveUser();
 
+    MyList<User> getAllUsers();
+
+    MyList<User> getAllReaders();
+
+    User getUserByEmail(String email);
+
+    boolean blockUser(String email);
+
+    boolean unblockUser(String email);
+
+    MyList<Book> getUserBooks(String email);
+
     // Может все-таки стоит вместо boolean isBusy, в модель Book добавить поле BorrowedBy??
     // С типом User?
     Book addBook (String title, String author, int year, int pages, String genre);
@@ -36,5 +48,9 @@ public interface MainService {
     MyList<Book> getAvailableBooks();
 
     MyList<Book> getBorrowedBooks();
+
+    Book geBookById(int bookId);
+
+    boolean deleteBookById(int bookId);
 
 }

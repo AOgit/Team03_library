@@ -62,6 +62,36 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public MyList<User> getAllUsers() {
+        return null;
+    }
+
+    @Override
+    public MyList<User> getAllReaders() {
+        return null;
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return null;
+    }
+
+    @Override
+    public boolean blockUser(String email) {
+        return false;
+    }
+
+    @Override
+    public boolean unblockUser(String email) {
+        return false;
+    }
+
+    @Override
+    public MyList<Book> getUserBooks(String email) {
+        return null;
+    }
+
+    @Override
     public boolean borrowBook(int bookId) {
         Book book =  bookRepository.getBookById(bookId);
         if (book == null || book.isBorrowed()) return false;
@@ -105,6 +135,16 @@ public class MainServiceImpl implements MainService {
     @Override
     public MyList<Book> getBorrowedBooks() {
         return bookRepository.getBorrowedBooks();
+    }
+
+    @Override
+    public Book geBookById(int bookId) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteBookById(int bookId) {
+        return false;
     }
 
     @Override
