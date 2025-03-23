@@ -242,7 +242,6 @@ public class MyArrayList<T> implements MyList<T> {
         3. Вернуть ссылку на новый массив
          */
 
-//        // TODO здесь будет ошибка
 //        T[] result = (T[]) new Object[cursor];
 ////        T[] res = new T[11];  нельзя создать объект
 ////        T obj = new T();
