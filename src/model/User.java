@@ -22,7 +22,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("User => email: %s, password: %s. userBooks: %d, role: %s. %s", email, password, userBooks.size(), role, blocked);
+        return String.format("Пользователь => email: %s, пароль: %s, книги на руках: %d, роль: %s, заблокирован: %s", email, password, userBooks.size(), role, blocked);
     }
 
     @Override
