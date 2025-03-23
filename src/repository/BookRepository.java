@@ -32,8 +32,6 @@ public interface BookRepository {
 
     // Update
     boolean updateBook(Book book);
-    // Сохранить обновленный объект
-    void saveBook(Book book);
 
     // получить читателя по книге
     String getCurrentReader(int id);

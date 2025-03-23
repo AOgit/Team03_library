@@ -30,14 +30,25 @@ public class UserRepositoryImpl implements UserRepository {
         users.addAll(superAdmin, admin, user);
     }
 
-    
-
-
     @Override
     public User addUser(String email, String password) {
         User user = new User(email, password);
         users.add(user);
         return user;
+    }
+
+    @Override
+    public MyList<User> getAllUsers() {
+        return this.users;
+    }
+    @Override
+
+    public MyList<User> getAllReaders() {
+       MyList<User> readers = new MyArrayList<>();
+        for (User user : users) {
+            if (!user.getUserBooks().isEmpty()) readers.add(user);
+        }
+        return readers;
     }
 
     @Override
@@ -51,12 +62,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public MyList<Book> getUserBooksByEmail(String email) {
-        if (getUserByEmail(email) != null) {
-            return getUserByEmail(email).getUserBooks();
+    public boolean update(User user) {
+        for (int i = 0; i < users.size(); i++) {
+            User us = users.get(i);
+            if (us.getEmail().equals(user.getEmail())) {
+                users.set(i, user); // Обновляем книгу по индексу
+                return true;
+            }
         }
-        return null;
+        return false;
     }
+
 
     @Override
     public boolean updatePassword(String email, String newPassword) {
