@@ -19,40 +19,27 @@ public class Book {
         this.year = year;
         this.pages = pages;
         this.genre =genre;
-
-
     }
 
     @Override
     public String toString() {
-        return "Book {" +
-                "id = " + id +
-                ", title = '" + title + '\'' +
-                ", author = '" + author + '\'' +
-                ", year = " + year +
-                ", pages = " + pages +
-                ", isBorrowed = " + isBorrowed +
-                '}';
+        return String.format("Книга №%d. Название: %s, автор: %s, год издания: %s, " +
+                        "количество страниц: %s, жанр: %s. Доступна: %s\n",
+                        id, title, author, year, pages, genre, isBorrowed ? "Нет" : "Да");
     }
-
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Book)) return false;
-        Book book = (Book) o;
+        if (!(o instanceof Book book)) return false;
         return id == book.id
                 && year == book.year
                 && pages == book.pages
                 && isBorrowed == book.isBorrowed
                 && Objects.equals(title, book.title)
                 && Objects.equals(author, book.author)
-                && Objects.equals(genre, book.genre);
+                && Objects.equals(genre, book.genre)
+                && Objects.equals(reader, book.reader);
     }
-//    @Override
-//    public boolean equals(Object o) {
-//        if (!(o instanceof Book book)) return false;
-//        return getId() == book.getId() && getYear() == book.getYear() && getPages() == book.getPages() && isBusy() == book.isBusy() && Objects.equals(getTitle(), book.getTitle()) && Objects.equals(getAuthor(), book.getAuthor());
-//    }
 
 
     public int getId() {
