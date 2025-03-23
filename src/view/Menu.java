@@ -3,6 +3,7 @@ package view;
 import model.Book;
 import model.User;
 import service.MainService;
+import utils.ClearTerminal;
 import utils.ColorMe.Color;
 import utils.ColorMe.ColorMe;
 import utils.MyList;
@@ -24,6 +25,7 @@ public class Menu {
     }
     private void showMenu() {
         while (true) {
+            userPrompt();
             System.out.println(ColorMe.text(Color.PURPLE, "Добро пожаловать в меню"));
             System.out.println("1. Меню книг");
             System.out.println("2. Меню пользователя");
@@ -63,10 +65,16 @@ public class Menu {
 
     private void showUserMenu() {
         while (true) {
+            ClearTerminal.clear();
+            userPrompt();
             System.out.println("Меню пользователя:");
-            System.out.println("1. Войти");
-            System.out.println("2. Регистрация нового пользователя");
-            System.out.println("3. Выйти из системы");
+            if (service.getActiveUser() == null) {
+                System.out.println("1. Войти");
+                System.out.println("2. Регистрация нового пользователя");
+            } else {
+                System.out.println("1. Выйти из системы");
+            }
+
             System.out.println("0. Вернуться в предыдущее меню");
 
             System.out.println("\nВыберите номер пункта меню");
@@ -80,99 +88,42 @@ public class Menu {
         }
     }
 
-    private  void  test() {
-
-    }
-
     private void handleUserMenuInput(int input) {
-
         switch (input) {
             case 1:
-                // Авторизация
-                /*
-                1. Запросить у пользователя email и пароль
-                2. Передать полученные данные в СЕРВИСНЫЙ слой
-                3. Получить ответ от сервисного слоя - прошел ли успешно login
-                4. Сообщить результат пользователю
-                 */
-                System.out.println("Вход в систему");
-                System.out.println("Введите email: ");
-                String emailUser = scanner.nextLine();
-
-                System.out.println("Введите пароль: ");
-                String passwordUser = scanner.nextLine();
-
-                if (!service.loginUser(emailUser, passwordUser)) {
-                    System.out.println("Такого пользователя в системе нет!");
+                if (service.getActiveUser() == null) {
+                    login();
                 } else {
-                    System.out.println("Добро пожаловать!");
+                    logout();
                 }
-
-                waitRead();
                 break;
             case 2:
-                // Регистрация
-                /*
-                 1. Запросить у пользователя email и пароль
-                2. Передать полученные данные в СЕРВИСНЫЙ слой
-                3. Получить ответ от сервисного слоя -
-                4. Сообщить результат пользователю
-                 */
-                System.out.println("Регистрация нового пользователя");
-                System.out.println("Введите email:");
-                String email = scanner.nextLine();
-
-                System.out.println("Введите пароль:");
-                String password = scanner.nextLine();
-
-                User user = service.registerUser(email, password);
-
-                if (user == null) {
-                    System.out.println("Регистрация провалена");
-                } else {
-                    System.out.println("Вы успешно зарегистрировались в системе!");
-                    // System.out.println(user.getEmail() + " ваш email");
-                }
-
-                waitRead();
-                break;
-            case 3:
-                // Logout
-                // Есть ли пользователь, который сейчас авторизован.
-                if (service.getActiveUser() == null) {
-                    System.out.println("Сейчас в системе нет авторизованных пользователей");
-                    waitRead();
-                    break;
-                }
-                service.logout();
-                System.out.println("Вы вышли из системы");
-                waitRead();
+                if (service.getActiveUser() == null)
+                    registration();
                 break;
             default:
                 System.out.println("Сделайте корректный выбор");
                 waitRead();
-
         }
     }
 
     private void showAdminMenu() {
         while (true) {
             // TODO добавить роль супер админа, который может менять роли всех остальных
-            // Alex
-            System.out.println("1. Посмотреть список пользователей");
-            System.out.println("2. Посмотреть список читателей");
-            System.out.println("3. Заблокировать пользователя"); //TODO добавить поле boolean active user
-            System.out.println("4. Разблокировать пользователя");
-            System.out.println("5. Посмотреть взятые книги у читателя");
-
-            // Kostia
-            System.out.println("6. Список всех отданных читателям книг");
-            System.out.println("7. Добавить новую книгу");
-            System.out.println("8. Редактировать книгу");
-            System.out.println("9. Удалить книгу");
-            System.out.println("10. Список всех свободных книг");
+            userPrompt();
+            System.out.println("1. Список всех пользователей");
+            System.out.println("2. Список всех читателей");
+            System.out.println("3. Редактировать пользователя");
+            System.out.println("============================\n");
+            System.out.println("5. Список книг в наличии");
+            System.out.println("6. Список книг на абонементе");
+            System.out.println("7. Список книг у определенного читателя");
+            System.out.println("============================\n");
+            System.out.println("8. Добавить новую книгу");
+            System.out.println("9. Редактировать книгу");
+            System.out.println("10. Удалить книгу");
+            System.out.println("============================\n");
             System.out.println("0. Вернутся в предыдущее меню");
-
             System.out.println("\nВыберите номер пункта меню");
             int input = scanner.nextInt();
             scanner.nextLine();
@@ -513,6 +464,53 @@ public class Menu {
     private void waitRead() {
         System.out.println("\nДля продолжения нажмите Enter...");
         scanner.nextLine();
+    }
+
+    private void userPrompt(){
+        User activeUser = service.getActiveUser();
+        if (activeUser != null)
+            System.out.printf("Здравствуйте, %s\n", activeUser.getEmail());
+    }
+
+    private void login() {
+        System.out.println("Вход в систему");
+        System.out.println("Введите email: ");
+        String emailUser = scanner.nextLine();
+
+        System.out.println("Введите пароль: ");
+        String passwordUser = scanner.nextLine();
+
+        if (!service.loginUser(emailUser, passwordUser)) {
+            System.out.println("Такого пользователя в системе нет!");
+        } else {
+            System.out.println("Добро пожаловать!");
+        }
+        waitRead();
+    }
+
+    private void logout() {
+        service.logout();
+        System.out.println("Вы успешно вышли из системы");
+        waitRead();
+    }
+
+
+    private void registration() {
+        System.out.println("Регистрация нового пользователя");
+        System.out.println("Введите email:");
+        String email = scanner.nextLine();
+
+        System.out.println("Введите пароль:");
+        String password = scanner.nextLine();
+
+        User user = service.registerUser(email, password);
+
+        if (user == null) {
+            System.out.println("Регистрация провалена");
+        } else {
+            System.out.println("Вы успешно зарегистрировались в системе!");
+        }
+        waitRead();
     }
 
 }

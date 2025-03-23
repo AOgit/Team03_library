@@ -63,15 +63,11 @@ public class User {
         this.role = role;
     }
 
-    public boolean isActive() {
+    public boolean isBlocked() {
         return blocked;
     }
 
-    public void setActive() {
-        this.blocked = false;
-    }
-
-    public void setBlocked() {
-        this.blocked = true;
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }

@@ -42,8 +42,7 @@ public class MainServiceImpl implements MainService {
     @Override
     public boolean loginUser(String email, String password) {
         User user = userRepository.getUserByEmail(email);
-        if (user == null) return false;
-        // TODO isBlocked
+        if (user == null || user.isBlocked()) return false;
 
         if (user.getPassword().equals(password)) {
             this.activeUser = user;
@@ -67,7 +66,7 @@ public class MainServiceImpl implements MainService {
         Book book =  bookRepository.getBookById(bookId);
         if (book == null || book.isBorrowed()) return false;
         book.setIsBorrowed(true);
-        return true;
+        return bookRepository.updateBook(book);
     }
 
     @Override
@@ -75,7 +74,7 @@ public class MainServiceImpl implements MainService {
         Book book =  bookRepository.getBookById(bookId);
         if (book == null || !book.isBorrowed()) return false;
         book.setIsBorrowed(false);
-        return true;
+        return bookRepository.updateBook(book);
     }
 
     @Override
