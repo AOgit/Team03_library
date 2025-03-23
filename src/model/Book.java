@@ -87,11 +87,7 @@ public class Book {
     }
 
     public void setIsBorrowed(boolean borrowed) {
-        isBorrowed = true;
-    }
-
-    public void setAvailable(boolean available) {
-        isBorrowed = false;
+        isBorrowed = borrowed;
     }
 
     public User getReader() {

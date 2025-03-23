@@ -104,8 +104,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Book addBook(String title, String author, int year, int pages) {
-        return bookRepository.addBook(title, author, year, pages);
+    public Book addBook(String title, String author, int year, int pages, String genre) {
+        return bookRepository.addBook(title, author, year, pages, genre);
     }
 
 

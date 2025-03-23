@@ -1,9 +1,12 @@
+import model.Role;
 import repository.BookRepository;
 import repository.BookRepositoryImpl;
 import repository.UserRepository;
 import repository.UserRepositoryImpl;
 import service.MainService;
 import service.MainServiceImpl;
+
+import java.util.Arrays;
 
 public class ApplicationTest {
     public static void main(String[] args) {
@@ -13,7 +16,9 @@ public class ApplicationTest {
 
         MainService service = new MainServiceImpl(bookRepository, userRepository);
 
-        service.addBook("War", "Vasya", 1000, 500);
+//        System.out.println(Arrays.toString(Role.values()));
+
+        service.addBook("Мы закончили этот проект", "Алекс, Костя, Ева, Лена", 2025, 1, "фантастика");
 
         System.out.println(service.getAllBooks());
 

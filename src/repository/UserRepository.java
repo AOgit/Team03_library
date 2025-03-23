@@ -13,8 +13,6 @@ public interface UserRepository {
     // Read
     User getUserByEmail(String email);
 
-    Role[] getAllRoles();
-
     // Какие книги у пользователя
     MyList<Book> getUserBooksByEmail(String email);
 
@@ -23,8 +21,9 @@ public interface UserRepository {
 
     // Сохранить изменения о пользователе
     boolean updateRole(String email, Role newrole);
+
     // Delete User
-    void deleteUser(String email);
+    boolean deleteUser(String email);
 
 
 

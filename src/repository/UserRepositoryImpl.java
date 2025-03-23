@@ -6,6 +6,8 @@ import model.User;
 import utils.MyArrayList;
 import utils.MyList;
 
+import java.util.Arrays;
+
 public class UserRepositoryImpl implements UserRepository {
 
     // Храним список пользователей
@@ -17,13 +19,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private void addUsers() {
-        User admin = new User("1", "1");
+
+       // Изначально в системе должен быть как минимум один SuperAdmin
+        User superAdmin = new User("superAdmin@mail.de", "superAdmin");
+        superAdmin.setRole(Role.SUPER_ADMIN);
+
+        User admin = new User("admin@mail.de", "admin");
         admin.setRole(Role.ADMIN);
 
-        User user = new User("2", "2");
-        user.setRole(Role.USER);
+        User user = new User("user@mail.de", "user");
 
-        users.addAll(admin, user);
+        users.addAll(superAdmin, admin, user);
     }
 
 
@@ -64,28 +70,25 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean updateRole(String email, Role newrole) {
+    public boolean updateRole(String email, Role newRole) {
+        // Стараемся переиспользовать методы и не повторяться
+        User user = getUserByEmail(email);
+        if (user != null) {
+            user.setRole(newRole);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean deleteUser(String email) {
         for (User user : users) {
             if (user.getEmail().equals(email)) {
-                user.setRole(newrole);
-                return true;
+                return users.remove(user);
             }
         }
         return false;
     }
 
-    @Override
-    public Role[] getAllRoles() {
-        return new Role[0];
-    }
-
-    @Override
-    public void deleteUser(String email) {
-        for (User user : users) {
-            if (user.getEmail().equals(email)) {
-                users.remove(user);
-                return;
-            }
-        }
-    }
 }

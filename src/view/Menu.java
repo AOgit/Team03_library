@@ -298,7 +298,10 @@ public class Menu {
                int pages = scanner.nextInt();
                scanner.nextLine();
 
-                Book book = service.addBook(title, author, year, pages);
+                System.out.println("Введите жанр:");
+                String genre = scanner.nextLine();
+
+                Book book = service.addBook(title, author, year, pages, genre);
                 if (book == null) {
                     System.out.println("Не удалось добавить книгу");
                     break;
