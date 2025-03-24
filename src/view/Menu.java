@@ -35,6 +35,7 @@ public class Menu {
     }
     private void showMenu() {
         while (true) {
+            clearConsole();
             userPrompt();
             System.out.println("=======================================");
             System.out.println(ColorMe.text(Color.PURPLE, "🎉  ДОБРО ПОЖАЛОВАТЬ В БИБЛИОТЕКУ!  🎉"));
@@ -82,6 +83,7 @@ public class Menu {
 
     private void showUserMenu() {
         while (true) {
+            clearConsole();
             userPrompt();
             System.out.println("=======================================");
             System.out.println("         👤  МЕНЮ ПОЛЬЗОВАТЕЛЯ  👤      ");
@@ -101,11 +103,13 @@ public class Menu {
 
             // Прерываю текущий цикл
             if (choice == 0) break;
+
             handleUserMenuInput(choice);
         }
     }
 
     private void handleUserMenuInput(int input) {
+        clearConsole();
         switch (input) {
             case 1:
                 if (!service.isLoggedIn()) {
@@ -126,6 +130,7 @@ public class Menu {
 
     private void showAdminMenu() {
         while (true) {
+            clearConsole();
             if (!service.isAdmin() && !service.isSuperAdmin()) break;
             userPrompt();
             System.out.println("=======================================");
@@ -158,6 +163,7 @@ public class Menu {
     }
 
     private void handleAdminMenuInput(int input) {
+        clearConsole();
         switch (input) {
             case 1:
                 showAllUsers();
@@ -200,6 +206,7 @@ public class Menu {
 
     private void showBookMenu() {
         while (true) {
+            clearConsole();
             userPrompt();
             System.out.println("=======================================");
             System.out.println("        📚 МЕНЮ БИБЛИОТЕКИ 📚         ");
@@ -228,6 +235,7 @@ public class Menu {
     }
 
     private void handleBookMenuInput(int choice) {
+        clearConsole();
         switch (choice) {
             case 1:
                 showAllBooks();
@@ -281,11 +289,15 @@ public class Menu {
         try {
             Robot robot = null;
             robot = new Robot();
-            // Выставляем шорткат в натройках SHIFT + L для очистки консоли
-            robot.keyPress(KeyEvent.VK_DEAD_GRAVE);       // Нажатие клавиши L
-            robot.keyRelease(KeyEvent.VK_DEAD_GRAVE);     // Отпускание клавиши L
+            // Выставляем шорткат в натройках File -> Settings -> Keymap -> Other -> Clear All
+            // SHIFT + SPACE для очистки консоли
+            // Иначе работать не будет
+            robot.keyPress(KeyEvent.VK_SHIFT);
+            robot.keyPress(KeyEvent.VK_SPACE);
+            robot.keyRelease(KeyEvent.VK_SPACE);
+            robot.keyRelease(KeyEvent.VK_SHIFT);
             // Задержка, чтобы дать время переключить фокус на окно IntelliJ IDEA
-            robot.delay(500);  // Задержка
+            robot.delay(1000);  // Задержка
         } catch (AWTException e) {
             throw new RuntimeException(e);
         }
@@ -475,7 +487,7 @@ public class Menu {
         String title = scanner.nextLine();
         MyList<Book> booksByTitle = service.getBooksByTitle(title);
         if (booksByTitle.isEmpty()) {
-            System.out.println("Не удалось найти книгу");
+            System.out.println("Не удалось найти книгу с таким названием");
         } else {
             System.out.println(booksByTitle);
         }
@@ -488,7 +500,7 @@ public class Menu {
         String author = scanner.nextLine();
         MyList<Book> booksByAuthor = service.getBooksByAuthor(author);
         if (booksByAuthor.isEmpty()) {
-            System.out.println("Не удалось найти книгу");
+            System.out.println("Не удалось найти книгу с такой фамилией автора");
         } else {
             System.out.println(booksByAuthor);
         }
@@ -501,7 +513,7 @@ public class Menu {
         String genre = scanner.nextLine();
         MyList<Book> booksByGenre = service.getBookByGenre(genre);
         if (booksByGenre.isEmpty()) {
-            System.out.println("Не удалось найти книгу");
+            System.out.println("Не удалось найти книгу такого жанра");
         } else {
             System.out.println(booksByGenre);
         }
@@ -518,11 +530,15 @@ public class Menu {
             String answerInput = scanner.nextLine();
             if (answerInput.trim().equalsIgnoreCase("да")) {
                 if (!service.borrowBook(id)) {
-                    System.out.println("Не удалось взять книгу");
+                    System.out.println("Не удалось взять книгу на абонемент");
                 } else {
-                    System.out.println("Вы забрали книгу!");
+                    System.out.println("Книга оформлена на абонемент");
                 }
+            } else {
+                System.out.println("Не берем значит... Ну ок: ученье свет, а не ученье приятный полумрак...");
             }
+        } else {
+            System.out.println("Книга с таким id не найдена!");
         }
         waitRead();
     }
@@ -640,11 +656,19 @@ public class Menu {
      System.out.println("Удаление книг");
      System.out.println("Введите id книги, которую хотите удалить из библиотеки:");
      int bookToDelete = checkIntInput();
-
-     if (!service.deleteBookById(bookToDelete)) {
-         System.out.println("Не удалось удалить книгу");
+     Book book = service.getBookById(bookToDelete);
+     if (book != null) {
+         System.out.printf("Книга \"%s: %s\" Удаляем? Да/Нет\n", book.getTitle(), book.getAuthor());
+         String answerInput = scanner.nextLine();
+         if (answerInput.trim().equalsIgnoreCase("да")) {
+             if (!service.deleteBookById(bookToDelete)) {
+                 System.out.println("Не удалось удалить книгу");
+             } else {
+                 System.out.println("Вы успешно удалили книгу!");
+             }
+         }
      } else {
-         System.out.println("Вы успешно удалили книгу!");
+         System.out.println("Книга с таким id не найдена!");
      }
 
      waitRead();
