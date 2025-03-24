@@ -95,11 +95,14 @@ public class MyArrayList<T> implements MyList<T> {
     // [5, 20, 45]
     public String toString() {
 
-        if (cursor == 0) return "[]";
+//        if (cursor == 0) return "[]";
+        if (cursor == 0) return "";
 
-        String result = "[";
+//        String result = "[";
+        String result = "";
         for (int i = 0; i < cursor; i++) {
-            result += array[i] + (i < cursor - 1 ? ", " : "]");
+//            result += array[i] + (i < cursor - 1 ? ", " : "]");
+            result += array[i];
         }
 
         return result;

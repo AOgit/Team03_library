@@ -5,6 +5,7 @@ import model.Role;
 import model.User;
 import repository.BookRepository;
 import repository.UserRepository;
+import utils.MyArrayList;
 import utils.MyList;
 import utils.UserValidation;
 
@@ -98,8 +99,15 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public MyList<Book> getUserBooks(String email) {
-        return null;
+    public MyList<Book> getUserBooks() {
+        User user = getActiveUser();
+        return getUserBooks(user);
+    }
+
+    @Override
+    public MyList<Book> getUserBooks(User user) {
+       if (user == null)  return new MyArrayList<>();
+       return user.getUserBooks();
     }
 
 
@@ -223,6 +231,12 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public boolean borrowBook(int bookId) {
+        User user = this.getActiveUser();
+        return borrowBook(user, bookId);
+    }
+
+    @Override
     public boolean borrowBook(User user, int bookId) {
         Book book =  bookRepository.getBookById(bookId);
         if (user == null || book == null || book.isBorrowed()) return false;
@@ -233,10 +247,17 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean returnBook(int bookId) {
+        User user = this.getActiveUser();
+        return returnBook(user, bookId);
+    }
+
+    @Override
+    public boolean returnBook(User user, int bookId) {
         Book book =  bookRepository.getBookById(bookId);
-        if (book == null || !book.isBorrowed()) return false;
+        if (user == null || book == null || !book.isBorrowed()) return false;
+        user.removeUserBook(book);
         book.setIsBorrowed(false);
-        return bookRepository.updateBook(book);
+        return userRepository.update(user) && bookRepository.updateBook(book);
     }
 
     // ==================BOOKS========================

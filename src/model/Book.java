@@ -23,8 +23,8 @@ public class Book {
 
     @Override
     public String toString() {
-        return String.format("Книга №%d. Название: %s  |  Автор: %s  |  Год издания: %s  |  " +
-                        "Количество страниц: %s  |  Жанр: %s  //  Доступна: %s\n",
+        return String.format("Книга №%d. Название: \"%s\"  |  Автор: %s  |  Год издания: %s  |  " +
+                        "Количество страниц: %s  |  Жанр: %s  |  Доступна: %s\n",
                         id, title, author, year, pages, genre, isBorrowed ? "Нет" : "Да");
     }
 
