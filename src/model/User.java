@@ -59,6 +59,10 @@ public class User {
         this.userBooks.add(book);
     }
 
+    public void removeUserBook(Book book) {
+        this.userBooks.remove(book);
+    }
+
     public Role getRole() {
         return role;
     }

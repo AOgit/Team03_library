@@ -37,8 +37,9 @@ public interface MainService {
 
     boolean deleteUser(User user);
 
-    MyList<Book> getUserBooks(String email);
-  
+    MyList<Book> getUserBooks();
+    MyList<Book> getUserBooks(User user);
+
     // ==================USERS========================
     // ==================BOOKS========================
 
@@ -46,9 +47,13 @@ public interface MainService {
 
     boolean editBook(int id, String title, String author, int year, int pages, String genre);
 
+    boolean borrowBook(int bookId);
+
     boolean borrowBook(User user, int bookId);
 
     boolean returnBook(int bookId);
+
+    boolean returnBook(User user, int bookId);
 
     MyList<Book> getBooksByTitle(String title);
 

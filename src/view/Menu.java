@@ -23,9 +23,10 @@ public class Menu {
     public void start() {
         // Потом убрать, для тестов выставляю
         service.loginUser("admin@mail.de", "admin");
-        User reader = service.registerUser("reader@mail.ru", "R(12ader");
-//        System.out.println(reader);
-        service.borrowBook(reader, 1);
+        service.borrowBook(1);
+//        User reader = service.registerUser("reader@mail.ru", "R(12ader")
+//        service.loginUser("reader@mail.ru", "R(12ader");
+//        service.borrowBook(reader, 1);
         showMenu();
     }
     private void showMenu() {
@@ -307,111 +308,26 @@ public class Menu {
     private void handleBookMenuInput(int choice) {
         switch (choice) {
             case 1:
-                MyList<Book> allBooks = service.getAllBooks();
-
-                if (allBooks == null) {
-                    System.out.println("В библиотеке нет ни одной книги!");
-                } else {
-                    System.out.println(allBooks);
-                }
-
-                waitRead();
+                showAllBooks();
                 break;
-
             case 2:
-                System.out.println("Список всех свободных книг");
-
-                MyList<Book> availableBooks = service.getAvailableBooks();
-
-                if (availableBooks == null) {
-                    System.out.println("Свободных книг сейчас нет");
-
-                    waitRead();
-                    break;
-                }
-                System.out.println(availableBooks);
-
-                waitRead();
+                showAvailableBooks();
                 break;
-
             case 3:
-                System.out.println("Поиск книг по названию");
-                System.out.println("Введите название книги, которую хотите найти");
-                String title = scanner.nextLine();
-
-                MyList<Book> booksByTitle = service.getBooksByTitle(title);
-
-                if (booksByTitle == null) {
-                    System.out.println("Не удалось найти книгу");
-                } else {
-                    System.out.println(booksByTitle);
-                }
-
-                waitRead();
+                showBooksByTitle();
                 break;
-
             case 4:
-                System.out.println("Поиск книг по автору");
-                System.out.println("Введите фамилию автора");
-                String author = scanner.nextLine();
-
-                MyList<Book> booksByAuthor = service.getBooksByAuthor(author);
-
-                if (booksByAuthor == null) {
-                    System.out.println("Не удалось найти книгу");
-                } else {
-                    System.out.println(booksByAuthor);
-                }
-
-                waitRead();
+                showBooksByAuthor();
                 break;
             case 5:
-                System.out.println("Поиск книг по жанру");
-                System.out.println("Введите название жанра");
-                String genre = scanner.nextLine();
-
-                MyList<Book> booksByGenre = service.getBookByGenre(genre);
-
-                if (booksByGenre == null) {
-                    System.out.println("Не удалось найти книгу");
-                } else {
-                    System.out.println(booksByGenre);
-                }
-
-                waitRead();
+                showBooksByGenre();
                 break;
             case 6:
-                System.out.println("Взять книгу из библиотеки");
-
-                System.out.println("Введите id книги, которую хотите взять");
-                int id = scanner.nextInt();
-                scanner.nextLine();
-
-//                if (!service.borrowBook(id)) {
-//                    System.out.println("Не удалось взять книгу");
-//                } else {
-//                    System.out.println("Вы забрали книгу!");
-//                }
-
-                waitRead();
+                borrowBook();
                 break;
-
             case 7:
-                System.out.println("Вернуть книгу в библиотеку");
-
-                System.out.println("Введите id книги, которую хотите вернуть");
-                int idBook = scanner.nextInt();
-                scanner.nextLine();
-
-                if (!service.returnBook(idBook)) {
-                    System.out.println("Не удалось вернуть книгу");
-                } else {
-                    System.out.println("Вы вернули книгу!");
-                }
-
-                waitRead();
+                returnBook();
                 break;
-
             default:
                 System.out.println("Сделайте корректный выбор");
                 waitRead();
@@ -550,20 +466,118 @@ public class Menu {
       waitRead();
   }
 
- private void deleteUser() {
-     System.out.println("Введите email пользователя, которого нужно удалить");
-     String emailInput = scanner.nextLine();
-     User user = service.getUserByEmail(emailInput.trim());
-     if (user == null) {
-         System.out.println("Пользователя с таким email не существует");
-     } else {
-         if (service.deleteUser(user))
-             System.out.println("Пользователь успешно удален");
-         else
-             System.out.println("Ошибка удаления пользователя!");
+     private void deleteUser() {
+         System.out.println("Введите email пользователя, которого нужно удалить");
+         String emailInput = scanner.nextLine();
+         User user = service.getUserByEmail(emailInput.trim());
+         if (user == null) {
+             System.out.println("Пользователя с таким email не существует");
+         } else {
+             if (service.deleteUser(user))
+                 System.out.println("Пользователь успешно удален");
+             else
+                 System.out.println("Ошибка удаления пользователя!");
+         }
+         waitRead();
      }
-     waitRead();
- }
 
+    private void showAllBooks(){
+        MyList<Book> allBooks = service.getAllBooks();
+        if (allBooks == null) {
+            System.out.println("В библиотеке нет ни одной книги!");
+        } else {
+            System.out.println(allBooks);
+        }
+        waitRead();
+    }
 
+    private void showAvailableBooks() {
+        System.out.println("Список всех свободных книг");
+        MyList<Book> availableBooks = service.getAvailableBooks();
+        if (availableBooks == null) {
+            System.out.println("Свободных книг сейчас нет");
+            waitRead();
+        } else {
+            System.out.println(availableBooks);
+        }
+        waitRead();
+    }
+
+    private void showBooksByTitle() {
+        System.out.println("Поиск книг по названию");
+        System.out.println("Введите название книги, которую хотите найти");
+        String title = scanner.nextLine();
+        MyList<Book> booksByTitle = service.getBooksByTitle(title);
+        if (booksByTitle == null) {
+            System.out.println("Не удалось найти книгу");
+        } else {
+            System.out.println(booksByTitle);
+        }
+        waitRead();
+    }
+
+    private void showBooksByAuthor() {
+        System.out.println("Поиск книг по автору");
+        System.out.println("Введите фамилию автора");
+        String author = scanner.nextLine();
+        MyList<Book> booksByAuthor = service.getBooksByAuthor(author);
+        if (booksByAuthor == null) {
+            System.out.println("Не удалось найти книгу");
+        } else {
+            System.out.println(booksByAuthor);
+        }
+        waitRead();
+    }
+
+    private void showBooksByGenre() {
+        System.out.println("Поиск книг по жанру");
+        System.out.println("Введите название жанра");
+        String genre = scanner.nextLine();
+        MyList<Book> booksByGenre = service.getBookByGenre(genre);
+        if (booksByGenre == null) {
+            System.out.println("Не удалось найти книгу");
+        } else {
+            System.out.println(booksByGenre);
+        }
+        waitRead();
+    }
+
+    private void borrowBook() {
+        System.out.println("Взять книгу из библиотеки");
+        System.out.println("Введите id книги, которую хотите взять");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Book book = service.getBookById(id);
+        if (book != null) {
+            System.out.printf("Книга \"%s: %s\" Берём? Да/Нет\n", book.getTitle(), book.getAuthor());
+            String answerInput = scanner.nextLine();
+            if (answerInput.trim().equalsIgnoreCase("да")) {
+                if (!service.borrowBook(id)) {
+                    System.out.println("Не удалось взять книгу");
+                } else {
+                    System.out.println("Вы забрали книгу!");
+                }
+            }
+        }
+        waitRead();
+    }
+
+    private void returnBook() {
+        System.out.println("Вернуть книгу в библиотеку");
+        MyList<Book> borrowedBooks = service.getUserBooks();
+        if (borrowedBooks.isEmpty()) {
+            System.out.println("У Вас нет взятых на абонемент книг");
+        } else {
+            System.out.println(borrowedBooks);
+            System.out.println("Введите № книги, которую хотите вернуть");
+            int idBook = scanner.nextInt();
+            scanner.nextLine();
+            if (!service.returnBook(idBook)) {
+                System.out.println("Не удалось вернуть книгу");
+            } else {
+                System.out.println("Вы вернули книгу!");
+            }
+        }
+        waitRead();
+    }
 }
