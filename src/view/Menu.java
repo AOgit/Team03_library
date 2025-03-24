@@ -177,96 +177,22 @@ public class Menu {
                 deleteUser();
                 break;
             case 6:
-                // Список всех занятых книг
-                System.out.println("Cписок книг у читателей");
-                MyList<Book> borrowedBooks = service.getBorrowedBooks();
-                if (borrowedBooks == null) {
-                    System.out.println("Занятых книг пока нет");
-
-                    waitRead();
-                    break;
-                }
-                System.out.println(borrowedBooks);
-
-                waitRead();
+                showAvailableBooks();
                 break;
-
             case 7:
-                System.out.println("Добавление новой книги");
-                System.out.println("Введите название книги:");
-                String title = scanner.nextLine();
-
-                System.out.println("Введите автора:");
-                String author = scanner.nextLine();
-
-                System.out.println("Введите год книги:");
-                int year = scanner.nextInt();
-                scanner.nextLine();
-
-                System.out.println("Введите количество страниц:");
-               int pages = scanner.nextInt();
-               scanner.nextLine();
-
-                System.out.println("Введите жанр:");
-                String genre = scanner.nextLine();
-
-                Book book = service.addBook(title, author, year, pages, genre);
-                if (book == null) {
-                    System.out.println("Не удалось добавить книгу");
-                    break;
-                } else {
-                    System.out.println("Книга" + book + " успешно добавлена!");
-                }
-
-                waitRead();
+                showBorrowedBooks();
                 break;
-
-
             case 8:
-                System.out.println("Редактирование книг");
-                // TODO отдельное меню редактирования книг (ВОЗМОЖНО) На обсуждение
-
-            case 9:
-                System.out.println("Удаление книг");
-                System.out.println("Введите id книги, которую хотите удалить из библиотеки");
-                int bookToDelete = scanner.nextInt();
-                scanner.nextLine();
-//
-//                if (
-//                        service.borrowBook(bookToDelete)) {
-//                    System.out.println("Операция провалена");
-//
-//                    waitRead();
-//                    break;
-//                }
-
-                if (true /*TODO !service.deleteBookById(bookToDelete)*/) {
-                    System.out.println("Не удалось удалить эту книгу");
-
-                    break;
-                } else {
-                    System.out.println("Вы успешно удалили книгу " + bookToDelete);
-                }
-
-                waitRead();
+                showBooksByReader();
                 break;
-
-
+            case 9:
+                addNewBook();
+                break;
             case 10:
-                System.out.println("Список всех свободных книг");
-
-                System.out.println("Cписок книг которые сейчас находятся в библиотеке");
-                MyList<Book> availableBooks = service.getAvailableBooks();
-
-                if (availableBooks == null) {
-                    System.out.println("Свободных книг сейчас нет");
-
-                    waitRead();
-                    break;
-                }
-                System.out.println(availableBooks);
-
-                waitRead();
+                editBook();
+                break;
+            case 11:
+                deleteBook();
                 break;
 
             default:
@@ -561,6 +487,137 @@ public class Menu {
         }
         waitRead();
     }
+
+
+ private void showBorrowedBooks() {
+     // Список всех занятых книг
+     System.out.println("Cписок книг у читателей");
+     MyList<Book> borrowedBooks = service.getBorrowedBooks();
+     if (borrowedBooks == null) {
+         System.out.println("Занятых книг пока нет");
+     } else {
+         System.out.println(borrowedBooks);
+     }
+
+     waitRead();
+ }
+
+ private void showBooksByReader() {
+     System.out.println("Посмотреть книги у определенного читателя");
+     System.out.println("Введите email читателя, у которого хотите посмотреть книги:");
+     String email = scanner.nextLine();
+
+     User user = service.getUserByEmail(email);
+
+     if (user == null) {
+         System.out.println("Такого пользователя нет!");
+     } else if (user.getUserBooks().isEmpty()) {
+         System.out.println("У пользователя нет книг");
+     } else {
+         System.out.println(user.getUserBooks());
+     }
+
+     waitRead();
+ }
+
+ private void addNewBook() {
+     System.out.println("Добавление новой книги");
+     System.out.println("Введите название книги:");
+     String title = scanner.nextLine().trim();
+
+     System.out.println("Введите автора:");
+     String author = scanner.nextLine().trim();
+
+     System.out.println("Введите год книги:");
+     int year = scanner.nextInt();
+     scanner.nextLine();
+
+     System.out.println("Введите количество страниц:");
+     int pages = scanner.nextInt();
+     scanner.nextLine();
+
+     System.out.println("Введите жанр:");
+     String genre = scanner.nextLine().trim();
+
+     if (title.isEmpty() || author.isEmpty() || genre.isEmpty()) {
+         System.out.println("Введите корректные данные!");
+
+         waitRead();
+         return;
+     }
+
+     Book book = service.addBook(title, author, year, pages, genre);
+     if (book == null) {
+         System.out.println("Не удалось добавить книгу");
+     } else {
+         System.out.println("Книга успешно добавлена!");
+         System.out.println(book);
+     }
+
+     waitRead();
+ }
+
+ private void editBook() {
+     System.out.println("Редактирование книг");
+     System.out.println("Введите id книги, которую нужно отредактировать:");
+     int id = scanner.nextInt();
+     scanner.nextLine();
+
+     Book book = service.getBookById(id);
+
+     System.out.println("Заполните те поля, которые нужно отредактировать. Если поле редактировать НЕ нужно - оставьте пустым:");
+     System.out.println("Текущее название книги: " + book.getTitle());
+     System.out.println("Поменять название:");
+     String newTitle = scanner.nextLine().trim();
+
+     System.out.println("Текущий автор книги: " + book.getAuthor());
+     System.out.println("Поменять автора:");
+     String newAuthor = scanner.nextLine().trim();
+
+     System.out.println("Текущий год книги: " + book.getYear());
+     System.out.println("Поменять год:");
+     int newYear = scanner.nextInt();
+     scanner.nextLine();
+
+     System.out.println("Текущее кол-во страниц книги: " + book.getPages());
+     System.out.println("Поменять кол-во страниц:");
+     int newPages = scanner.nextInt();
+     scanner.nextLine();
+
+     System.out.println("Текущий жанр книги: " + book.getGenre());
+     System.out.println("Поменять жанр:");
+     String newGenre = scanner.nextLine().trim();
+
+     if (newTitle.isEmpty()) newTitle = null;
+     if (newAuthor.isEmpty()) newAuthor = null;
+     if (newGenre.isEmpty()) newGenre = null;
+
+     if (service.editBook(id, newTitle, newAuthor, newYear, newPages, newGenre)) {
+         System.out.println("Книга отредактирована!");
+         System.out.println(service.getBookById(id));
+     } else {
+         System.out.println("Не получилось отредактировать книгу");
+     }
+
+     waitRead();
+ }
+
+ private void deleteBook() {
+     System.out.println("Удаление книг");
+     System.out.println("Введите id книги, которую хотите удалить из библиотеки:");
+     int bookToDelete = scanner.nextInt();
+     scanner.nextLine();
+
+     if (!service.deleteBookById(bookToDelete)) {
+         System.out.println("Не удалось удалить книгу");
+     } else {
+         System.out.println("Вы успешно удалили книгу!");
+     }
+
+     waitRead();
+ }
+
+
 
     private void returnBook() {
         System.out.println("Вернуть книгу в библиотеку");
