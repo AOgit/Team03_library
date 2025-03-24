@@ -31,8 +31,8 @@ public class UserTests {
         userRepository = new UserRepositoryImpl();
         bookRepository = new BookRepositoryImpl();
         service = new MainServiceImpl(bookRepository, userRepository);
-        superAdmin = new User(emailSuper, passwordSeuper);
-        user = new User(email, password);
+//        superAdmin = new User(emailSuper, passwordSeuper);
+//        user = new User(email, password);
         service.loginUser(emailSuper, passwordSeuper);
 
         book1 = new Book(1, "Java для чайников", "Берд Б.", 2013, 368, "сказка");

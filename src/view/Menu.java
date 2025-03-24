@@ -50,8 +50,7 @@ public class Menu {
             System.out.println("=======================================");
             System.out.print("▶️  Введите номер пункта меню: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = checkIntInput();
 
             if (choice == 0) {
                 System.out.println(ColorMe.text(Color.GREEN, "👋 До свидания! Спасибо за использование программы."));
@@ -75,7 +74,7 @@ public class Menu {
                 showAdminMenu();
                 break;
             default:
-                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Сделайте корректный выбор!"));
+                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
                 waitRead();
         }
     }
@@ -98,12 +97,11 @@ public class Menu {
             System.out.println("🔙 0️⃣  Вернуться в предыдущее меню");
             System.out.println("=======================================");
             System.out.print("▶️  Введите номер пункта меню: ");
-            int input = scanner.nextInt();
-            scanner.nextLine();
+            int choice = checkIntInput();
 
             // Прерываю текущий цикл
-            if (input == 0) break;
-            handleUserMenuInput(input);
+            if (choice == 0) break;
+            handleUserMenuInput(choice);
         }
     }
 
@@ -121,7 +119,7 @@ public class Menu {
                     registration();
                 break;
             default:
-                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Сделайте корректный выбор!"));
+                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
                 waitRead();
         }
     }
@@ -137,7 +135,7 @@ public class Menu {
             System.out.println("📖 2️⃣  Список всех читателей");
             System.out.println("🚫 3️⃣  Заблокировать / разблокировать пользователя");
             System.out.println("🔄 4️⃣  Изменить роль пользователя");
-            System.out.println("🗑️ 5️⃣. Удалить пользователя");
+            System.out.println("🗑️ 5️⃣  Удалить пользователя");
             System.out.println("---------------------------------------");
             System.out.println("📚 6️⃣  Список книг в наличии");
             System.out.println("📜 7️⃣  Список книг на абонементе");
@@ -151,12 +149,11 @@ public class Menu {
             System.out.println("=======================================");
             System.out.print("▶️  Введите номер пункта меню: ");
 
-            int input = scanner.nextInt();
-            scanner.nextLine();
+            int choice = checkIntInput();
 
             // Прерываю текущий цикл
-            if (input == 0) break;
-            handleAdminMenuInput(input);
+            if (choice == 0) break;
+            handleAdminMenuInput(choice);
         }
     }
 
@@ -195,12 +192,9 @@ public class Menu {
             case 11:
                 deleteBook();
                 break;
-
             default:
-                System.out.println("Сделайте корректный выбор");
-                waitRead();
-
-        }
+                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
+                waitRead();        }
     }
 
 
@@ -226,8 +220,7 @@ public class Menu {
 
             System.out.println("0️⃣  ❌  Вернуться в главное меню");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = checkIntInput();
 
             if (choice == 0) break;
             handleBookMenuInput(choice);
@@ -267,7 +260,7 @@ public class Menu {
                 editBook();
                 break;
             default:
-                System.out.println("Сделайте корректный выбор");
+                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
                 waitRead();
         }
     }
@@ -296,6 +289,23 @@ public class Menu {
         } catch (AWTException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    private int checkIntInput() {
+        boolean valid = false;
+        int inputInt = 0;
+        while (!valid) {
+            try {
+                inputInt = scanner.nextInt();
+                valid = true;
+            } catch (Exception e) {
+                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректное число!"));
+                scanner.nextLine();
+            }
+        }
+        scanner.nextLine();
+        return inputInt;
     }
 
 
@@ -360,6 +370,9 @@ public class Menu {
         }
         waitRead();
     }
+
+
+
 
    private void blockUnblokUser () {
        System.out.println("Смена статуса пользователя");
@@ -498,8 +511,7 @@ public class Menu {
     private void borrowBook() {
         System.out.println("Взять книгу из библиотеки");
         System.out.println("Введите id книги, которую хотите взять");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        int id = checkIntInput();
         Book book = service.getBookById(id);
         if (book != null) {
             System.out.printf("Книга \"%s: %s\" Берём? Да/Нет\n", book.getTitle(), book.getAuthor());
@@ -556,12 +568,10 @@ public class Menu {
      String author = scanner.nextLine().trim();
 
      System.out.println("Введите год книги:");
-     int year = scanner.nextInt();
-     scanner.nextLine();
+     int year = checkIntInput();
 
      System.out.println("Введите количество страниц:");
-     int pages = scanner.nextInt();
-     scanner.nextLine();
+     int pages = checkIntInput();
 
      System.out.println("Введите жанр:");
      String genre = scanner.nextLine().trim();
@@ -587,8 +597,7 @@ public class Menu {
  private void editBook() {
      System.out.println("Редактирование книг");
      System.out.println("Введите id книги, которую нужно отредактировать:");
-     int id = scanner.nextInt();
-     scanner.nextLine();
+     int id = checkIntInput();
 
      Book book = service.getBookById(id);
 
@@ -603,13 +612,11 @@ public class Menu {
 
      System.out.println("Текущий год книги: " + book.getYear());
      System.out.println("Поменять год:");
-     int newYear = scanner.nextInt();
-     scanner.nextLine();
+     int newYear = checkIntInput();
 
      System.out.println("Текущее кол-во страниц книги: " + book.getPages());
      System.out.println("Поменять кол-во страниц:");
-     int newPages = scanner.nextInt();
-     scanner.nextLine();
+     int newPages = checkIntInput();
 
      System.out.println("Текущий жанр книги: " + book.getGenre());
      System.out.println("Поменять жанр:");
@@ -632,8 +639,7 @@ public class Menu {
  private void deleteBook() {
      System.out.println("Удаление книг");
      System.out.println("Введите id книги, которую хотите удалить из библиотеки:");
-     int bookToDelete = scanner.nextInt();
-     scanner.nextLine();
+     int bookToDelete = checkIntInput();
 
      if (!service.deleteBookById(bookToDelete)) {
          System.out.println("Не удалось удалить книгу");
@@ -654,8 +660,7 @@ public class Menu {
         } else {
             System.out.println(borrowedBooks);
             System.out.println("Введите № книги, которую хотите вернуть");
-            int idBook = scanner.nextInt();
-            scanner.nextLine();
+            int idBook = checkIntInput();
             if (!service.returnBook(idBook)) {
                 System.out.println("Не удалось вернуть книгу");
             } else {
