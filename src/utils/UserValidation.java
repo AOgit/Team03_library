@@ -67,7 +67,7 @@ public class UserValidation {
         // альтернативный способ объявления переменных
         boolean[] result = new boolean[4]; // false, false, false, false
 
-        String symbols = "!%$@&*()[],.-";
+        String symbols = "!%$@&*()[],.-_";
 
         // Перебираю символы
         for (char ch : password.toCharArray()) {
