@@ -6,6 +6,7 @@ import model.User;
 import service.MainService;
 import utils.ColorMe.Color;
 import utils.ColorMe.ColorMe;
+import utils.CreditsUpwards;
 import utils.MyList;
 
 import java.awt.*;
@@ -25,7 +26,7 @@ public class Menu {
 
     public void start() {
         // Потом убрать, для тестов выставляю
-        service.loginUser("admin@mail.de", "admin");
+        service.loginUser("superAdmin@mail.de", "superAdmin");
         service.borrowBook(1);
 //        User reader = service.registerUser("reader@mail.ru", "R(12ader")
 //        service.loginUser("reader@mail.ru", "R(12ader");
@@ -54,7 +55,9 @@ public class Menu {
             int choice = checkIntInput();
 
             if (choice == 0) {
-                System.out.println(ColorMe.text(Color.GREEN, "👋 До свидания! Спасибо за использование программы."));
+                clearConsole();
+//                System.out.println(ColorMe.text(Color.GREEN, "👋 До свидания! Спасибо за использование программы."));
+                CreditsUpwards.credits();
                 // Завершение работы приложения
                 System.exit(0);
             }
@@ -139,7 +142,8 @@ public class Menu {
             System.out.println("👥 1️⃣  Список всех пользователей");
             System.out.println("📖 2️⃣  Список всех читателей");
             System.out.println("🚫 3️⃣  Заблокировать / разблокировать пользователя");
-            System.out.println("🔄 4️⃣  Изменить роль пользователя");
+            if (service.isSuperAdmin())
+                System.out.println(ColorMe.text(Color.ORANGE, "🔄 4️⃣  Изменить роль пользователя"));
             System.out.println("🗑️ 5️⃣  Удалить пользователя");
             System.out.println("---------------------------------------");
             System.out.println("📚 6️⃣  Список книг в наличии");
@@ -216,8 +220,10 @@ public class Menu {
             System.out.println("3️⃣  🔍  Найти книгу по названию");
             System.out.println("4️⃣  ✍️  Найти книгу по автору");
             System.out.println("5️⃣  🎭  Найти книгу по жанру");
-            System.out.println("6️⃣  📥  Взять книгу из библиотеки");
-            System.out.println("7️⃣  📤  Вернуть книгу в библиотеку");
+            if (service.isLoggedIn()) {
+                System.out.println(ColorMe.text(Color.BLUE,"6️⃣  📥  Взять книгу из библиотеки"));
+                System.out.println(ColorMe.text(Color.BLUE,"7️⃣  📤  Вернуть книгу в библиотеку"));
+            }
             System.out.println("=======================================");
             if (service.isAdmin() || service.isSuperAdmin()) {
                 System.out.println(ColorMe.text(Color.YELLOW, "8️⃣ 🔍 Список книг на абонементе"));
