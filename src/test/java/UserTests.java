@@ -1,4 +1,3 @@
-import model.Book;
 import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,12 +75,29 @@ public class UserTests {
     }
 
     @Test
+    void GetAllUsersShouldFailForUser() {
+        service.loginUser(email, password);
+        assertNull(service.getAllUsers());
+    }
+
+    @Test
+    void GetAllUsersShouldSuccessForAdmin() {
+
+    }
+
+    @Test
     void testGetAllReaders() {
         assertTrue(service.getAllReaders().isEmpty());
         assertEquals(0, service.getAllReaders().size());
 
         service.borrowBook(1);
         assertEquals(1, service.getAllReaders().size());
+    }
+
+    @Test
+    void GetAllReadersShouldFailForUser() {
+        service.loginUser(email, password);
+        assertNull(service.getAllReaders());
     }
 
     @ParameterizedTest
@@ -96,6 +112,11 @@ public class UserTests {
         assertNotNull(service.getUserByEmail(emails));
     }
 
+    @Test
+    void getUserByEmailShouldFailForUser() {
+        service.loginUser(email, password);
+        assertNull(service.getUserByEmail(email));
+    }
 
 
 
