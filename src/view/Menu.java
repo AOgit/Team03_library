@@ -3,13 +3,19 @@ package view;
 import model.Book;
 import model.Role;
 import model.User;
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
 import service.MainService;
+//import utils.ClearConsole;
 import utils.ColorMe.Color;
 import utils.ColorMe.ColorMe;
 import utils.MyList;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Scanner;
+
 
 public class Menu {
     private final MainService service;
@@ -27,6 +33,7 @@ public class Menu {
 //        User reader = service.registerUser("reader@mail.ru", "R(12ader")
 //        service.loginUser("reader@mail.ru", "R(12ader");
 //        service.borrowBook(reader, 1);
+
         showMenu();
     }
     private void showMenu() {
@@ -99,7 +106,6 @@ public class Menu {
 
             // Прерываю текущий цикл
             if (input == 0) break;
-
             handleUserMenuInput(input);
         }
     }
@@ -127,7 +133,6 @@ public class Menu {
         while (true) {
             if (!service.isAdmin() && !service.isSuperAdmin()) break;
             userPrompt();
-
             System.out.println("=======================================");
             System.out.println(ColorMe.text(Color.PURPLE,"     🔧  АДМИНИСТРАТОРСКОЕ МЕНЮ  🔧     "));
             System.out.println("=======================================");
@@ -154,7 +159,6 @@ public class Menu {
 
             // Прерываю текущий цикл
             if (input == 0) break;
-
             handleAdminMenuInput(input);
         }
     }
@@ -205,6 +209,7 @@ public class Menu {
 
     private void showBookMenu() {
         while (true) {
+            userPrompt();
             System.out.println("=======================================");
             System.out.println("        📚 МЕНЮ БИБЛИОТЕКИ 📚         ");
             System.out.println("=======================================");
@@ -216,9 +221,11 @@ public class Menu {
             System.out.println("6️⃣  📥  Взять книгу из библиотеки");
             System.out.println("7️⃣  📤  Вернуть книгу в библиотеку");
             System.out.println("=======================================");
-//            System.out.println("7. Список всех отданных читателям книг"); ADMIN
-//            System.out.println("8. Добавить новую книгу"); ADMIN
-//            System.out.println("9. Редактировать книгу"); ADMIN
+            if (service.isAdmin() || service.isSuperAdmin()) {
+                System.out.println(ColorMe.text(Color.YELLOW, "8️⃣ 🔍 Список книг на абонементе"));
+                System.out.println(ColorMe.text(Color.YELLOW,"9️⃣ ➕ Добавить новую книгу"));
+                System.out.println(ColorMe.text(Color.YELLOW,"1️⃣0️⃣✏️ Редактировать книгу"));
+            }
 
             System.out.println("0️⃣  ❌  Вернуться в главное меню");
 
@@ -226,7 +233,6 @@ public class Menu {
             scanner.nextLine();
 
             if (choice == 0) break;
-
             handleBookMenuInput(choice);
         }
     }
@@ -254,6 +260,15 @@ public class Menu {
             case 7:
                 returnBook();
                 break;
+            case 8:
+                showBorrowedBooks();
+                break;
+            case 9:
+                addNewBook();
+                break;
+            case 10:
+                editBook();
+                break;
             default:
                 System.out.println("Сделайте корректный выбор");
                 waitRead();
@@ -269,8 +284,23 @@ public class Menu {
     private void userPrompt(){
         User activeUser = service.getActiveUser();
         if (activeUser != null)
-            System.out.printf("Здравствуйте, %s\n", activeUser.getEmail());
+            System.out.println(ColorMe.text(Color.BLUE,"Здравствуйте, ") + ColorMe.text(Color.ORANGE, activeUser.getEmail()));
     }
+
+    public void clearConsole() {
+        try {
+            Robot robot = null;
+            robot = new Robot();
+            // Выставляем шорткат в натройках SHIFT + L для очистки консоли
+            robot.keyPress(KeyEvent.VK_DEAD_GRAVE);       // Нажатие клавиши L
+            robot.keyRelease(KeyEvent.VK_DEAD_GRAVE);     // Отпускание клавиши L
+            // Задержка, чтобы дать время переключить фокус на окно IntelliJ IDEA
+            robot.delay(500);  // Задержка
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private void login() {
         System.out.println("Введите email: ");
