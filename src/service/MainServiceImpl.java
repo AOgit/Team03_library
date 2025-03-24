@@ -41,6 +41,9 @@ public class MainServiceImpl implements MainService {
 
         User user = userRepository.addUser(email, password);
 
+        // делаем автологин после успешной регистрации
+        loginUser(email, password);
+
         return user;
     }
 
@@ -86,14 +89,24 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean blockUser(User user) {
-        if (!isAdmin() && !isSuperAdmin()) return false;
+        Role role = user.getRole();
+        if (!isAdmin() && !isSuperAdmin() || role == Role.SUPER_ADMIN) return false;
+        if (isAdmin() && role != Role.USER ) {
+            System.out.println("Не хватает прав для блокировки!");
+            return false;
+        }
         user.setBlocked(true);
         return userRepository.update(user);
     }
 
     @Override
     public boolean unblockUser(User user) {
+        Role role = user.getRole();
         if (!isAdmin() && !isSuperAdmin()) return false;
+        if (isAdmin() && role != Role.USER ) {
+            System.out.println("Не хватает прав для разблокировки!");
+            return false;
+        }
         user.setBlocked(false);
         return userRepository.update(user);
     }
@@ -138,7 +151,7 @@ public class MainServiceImpl implements MainService {
 
     public boolean deleteUser(User user) {
         Role role = user.getRole();
-        if (!isAdmin() && !isSuperAdmin()) return false;
+        if (!isAdmin() && !isSuperAdmin() || role == Role.SUPER_ADMIN) return false;
         if (isAdmin() && role != Role.USER ) {
             System.out.println("Администраторы могут удалять только простых пользователей");
             return false;
