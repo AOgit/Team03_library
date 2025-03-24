@@ -483,7 +483,7 @@ public class Menu {
 
     private void showAllBooks(){
         MyList<Book> allBooks = service.getAllBooks();
-        if (allBooks == null) {
+        if (allBooks.isEmpty()) {
             System.out.println("В библиотеке нет ни одной книги!");
         } else {
             System.out.println(allBooks);
@@ -494,7 +494,7 @@ public class Menu {
     private void showAvailableBooks() {
         System.out.println("Список всех свободных книг");
         MyList<Book> availableBooks = service.getAvailableBooks();
-        if (availableBooks == null) {
+        if (availableBooks.isEmpty()) {
             System.out.println("Свободных книг сейчас нет");
             waitRead();
         } else {
@@ -508,7 +508,7 @@ public class Menu {
         System.out.println("Введите название книги, которую хотите найти");
         String title = scanner.nextLine();
         MyList<Book> booksByTitle = service.getBooksByTitle(title);
-        if (booksByTitle == null) {
+        if (booksByTitle.isEmpty()) {
             System.out.println("Не удалось найти книгу");
         } else {
             System.out.println(booksByTitle);
@@ -521,7 +521,7 @@ public class Menu {
         System.out.println("Введите фамилию автора");
         String author = scanner.nextLine();
         MyList<Book> booksByAuthor = service.getBooksByAuthor(author);
-        if (booksByAuthor == null) {
+        if (booksByAuthor.isEmpty()) {
             System.out.println("Не удалось найти книгу");
         } else {
             System.out.println(booksByAuthor);
@@ -534,7 +534,7 @@ public class Menu {
         System.out.println("Введите название жанра");
         String genre = scanner.nextLine();
         MyList<Book> booksByGenre = service.getBookByGenre(genre);
-        if (booksByGenre == null) {
+        if (booksByGenre.isEmpty()) {
             System.out.println("Не удалось найти книгу");
         } else {
             System.out.println(booksByGenre);
