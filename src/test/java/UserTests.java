@@ -84,5 +84,8 @@ public class UserTests {
     }
 
 // Test
+   void getUserByEmail() {
+
+   }
 
 }
