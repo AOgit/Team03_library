@@ -16,7 +16,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     public UserRepositoryImpl() {
         users = new MyArrayList<>();
-        addUsers();
+//        addUsers();
     }
 
     private void addUsers() {
@@ -27,6 +27,7 @@ public class UserRepositoryImpl implements UserRepository {
         User admin = new User("admin@mail.de", "admin");
         admin.setRole(Role.ADMIN);
         User user = new User("user@mail.de", "user");
+        admin.setRole(Role.USER);
 
         users.addAll(superAdmin, admin, user);
     }
