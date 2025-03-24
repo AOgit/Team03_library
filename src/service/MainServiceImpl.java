@@ -248,6 +248,8 @@ public class MainServiceImpl implements MainService {
     @Override
     public boolean returnBook(int bookId) {
         User user = this.getActiveUser();
+        MyList<Book> borrowedBooks = user.getUserBooks();
+        if (borrowedBooks.isEmpty()) return false;
         return returnBook(user, bookId);
     }
 

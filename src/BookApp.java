@@ -7,7 +7,7 @@ import service.MainService;
 import service.MainServiceImpl;
 import view.Menu;
 
-public class BookApp {
+public class  BookApp {
     public static void main(String[] args) {
 
         BookRepository bookRepository = new BookRepositoryImpl();
