@@ -67,6 +67,8 @@ public interface MainService {
     Book getBookById(int bookId);
 
     boolean deleteBookById(int bookId);
+
+    boolean deleteBook(Book book);
    
   // ==================BOOKS========================
 

@@ -37,7 +37,7 @@ public interface BookRepository {
     String getCurrentReader(int id);
 
     // Delete
-    boolean deleteById(int id);
+    boolean deleteBook(Book book);
 
 
 
