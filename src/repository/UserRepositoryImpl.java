@@ -16,7 +16,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     public UserRepositoryImpl() {
         users = new MyArrayList<>();
-//        addUsers();
+        addUsers();
     }
 
     private void addUsers() {
