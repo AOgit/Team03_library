@@ -1,5 +1,6 @@
 package service;
 
+import model.Book;
 import model.Role;
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import repository.BookRepository;
 import repository.BookRepositoryImpl;
 import repository.UserRepository;
 import repository.UserRepositoryImpl;
+import utils.MyList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -204,14 +206,71 @@ class MainServiceImplTest1 {
     }
 
     @Test
-    void editBook() {
+    void editBook_shouldFailForUser() {
+        Book bookBeforeEdit = bookRepository.getBookById(1);
+        mainService.loginUser("user@mail.de", "user");
+        mainService.editBook(1, "Python", "Author", 1999, 300, "IT");
+
+        Book bookAfterEdit = bookRepository.getBookById(1);
+//        assertEquals(bookBeforeEdit, bookAfterEdit, "Юзер не может редактировать книги!");
+        assertNotEquals("Python", bookAfterEdit.getTitle(), "Название книги должно измениться");
     }
 
     @Test
-    void borrowBook() {
+    void editBook_shouldSucceedForAdmin() {
+        mainService.loginUser("admin@mail.de", "admin");
+
+        Book bookBeforeEdit = bookRepository.getBookById(1);
+        boolean editResult = mainService.editBook(1, "Python", "Author", 1999, 300, "IT");
+        assertTrue(editResult, "Админ должен успешно редактировать книгу!");
+
+        Book bookAfterEdit = bookRepository.getBookById(1);
+//        assertNotEquals(bookBeforeEdit, bookAfterEdit, "Админ может редактировать книги!");
+
+        assertEquals("Python", bookAfterEdit.getTitle(), "Название книги должно измениться");
+        assertEquals("Author", bookAfterEdit.getAuthor(), "Автор книги должен измениться");
+        assertEquals(1999, bookAfterEdit.getYear(), "Год выпуска книги должен измениться");
+        assertEquals(300, bookAfterEdit.getPages(), "Количество страниц книги должно измениться");
+        assertEquals("IT", bookAfterEdit.getGenre(), "Жанр книги должен измениться");
     }
 
     @Test
-    void returnBook() {
+    void borrowBook_ShouldFailForNotRegisteredUser() {
+        mainService.loginUser("user11@mail.de", "user");
+        boolean result = mainService.borrowBook(1);
+
+    assertFalse(result, "Незарегистрированный пользователь не должен брать книгу!");
+
+    }
+    @Test
+    void borrowBook_ShouldFailForNonExistentBook() {
+        mainService.loginUser("user@mail.de", "user");
+
+        boolean result = mainService.borrowBook(999);
+        assertFalse(result, "Нельзя взять несуществующую книгу!");
+    }
+
+    @Test
+    void borrowBook_ShouldSucceedWhenBookIsAvailable() {
+        mainService.loginUser("user@mail.de", "user");
+
+        Book book = bookRepository.getBookById(1);
+
+        boolean result = mainService.borrowBook(1);
+
+        assertTrue(result, "Книга должна быть успешно взята!");
+
+        MyList<Book> userBooks = mainService.getUserBooks();
+
+        assertTrue(userBooks.contains(book), "Книга должна быть в списке книг пользователя!");
+        assertTrue(book.isBorrowed(), "Книга должна быть помечена как занятая!");
+}
+
+    @Test
+    void returnBook_ShouldFailForNonExistentBook() {
+        mainService.loginUser("user@mail.de", "user");
+        boolean result = mainService.returnBook(999);
+        assertFalse(result, "Нельзя вернуть несуществующую книгу!");
+
     }
 }
