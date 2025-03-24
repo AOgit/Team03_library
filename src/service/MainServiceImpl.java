@@ -190,7 +190,18 @@ public class MainServiceImpl implements MainService {
     @Override
     public boolean deleteBookById(int bookId) {
         if (bookId < 0) return false;
-        return bookRepository.deleteById(bookId);
+        Book book = bookRepository.getBookById(bookId);
+
+        if (book.isBorrowed()) {
+            System.out.println("Книга находится у читателя!");
+            return false;
+        }
+        return deleteBook(book);
+    }
+
+    @Override
+    public boolean deleteBook(Book book) {
+        return  bookRepository.deleteBook(book);
     }
 
     @Override
