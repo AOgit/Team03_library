@@ -1,4 +1,5 @@
 import model.Role;
+import model.User;
 import repository.BookRepository;
 import repository.BookRepositoryImpl;
 import repository.UserRepository;
@@ -40,6 +41,15 @@ public class ApplicationTest {
         System.out.println("Borrow book №11: " + service.returnBook(11));
 
 
+        service.loginUser("admin@mail.de", "admin");
+        service.loginUser("user@mail.de", "user");
+        System.out.println(service.isSuperAdmin());
+        System.out.println(service.isAdmin());
+        System.out.println(service.getActiveUser());
+        User user = service.getUserByEmail("user@mail.de");
+        System.out.println(user);
+
+//        System.out.println(service.deleteUser(user));
 
     }
 }
