@@ -85,7 +85,7 @@ public class UserTests {
 
 // Test
    void getUserByEmail() {
-
+       System.out.println("Test close PR");
    }
 
 }
