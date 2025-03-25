@@ -5,6 +5,7 @@ import model.Role;
 import model.User;
 import repository.BookRepository;
 import repository.UserRepository;
+import repository.UserRepositoryImpl;
 import utils.MyArrayList;
 import utils.MyList;
 import utils.StringHashing;
@@ -74,6 +75,25 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public boolean changePassword(String oldPassword, String newPassword) {
+        User user = this.getActiveUser();
+        if (user == null) return false;
+        String oldHashPassword = StringHashing.hashPassword(oldPassword);
+        String oldHashPasswordRepository = userRepository.getUserByEmail(user.getEmail()).getPassword();
+       if (!oldHashPassword.equals(oldHashPasswordRepository)) {
+           System.out.println("Вы ввели неверный текущий пароль");
+           return false;
+       }
+        if (!UserValidation.isPasswordValid(newPassword)) {
+            System.out.println("Новый пароль не прошел проверку");
+            return false;
+        }
+       String newHashPassword = StringHashing.hashPassword(newPassword);
+       user.setPassword(newHashPassword);
+       return userRepository.update(user);
+    }
+
+    @Override
     public User getActiveUser() {
         return this.activeUser;
     }
@@ -123,12 +143,14 @@ public class MainServiceImpl implements MainService {
     @Override
     public MyList<Book> getUserBooks() {
         User user = getActiveUser();
-        return getUserBooks(user);
+        if (user == null)  return null;
+        return user.getUserBooks();
     }
 
     @Override
     public MyList<Book> getUserBooks(User user) {
-       if (user == null)  return new MyArrayList<>();
+        if (user == null)  return null;
+        if (!isAdmin() && !isSuperAdmin()) return null;
        return user.getUserBooks();
     }
 

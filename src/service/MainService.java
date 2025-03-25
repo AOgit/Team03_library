@@ -23,6 +23,8 @@ public interface MainService {
 
     void logout();
 
+    public boolean changePassword(String oldPassword, String newPassword);
+
     User getActiveUser();
   
     MyList<User> getAllUsers();

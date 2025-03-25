@@ -96,10 +96,12 @@ public class Menu {
                 System.out.println("🆕 2️⃣  Регистрация нового пользователя");
             } else {
                 System.out.println("🚪 1️⃣  Выйти из системы");
+                System.out.println("🔄 2️⃣  Смена пароля");
+                System.out.println("🔍 3️⃣  Список книг на абонементе");
             }
 
             System.out.println("---------------------------------------");
-            System.out.println("🔙 0️⃣  Вернуться в предыдущее меню");
+            System.out.println("🔙 0️⃣  Вернуться в главное меню");
             System.out.println("=======================================");
             System.out.print("▶️  Введите номер пункта меню: ");
             int choice = checkIntInput();
@@ -122,8 +124,16 @@ public class Menu {
                 }
                 break;
             case 2:
-                if (!service.isLoggedIn())
+                if (!service.isLoggedIn()) {
                     registration();
+                } else {
+                    passwordChange();
+                }
+                break;
+            case 3:
+                if (service.isLoggedIn()) {
+                    showUserBooks();
+                }
                 break;
             default:
                 System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
@@ -154,7 +164,7 @@ public class Menu {
             System.out.println("✏️ 1️⃣0️⃣  Редактировать книгу");
             System.out.println("🗑️ 1️⃣1️⃣  Удалить книгу");
             System.out.println("---------------------------------------");
-            System.out.println("🔙 0️⃣  Вернуться в предыдущее меню");
+            System.out.println("🔙 0️⃣  Вернуться в главное меню");
             System.out.println("=======================================");
             System.out.print("▶️  Введите номер пункта меню: ");
 
@@ -226,12 +236,12 @@ public class Menu {
             }
             System.out.println("=======================================");
             if (service.isAdmin() || service.isSuperAdmin()) {
-                System.out.println(ColorMe.text(Color.YELLOW, "8️⃣ 🔍 Список книг на абонементе"));
+                System.out.println(ColorMe.text(Color.YELLOW, "8️⃣ 🔍 Список всех книг на абонементе"));
                 System.out.println(ColorMe.text(Color.YELLOW,"9️⃣ ➕ Добавить новую книгу"));
                 System.out.println(ColorMe.text(Color.YELLOW,"1️⃣0️⃣✏️ Редактировать книгу"));
             }
 
-            System.out.println("0️⃣  ❌  Вернуться в главное меню");
+            System.out.println("🔙 0️⃣  Вернуться в главное меню");
 
             int choice = checkIntInput();
 
@@ -346,13 +356,25 @@ public class Menu {
         waitRead();
     }
 
+    private void passwordChange() {
+        System.out.println("Введите текущий пароль: ");
+        String oldPassword = scanner.nextLine();
+        System.out.println("Введите новый пароль:\n(минимальные требования: >= 8 символов, спецсимвол, большая буква, цифра)");
+        String newPassword = scanner.nextLine();
+        if (service.changePassword(oldPassword, newPassword)) {
+            System.out.println("Поздравляем! Пароль успешно изменен");
+        } else {
+            System.out.println("Не удалось изменить пароль");
+        }
+        waitRead();
+    }
 
     private void registration() {
         System.out.println("Регистрация нового пользователя");
         System.out.println("Введите email:");
         String emailInput = scanner.nextLine();
 
-        System.out.println("Введите пароль:");
+        System.out.println("Введите пароль:\n(минимальные требования: >= 8 символов, спецсимвол, большая буква, цифра)");
         String passwordInput = scanner.nextLine();
 
         User user = service.registerUser(emailInput, passwordInput);
@@ -554,12 +576,22 @@ public class Menu {
      // Список всех занятых книг
      System.out.println("Cписок книг у читателей");
      MyList<Book> borrowedBooks = service.getBorrowedBooks();
-     if (borrowedBooks == null) {
+     if (borrowedBooks.isEmpty()) {
          System.out.println("Занятых книг пока нет");
-     } else {
+     } else if (!borrowedBooks.isEmpty()){
          System.out.println(borrowedBooks);
      }
+     waitRead();
+ }
 
+ private void showUserBooks(){
+     MyList<Book> borrowedBooks = service.getUserBooks();
+     if (borrowedBooks.isEmpty()) {
+         System.out.println("Ваш абонемент пуст!");
+     } else if (!borrowedBooks.isEmpty()){
+         System.out.println("Список книг на абонементе");
+         System.out.println(borrowedBooks);
+     }
      waitRead();
  }
 
@@ -687,7 +719,7 @@ public class Menu {
         MyList<Book> borrowedBooks = service.getUserBooks();
         if (borrowedBooks.isEmpty()) {
             System.out.println("У Вас нет взятых на абонемент книг");
-        } else {
+        } else if (!borrowedBooks.isEmpty()) {
             System.out.println(borrowedBooks);
             System.out.println("Введите № книги, которую хотите вернуть");
             int idBook = checkIntInput();
