@@ -104,27 +104,27 @@ public class MainServiceImpl implements MainService {
   
     @Override
     public MyList<User> getAllUsers() {
-        if (!isAdmin() && !isSuperAdmin()) return null;
+        if (!isAdmin()) return null;
         return userRepository.getAllUsers();
     }
 
     @Override
     public MyList<User> getAllReaders() {
-        if (!isAdmin() && !isSuperAdmin()) return null;
+        if (!isAdmin()) return null;
         return userRepository.getAllReaders();
     }
 
     @Override
     public User getUserByEmail(String email) {
-        if (!isAdmin() && !isSuperAdmin()) return null;
+        if (!isAdmin()) return null;
         return userRepository.getUserByEmail(email);
     }
 
     @Override
     public boolean blockUser(User user) {
         Role role = user.getRole();
-        if (!isAdmin() && !isSuperAdmin() || role == Role.SUPER_ADMIN) return false;
-        if (isAdmin() && role != Role.USER ) {
+        if (!isAdmin() || role == Role.SUPER_ADMIN) return false;
+        if (this.activeUser.getRole() == Role.ADMIN && role != Role.USER ) {
             System.out.println("Не хватает прав для блокировки!");
             return false;
         }
@@ -135,8 +135,8 @@ public class MainServiceImpl implements MainService {
     @Override
     public boolean unblockUser(User user) {
         Role role = user.getRole();
-        if (!isAdmin() && !isSuperAdmin()) return false;
-        if (isAdmin() && role != Role.USER ) {
+        if (!isAdmin()) return false;
+        if (this.activeUser.getRole() == Role.ADMIN && role != Role.USER ) {
             System.out.println("Не хватает прав для разблокировки!");
             return false;
         }
@@ -154,7 +154,7 @@ public class MainServiceImpl implements MainService {
     @Override
     public MyList<Book> getUserBooks(User user) {
         if (user == null)  return null;
-        if (!isAdmin() && !isSuperAdmin()) return null;
+        if (!isAdmin()) return null;
        return user.getUserBooks();
     }
 
@@ -166,7 +166,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean isAdmin() {
-        return isLoggedIn() && activeUser.getRole() == Role.ADMIN;
+        return isLoggedIn() && (activeUser.getRole() == Role.ADMIN || activeUser.getRole() == Role.SUPER_ADMIN);
     }
   
     @Override
@@ -186,8 +186,8 @@ public class MainServiceImpl implements MainService {
 
     public boolean deleteUser(User user) {
         Role role = user.getRole();
-        if (!isAdmin() && !isSuperAdmin() || role == Role.SUPER_ADMIN) return false;
-        if (isAdmin() && role != Role.USER ) {
+        if (!isAdmin() || role == Role.SUPER_ADMIN) return false;
+        if (this.activeUser.getRole() == Role.ADMIN && role != Role.USER ) {
             System.out.println("Администраторы могут удалять только простых пользователей");
             return false;
         }
@@ -245,7 +245,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean deleteBookById(int bookId) {
-        if (!isAdmin() && !isSuperAdmin()) return false;
+        if (!isAdmin()) return false;
         if (bookId < 0) return false;
         Book book = bookRepository.getBookById(bookId);
 
@@ -258,19 +258,19 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean deleteBook(Book book) {
-        if (!isAdmin() && !isSuperAdmin()) return false;
+        if (!isAdmin()) return false;
         return  bookRepository.deleteBook(book);
     }
 
     @Override
     public Book addBook(String title, String author, int year, int pages, String genre) {
-        if (!isAdmin() && !isSuperAdmin()) return null;
+        if (!isAdmin()) return null;
         return bookRepository.addBook(title, author, year, pages, genre);
     }
 
     @Override
     public boolean editBook(int id, String title, String author, int year, int pages, String genre) {
-        if (!isAdmin() && !isSuperAdmin()) return false;
+        if (!isAdmin()) return false;
         Book book = bookRepository.getBookById(id);
         if (book == null) return false;
 

@@ -45,7 +45,7 @@ public class Menu {
             System.out.println("📚 1️⃣  Меню книг");
             System.out.println("👤 2️⃣  Меню пользователя");
 
-            if (service.isAdmin() || service.isSuperAdmin())
+            if (service.isAdmin())
                 System.out.println(ColorMe.text(Color.ORANGE, "🔧 3️⃣  Меню администратора"));
             System.out.println("---------------------------------------");
             System.out.println("❌ 0️⃣  Выход");
@@ -75,7 +75,7 @@ public class Menu {
                 showUserMenu();
                 break;
             case 3:
-                if (service.isAdmin() || service.isSuperAdmin()) { showAdminMenu();} else {wrongMenuNumber();}
+                if (service.isAdmin()) { showAdminMenu();} else {wrongMenuNumber();}
                 break;
             default:
                 wrongMenuNumber();
@@ -140,7 +140,7 @@ public class Menu {
     private void showAdminMenu() {
         while (true) {
             clearConsole();
-            if (!service.isAdmin() && !service.isSuperAdmin()) break;
+            if (!service.isAdmin()) break;
             userPrompt();
             System.out.println("=======================================");
             System.out.println(ColorMe.text(Color.PURPLE,"     🔧  АДМИНИСТРАТОРСКОЕ МЕНЮ  🔧     "));
@@ -230,7 +230,7 @@ public class Menu {
                 System.out.println(ColorMe.text(Color.BLUE,"6️⃣  📥  Взять книгу из библиотеки"));
                 System.out.println(ColorMe.text(Color.BLUE,"7️⃣  📤  Вернуть книгу в библиотеку"));
             }
-            if (service.isAdmin() || service.isSuperAdmin()) {
+            if (service.isAdmin()) {
                 System.out.println("----------------Admin part-----------------------");
                 System.out.println(ColorMe.text(Color.YELLOW,"8️⃣   🔍 ️ Список всех книг на абонементе"));
                 System.out.println(ColorMe.text(Color.YELLOW,"9️⃣   🔍 ️ Список книг у определенного читателя"));
@@ -274,19 +274,19 @@ public class Menu {
                 if (service.isLoggedIn()) {returnBook(); } else {wrongMenuNumber();}
                 break;
             case 8:
-                if (service.isAdmin() || service.isSuperAdmin()) {showBorrowedBooks();} else {wrongMenuNumber();}
+                if (service.isAdmin()) {showBorrowedBooks();} else {wrongMenuNumber();}
                 break;
             case 9:
-                if (service.isAdmin() || service.isSuperAdmin()) {showBooksByReader();} else {wrongMenuNumber();}
+                if (service.isAdmin()) {showBooksByReader();} else {wrongMenuNumber();}
                 break;
             case 10:
-                if (service.isAdmin() || service.isSuperAdmin()) {addNewBook();} else {wrongMenuNumber();}
+                if (service.isAdmin()) {addNewBook();} else {wrongMenuNumber();}
                 break;
             case 11:
-                if (service.isAdmin() || service.isSuperAdmin()) {editBook();} else {wrongMenuNumber();}
+                if (service.isAdmin()) {editBook();} else {wrongMenuNumber();}
                 break;
             case 12:
-                if (service.isAdmin() || service.isSuperAdmin()) { deleteBook();} else {wrongMenuNumber();}
+                if (service.isAdmin()) { deleteBook();} else {wrongMenuNumber();}
                 break;
             default:
                 wrongMenuNumber();
