@@ -1,5 +1,3 @@
-package service;
-
 import model.Book;
 import model.Role;
 import model.User;
@@ -10,11 +8,12 @@ import repository.BookRepository;
 import repository.BookRepositoryImpl;
 import repository.UserRepository;
 import repository.UserRepositoryImpl;
+import service.MainServiceImpl;
 import utils.MyList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MainServiceImplTest1 {
+class MainServiceImplTest2 {
 
     private BookRepository bookRepository;
     private UserRepository userRepository;

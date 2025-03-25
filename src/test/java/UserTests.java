@@ -15,16 +15,18 @@ import utils.MyList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTests {
-    private User superAdmin;
-    private User user;
     private UserRepository userRepository;
     private BookRepository bookRepository;
     private MainService service;
+
     private final String emailSuper = "superAdmin@mail.de";
     private final String passwordSuper = "superAdmin";
 
     private final String email = "user@mail.de";
     private final String password = "user";
+
+    private final String emailAdmin = "admin@mail.de";
+    private final String passwordAdmin = "admin";
 
     @BeforeEach
     void setUp() {
@@ -36,8 +38,7 @@ public class UserTests {
 
     @Test
     void createUser() {
-        assertNull(superAdmin);
-        superAdmin = new User(emailSuper, passwordSuper);
+        User superAdmin = service.getUserByEmail(emailSuper);
         assertNotNull(superAdmin);
     }
 
@@ -68,7 +69,8 @@ public class UserTests {
         service.registerUser("email@gmail.com", "Password111_");
         assertEquals(size + 1, allUsers.size());
 
-        user = new User(email, password);
+        service.loginUser(emailSuper, passwordSuper);
+        User user = service.getUserByEmail(email);
 
         service.deleteUser(user);
         assertEquals(size, allUsers.size());
@@ -107,7 +109,7 @@ public class UserTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {email, emailSuper, "admin@mail.de"})
+    @ValueSource(strings = {email, emailSuper, emailAdmin})
     void testGetUserByValidEmail(String emails) {
         assertNotNull(service.getUserByEmail(emails));
     }
@@ -118,6 +120,35 @@ public class UserTests {
         assertNull(service.getUserByEmail(email));
     }
 
+    @Test
+    void testBlockUser() {
+        User user = service.getUserByEmail(email);
+        assertFalse(user.isBlocked());
+        service.blockUser(user);
+        assertTrue(user.isBlocked());
+    }
+
+    @Test
+    void blockSuperAdminShouldFail() {
+        service.loginUser(emailAdmin, passwordAdmin);
+        User userSuper = service.getUserByEmail(emailSuper);
+        assertFalse(userSuper.isBlocked());
+        assertFalse(service.blockUser(userSuper), "Нельзя заблокировать Супер Админа!");
+        assertFalse(userSuper.isBlocked());
+
+    }
+
+    @Test
+    void blockUserShouldFailForUser() {
+        service.loginUser(email, password);
+        User userAdmin = service.getUserByEmail(emailAdmin);
+        System.out.println(userAdmin);
+
+        assertFalse(userAdmin.isBlocked());
+        assertFalse(service.blockUser(userAdmin));
+
+        assertFalse(userAdmin.isBlocked());
+    }
 
 
 }
