@@ -75,11 +75,10 @@ public class Menu {
                 showUserMenu();
                 break;
             case 3:
-                showAdminMenu();
+                if (service.isAdmin() || service.isSuperAdmin()) { showAdminMenu();} else {wrongMenuNumber();}
                 break;
             default:
-                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
-                waitRead();
+                wrongMenuNumber();
         }
     }
 
@@ -131,13 +130,10 @@ public class Menu {
                 }
                 break;
             case 3:
-                if (service.isLoggedIn()) {
-                    showUserBooks();
-                }
+                if (service.isLoggedIn()) {showUserBooks();} else {wrongMenuNumber();}
                 break;
             default:
-                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
-                waitRead();
+                wrongMenuNumber();
         }
     }
 
@@ -189,7 +185,7 @@ public class Menu {
                 blockUnblokUser();
                 break;
             case 4:
-                changeUserRole();
+               if (service.isSuperAdmin()) { changeUserRole(); } else { wrongMenuNumber(); }
                 break;
             case 5:
                 deleteUser();
@@ -213,8 +209,8 @@ public class Menu {
                 deleteBook();
                 break;
             default:
-                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
-                waitRead();        }
+                wrongMenuNumber();
+        }
     }
 
 
@@ -239,6 +235,7 @@ public class Menu {
                 System.out.println(ColorMe.text(Color.YELLOW, "8️⃣ 🔍 Список всех книг на абонементе"));
                 System.out.println(ColorMe.text(Color.YELLOW,"9️⃣ ➕ Добавить новую книгу"));
                 System.out.println(ColorMe.text(Color.YELLOW,"1️⃣0️⃣✏️ Редактировать книгу"));
+                System.out.println(ColorMe.text(Color.YELLOW,"🗑️ 1️⃣1️⃣  Удалить книгу"));
             }
 
             System.out.println("🔙 0️⃣  Вернуться в главное меню");
@@ -269,23 +266,25 @@ public class Menu {
                 showBooksByGenre();
                 break;
             case 6:
-                borrowBook();
+                if (service.isLoggedIn()) { borrowBook(); } else {wrongMenuNumber();}
                 break;
             case 7:
-                returnBook();
+                if (service.isLoggedIn()) {returnBook(); } else {wrongMenuNumber();}
                 break;
             case 8:
-                showBorrowedBooks();
+                if (service.isAdmin() || service.isSuperAdmin()) {showBorrowedBooks();} else {wrongMenuNumber();}
                 break;
             case 9:
-                addNewBook();
+                if (service.isAdmin() || service.isSuperAdmin()) {addNewBook();} else {wrongMenuNumber();}
                 break;
             case 10:
-                editBook();
+                if (service.isAdmin() || service.isSuperAdmin()) {editBook();} else {wrongMenuNumber();}
+                break;
+            case 11:
+                if (service.isAdmin() || service.isSuperAdmin()) { deleteBook();} else {wrongMenuNumber();}
                 break;
             default:
-                System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
-                waitRead();
+                wrongMenuNumber();
         }
     }
 
@@ -317,6 +316,11 @@ public class Menu {
         } catch (AWTException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void wrongMenuNumber() {
+        System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректный номер пункта меню!"));
+        waitRead();
     }
 
 
