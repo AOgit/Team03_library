@@ -22,13 +22,15 @@ public class UserRepositoryImpl implements UserRepository {
     private void addUsers() {
 
        // Изначально в системе должен быть как минимум один SuperAdmin
-        User superAdmin = new User("superAdmin@mail.de", "superAdmin");
+        User superAdmin = new User("superAdmin@mail.de", "CMHonAWQtmxFLXNwVAstxs+L5cOBoY9q5d4jQGn/eeI=");
         superAdmin.setRole(Role.SUPER_ADMIN);
-        User admin = new User("admin@mail.de", "admin");
+        User admin = new User("admin@mail.de", "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=");
         admin.setRole(Role.ADMIN);
-        User user = new User("user@mail.de", "user");
+        User reader = new User("reader@mail.de", "PQlBlkqj69ywDM71ixuzmfn4mEZemIbVrsfzEJCg+zA=");
+        User user = new User("user@mail.de", "BPiZbadjt6lpsQKO4wB1aerzpjVIbdqyEdUSyFud+Ps=");
+        User user1 = new User("user1@mail.de", "CgQblGLKpKMbrDVn4Lbm/ZEAeH2yq0M9lvbReMq/zpA=");
 
-        users.addAll(superAdmin, admin, user);
+        users.addAll(superAdmin, admin, reader, user, user1);
     }
 
     @Override

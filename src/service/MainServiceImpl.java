@@ -7,6 +7,7 @@ import repository.BookRepository;
 import repository.UserRepository;
 import utils.MyArrayList;
 import utils.MyList;
+import utils.StringHashing;
 import utils.UserValidation;
 
 public class MainServiceImpl implements MainService {
@@ -18,6 +19,10 @@ public class MainServiceImpl implements MainService {
     public MainServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        // для демонстрации добавим книг одному из юзеров
+          User reader = userRepository.getUserByEmail("reader@mail.de");
+          borrowBook(reader, 1);
+          borrowBook(reader, 3);
     }
   
     // ==================USERS========================
@@ -39,7 +44,8 @@ public class MainServiceImpl implements MainService {
             return null;
         }
 
-        User user = userRepository.addUser(email, password);
+        String hashPassword = StringHashing.hashPassword(password);
+        User user = userRepository.addUser(email, hashPassword);
 
         // делаем автологин после успешной регистрации
         loginUser(email, password);
@@ -52,7 +58,9 @@ public class MainServiceImpl implements MainService {
         User user = userRepository.getUserByEmail(email);
         if (user == null || user.isBlocked()) return false;
 
-        if (user.getPassword().equals(password)) {
+        String hashPassword = StringHashing.hashPassword(password);
+
+        if (user.getPassword().equals(hashPassword)) {
             this.activeUser = user;
             return true;
         }
