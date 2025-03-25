@@ -219,6 +219,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean deleteBookById(int bookId) {
+        if (!isAdmin() && !isSuperAdmin()) return false;
         if (bookId < 0) return false;
         Book book = bookRepository.getBookById(bookId);
 
