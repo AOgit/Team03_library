@@ -26,11 +26,11 @@ public class Menu {
 
     public void start() {
         // Потом убрать, для тестов выставляю
-        service.loginUser("superAdmin@mail.de", "superAdmin");
-        service.borrowBook(1);
+//        service.loginUser("reader@mail.ru", "R(12ader");
+//        service.loginUser("superAdmin@mail.de", "superAdmin");
+//        service.borrowBook(1);
 //        User reader = service.registerUser("reader@mail.ru", "R(12ader")
 //        service.loginUser("reader@mail.ru", "R(12ader");
-//        service.borrowBook(reader, 1);
 
         showMenu();
     }
