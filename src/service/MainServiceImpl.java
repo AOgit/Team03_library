@@ -58,7 +58,11 @@ public class MainServiceImpl implements MainService {
     @Override
     public boolean loginUser(String email, String password) {
         User user = userRepository.getUserByEmail(email);
-        if (user == null || user.isBlocked()) return false;
+        if (user == null) return false;
+        if (user.isBlocked()) {
+            System.out.println("Ваш аккаунт заблокирован. Обратитесь в службу поддержки");
+            return false;
+        }
 
         String hashPassword = StringHashing.hashPassword(password);
 
