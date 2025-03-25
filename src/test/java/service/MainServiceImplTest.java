@@ -14,7 +14,7 @@ import utils.MyList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MainServiceImplTest1 {
+class MainServiceImplTest {
 
     private BookRepository bookRepository;
     private UserRepository userRepository;
