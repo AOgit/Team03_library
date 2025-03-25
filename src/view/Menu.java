@@ -149,17 +149,17 @@ public class Menu {
             System.out.println("📖 2️⃣  Список всех читателей");
             System.out.println("🚫 3️⃣  Заблокировать / разблокировать пользователя");
             if (service.isSuperAdmin())
-                System.out.println(ColorMe.text(Color.ORANGE, "🔄 4️⃣  Изменить роль пользователя"));
+                System.out.println(ColorMe.text(Color.RED, "🔄 4️⃣  Изменить роль пользователя"));
             System.out.println("🗑️ 5️⃣  Удалить пользователя");
             System.out.println("---------------------------------------");
-            System.out.println("📚 6️⃣  Список книг в наличии");
-            System.out.println("📜 7️⃣  Список книг на абонементе");
-            System.out.println("🔍 8️⃣  Список книг у определенного читателя");
-            System.out.println("---------------------------------------");
-            System.out.println("➕ 9️⃣    Добавить новую книгу");
-            System.out.println("✏️ 1️⃣0️⃣  Редактировать книгу");
-            System.out.println("🗑️ 1️⃣1️⃣  Удалить книгу");
-            System.out.println("---------------------------------------");
+//            System.out.println("📚 6️⃣  Список книг в наличии");
+//            System.out.println("📜 7️⃣  Список книг на абонементе");
+//            System.out.println("🔍 8️⃣  Список книг у определенного читателя");
+//            System.out.println("---------------------------------------");
+//            System.out.println("➕ 9️⃣    Добавить новую книгу");
+//            System.out.println("✏️ 1️⃣0️⃣  Редактировать книгу");
+//            System.out.println("🗑️ 1️⃣1️⃣  Удалить книгу");
+//            System.out.println("---------------------------------------");
             System.out.println("🔙 0️⃣  Вернуться в главное меню");
             System.out.println("=======================================");
             System.out.print("▶️  Введите номер пункта меню: ");
@@ -190,24 +190,24 @@ public class Menu {
             case 5:
                 deleteUser();
                 break;
-            case 6:
-                showAvailableBooks();
-                break;
-            case 7:
-                showBorrowedBooks();
-                break;
-            case 8:
-                showBooksByReader();
-                break;
-            case 9:
-                addNewBook();
-                break;
-            case 10:
-                editBook();
-                break;
-            case 11:
-                deleteBook();
-                break;
+//            case 6:
+//                showAvailableBooks();
+//                break;
+//            case 7:
+//                showBorrowedBooks();
+//                break;
+//            case 8:
+//                showBooksByReader();
+//                break;
+//            case 9:
+//                addNewBook();
+//                break;
+//            case 10:
+//                editBook();
+//                break;
+//            case 11:
+//                deleteBook();
+//                break;
             default:
                 wrongMenuNumber();
         }
@@ -230,16 +230,18 @@ public class Menu {
                 System.out.println(ColorMe.text(Color.BLUE,"6️⃣  📥  Взять книгу из библиотеки"));
                 System.out.println(ColorMe.text(Color.BLUE,"7️⃣  📤  Вернуть книгу в библиотеку"));
             }
-            System.out.println("=======================================");
             if (service.isAdmin() || service.isSuperAdmin()) {
-                System.out.println(ColorMe.text(Color.YELLOW, "8️⃣ 🔍 Список всех книг на абонементе"));
-                System.out.println(ColorMe.text(Color.YELLOW,"9️⃣ ➕ Добавить новую книгу"));
-                System.out.println(ColorMe.text(Color.YELLOW,"1️⃣0️⃣✏️ Редактировать книгу"));
-                System.out.println(ColorMe.text(Color.YELLOW,"🗑️ 1️⃣1️⃣  Удалить книгу"));
+                System.out.println("----------------Admin part-----------------------");
+                System.out.println(ColorMe.text(Color.YELLOW,"8️⃣   🔍 ️ Список всех книг на абонементе"));
+                System.out.println(ColorMe.text(Color.YELLOW,"9️⃣   🔍 ️ Список книг у определенного читателя"));
+                System.out.println(ColorMe.text(Color.YELLOW,"1️⃣0️⃣ ➕ Добавить новую книгу"));
+                System.out.println(ColorMe.text(Color.YELLOW,"1️⃣1️⃣ ✏️ Редактировать книгу"));
+                System.out.println(ColorMe.text(Color.YELLOW,"1️⃣2️⃣ 🗑️ Удалить книгу"));
             }
-
+            System.out.println("---------------------------------------");
             System.out.println("🔙 0️⃣  Вернуться в главное меню");
-
+            System.out.println("=======================================");
+            System.out.print("▶️  Введите номер пункта меню: ");
             int choice = checkIntInput();
 
             if (choice == 0) break;
@@ -275,12 +277,15 @@ public class Menu {
                 if (service.isAdmin() || service.isSuperAdmin()) {showBorrowedBooks();} else {wrongMenuNumber();}
                 break;
             case 9:
-                if (service.isAdmin() || service.isSuperAdmin()) {addNewBook();} else {wrongMenuNumber();}
+                if (service.isAdmin() || service.isSuperAdmin()) {showBooksByReader();} else {wrongMenuNumber();}
                 break;
             case 10:
-                if (service.isAdmin() || service.isSuperAdmin()) {editBook();} else {wrongMenuNumber();}
+                if (service.isAdmin() || service.isSuperAdmin()) {addNewBook();} else {wrongMenuNumber();}
                 break;
             case 11:
+                if (service.isAdmin() || service.isSuperAdmin()) {editBook();} else {wrongMenuNumber();}
+                break;
+            case 12:
                 if (service.isAdmin() || service.isSuperAdmin()) { deleteBook();} else {wrongMenuNumber();}
                 break;
             default:
@@ -296,8 +301,12 @@ public class Menu {
 
     private void userPrompt(){
         User activeUser = service.getActiveUser();
-        if (activeUser != null)
-            System.out.println(ColorMe.text(Color.BLUE,"Здравствуйте, ") + ColorMe.text(Color.ORANGE, activeUser.getEmail()));
+        if (activeUser != null) {
+            Color userColor = Color.BLUE;
+            if (activeUser.getRole() == Role.ADMIN) userColor = Color.ORANGE;
+            if (activeUser.getRole() == Role.SUPER_ADMIN) userColor = Color.RED;
+            System.out.println(ColorMe.text(Color.WHITE, "Здравствуйте, ") + ColorMe.text(userColor, activeUser.getEmail()));
+        }
     }
 
     public void clearConsole() {
@@ -330,7 +339,11 @@ public class Menu {
         while (!valid) {
             try {
                 inputInt = scanner.nextInt();
-                valid = true;
+                if (inputInt < 0) {
+                    System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите число больше нуля!"));
+                } else {
+                    valid = true;
+                }
             } catch (Exception e) {
                 System.out.println(ColorMe.text(Color.RED, "⛔ Ошибка: Введите корректное число!"));
                 scanner.nextLine();
@@ -425,7 +438,7 @@ public class Menu {
 
        User user = service.getUserByEmail(emailInput.trim());
        if (user == null) {
-           System.out.println("Пользователя с таким email не существует");
+           System.out.println("Пользователь с указанным email не найден");
        } else {
            if (user.isBlocked()) {
                System.out.println("Статус пользователя: заблокирован. Разблокировать? Да/Нет");
@@ -457,7 +470,7 @@ public class Menu {
 
       User user = service.getUserByEmail(email.trim());
       if (user == null) {
-          System.out.println("Пользователя с таким email не существует");
+          System.out.println("Пользователь с указанным email не найден");
       } else {
           System.out.println("Текущая роль пользователя: " + user.getRole().toString());
           System.out.println("Укажите новую роль: " + Arrays.toString(Role.values()));
@@ -481,7 +494,7 @@ public class Menu {
          String emailInput = scanner.nextLine();
          User user = service.getUserByEmail(emailInput.trim());
          if (user == null) {
-             System.out.println("Пользователя с таким email не существует");
+             System.out.println("Пользователь с указанным email не найден");
          } else {
              if (service.deleteUser(user))
                  System.out.println("Пользователь успешно удален");
@@ -519,7 +532,7 @@ public class Menu {
         String title = scanner.nextLine();
         MyList<Book> booksByTitle = service.getBooksByTitle(title);
         if (booksByTitle.isEmpty()) {
-            System.out.println("Не удалось найти книгу с таким названием");
+            System.out.println("Не удалось найти книгу с указанным названием");
         } else {
             System.out.println(booksByTitle);
         }
@@ -570,7 +583,7 @@ public class Menu {
                 System.out.println("Не берем значит... Ну ок: ученье свет, а не ученье приятный полумрак...");
             }
         } else {
-            System.out.println("Книга с таким id не найдена!");
+            System.out.println("Книга с указанным id не найдена!");
         }
         waitRead();
     }
@@ -658,39 +671,41 @@ public class Menu {
      int id = checkIntInput();
 
      Book book = service.getBookById(id);
-
-     System.out.println("Заполните те поля, которые нужно отредактировать. Если поле редактировать НЕ нужно - оставьте пустым:");
-     System.out.println("Текущее название книги: " + book.getTitle());
-     System.out.println("Поменять название:");
-     String newTitle = scanner.nextLine().trim();
-
-     System.out.println("Текущий автор книги: " + book.getAuthor());
-     System.out.println("Поменять автора:");
-     String newAuthor = scanner.nextLine().trim();
-
-     System.out.println("Текущий год книги: " + book.getYear());
-     System.out.println("Поменять год:");
-     int newYear = checkIntInput();
-
-     System.out.println("Текущее кол-во страниц книги: " + book.getPages());
-     System.out.println("Поменять кол-во страниц:");
-     int newPages = checkIntInput();
-
-     System.out.println("Текущий жанр книги: " + book.getGenre());
-     System.out.println("Поменять жанр:");
-     String newGenre = scanner.nextLine().trim();
-
-     if (newTitle.isEmpty()) newTitle = null;
-     if (newAuthor.isEmpty()) newAuthor = null;
-     if (newGenre.isEmpty()) newGenre = null;
-
-     if (service.editBook(id, newTitle, newAuthor, newYear, newPages, newGenre)) {
-         System.out.println("Книга отредактирована!");
-         System.out.println(service.getBookById(id));
+     if (book == null) {
+         System.out.println("Книга с указанным id не найдена");
      } else {
-         System.out.println("Не получилось отредактировать книгу");
-     }
+         System.out.println("Заполните те поля, которые нужно отредактировать. Если поле редактировать НЕ нужно - оставьте пустым:");
+         System.out.println("Текущее название книги: " + book.getTitle());
+         System.out.println("Поменять название:");
+         String newTitle = scanner.nextLine().trim();
 
+         System.out.println("Текущий автор книги: " + book.getAuthor());
+         System.out.println("Поменять автора:");
+         String newAuthor = scanner.nextLine().trim();
+
+         System.out.println("Текущий год книги: " + book.getYear());
+         System.out.println("Поменять год:");
+         int newYear = checkIntInput();
+
+         System.out.println("Текущее кол-во страниц книги: " + book.getPages());
+         System.out.println("Поменять кол-во страниц:");
+         int newPages = checkIntInput();
+
+         System.out.println("Текущий жанр книги: " + book.getGenre());
+         System.out.println("Поменять жанр:");
+         String newGenre = scanner.nextLine().trim();
+
+         if (newTitle.isEmpty()) newTitle = null;
+         if (newAuthor.isEmpty()) newAuthor = null;
+         if (newGenre.isEmpty()) newGenre = null;
+
+         if (service.editBook(id, newTitle, newAuthor, newYear, newPages, newGenre)) {
+             System.out.println("Книга отредактирована!");
+             System.out.println(service.getBookById(id));
+         } else {
+             System.out.println("Не получилось отредактировать книгу");
+         }
+     }
      waitRead();
  }
 
@@ -710,7 +725,7 @@ public class Menu {
              }
          }
      } else {
-         System.out.println("Книга с таким id не найдена!");
+         System.out.println("Книга с указанным id не найдена!");
      }
 
      waitRead();
