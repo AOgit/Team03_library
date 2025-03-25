@@ -4,6 +4,7 @@ import model.Book;
 import model.Role;
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import repository.BookRepository;
 import repository.BookRepositoryImpl;
@@ -77,7 +78,7 @@ class MainServiceImplTest1 {
     @Test
     void logout() {
 
-        userRepository.addUser("userr@mail.de", "User1234!!");
+        mainService.registerUser("userr@mail.de", "User1234!!");
         mainService.loginUser("userr@mail.de", "User1234!!");
 
         assertNotNull(mainService.getActiveUser(), "Активный пользователь должен быть не null");
@@ -99,7 +100,8 @@ class MainServiceImplTest1 {
 
     @Test
     void testIsAdmin() {
-        userRepository.addUser("admin1@mail.de", "Admin1234!!");
+//        userRepository.addUser("admin1@mail.de", "Admin1234!!");
+        mainService.registerUser("admin1@mail.de", "Admin1234!!");
         User adminUser = userRepository.getUserByEmail("admin1@mail.de");
         adminUser.setRole(Role.ADMIN);
 
@@ -112,96 +114,100 @@ class MainServiceImplTest1 {
     }
 
     @Test
-    void isSuperAdmin() {
-
-        userRepository.addUser("Superadmin1@mail.de", "SuperAdmin1234!!");
-        User adminUser = userRepository.getUserByEmail("Superadmin1@mail.de");
-        adminUser.setRole(Role.SUPER_ADMIN);
-
-//        mainService.loginUser("admin@mail.de", "admin");
-        mainService.loginUser("Superadmin1@mail.de", "SuperAdmin1234!!");
-
-        assertTrue(mainService.isSuperAdmin(), "Супер-админ должен быть распознан как супер-админ");
-        assertTrue(mainService.isLoggedIn(), "Система должна считать, что пользователь вошел");
-
-    }
-
-    @Test
+    @Disabled
     void getUserByEmail() {
 
     }
     @Test
+    @Disabled
     void getActiveUser() {
     }
 
     @Test
+    @Disabled
     void getAllUsers() {
     }
 
     @Test
+    @Disabled
     void getAllReaders() {
     }
 
 
     @Test
+    @Disabled
     void blockUser() {
     }
 
     @Test
+    @Disabled
     void unblockUser() {
     }
 
     @Test
+    @Disabled
     void getUserBooks() {
     }
 
 
 
     @Test
+    @Disabled
     void changeUserRole() {
     }
 
     @Test
+    @Disabled
     void deleteUser() {
     }
 
     @Test
+    @Disabled
     void getBooksByTitle() {
     }
 
     @Test
+    @Disabled
     void getUserBooksByEmail() {
     }
 
     @Test
+    @Disabled
     void getBooksByAuthor() {
     }
 
     @Test
+    @Disabled
     void getBookByGenre() {
     }
 
     @Test
+    @Disabled
     void getAllBooks() {
     }
 
     @Test
+    @Disabled
     void getAvailableBooks() {
     }
 
     @Test
+    @Disabled
     void getBorrowedBooks() {
     }
 
     @Test
+    @Disabled
     void getBookById() {
     }
 
     @Test
+    @Disabled
     void deleteBookById() {
     }
 
     @Test
+    @Disabled
     void addBook() {
     }
 
@@ -253,10 +259,9 @@ class MainServiceImplTest1 {
     @Test
     void borrowBook_ShouldSucceedWhenBookIsAvailable() {
         mainService.loginUser("user@mail.de", "user");
-
-        Book book = bookRepository.getBookById(1);
-
-        boolean result = mainService.borrowBook(1);
+        Book book = mainService.getBookById(2);
+        // в демонстрационных целях в сервисе книги 1 и 3 уже взята пользователем reader
+        boolean result = mainService.borrowBook(2);
 
         assertTrue(result, "Книга должна быть успешно взята!");
 

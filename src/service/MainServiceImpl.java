@@ -19,6 +19,7 @@ public class MainServiceImpl implements MainService {
     public MainServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+
         // для демонстрации добавим книг одному из юзеров
           User reader = userRepository.getUserByEmail("reader@mail.de");
           borrowBook(reader, 1);
@@ -230,16 +231,19 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public boolean deleteBook(Book book) {
+        if (!isAdmin() && !isSuperAdmin()) return false;
         return  bookRepository.deleteBook(book);
     }
 
     @Override
     public Book addBook(String title, String author, int year, int pages, String genre) {
+        if (!isAdmin() && !isSuperAdmin()) return null;
         return bookRepository.addBook(title, author, year, pages, genre);
     }
 
     @Override
     public boolean editBook(int id, String title, String author, int year, int pages, String genre) {
+        if (!isAdmin() && !isSuperAdmin()) return false;
         Book book = bookRepository.getBookById(id);
         if (book == null) return false;
 
