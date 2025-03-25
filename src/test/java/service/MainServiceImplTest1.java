@@ -198,11 +198,62 @@ class MainServiceImplTest1 {
     }
 
     @Test
-    void deleteBookById() {
+    void deleteBookById_shouldFailForUser() {
+        mainService.loginUser("user@mail.de", "user");
+
+        MyList<Book> listBeforeDelete = mainService.getAllBooks();
+        int initialSize = listBeforeDelete.size();
+
+        boolean deleteResult = mainService.deleteBookById(2);
+
+        MyList<Book> listAfterDelete = mainService.getAllBooks();
+        int newSize = listAfterDelete.size();
+
+        assertFalse(deleteResult, "Метод удаления должен вернуть false");
+
+        assertEquals(initialSize, newSize, "Размер списка не должен измениться");
+
+        assertNotNull(bookRepository.getBookById(2), "Книга с id 2 не должна быть удалена");
+
+
+    }
+    @Test
+    void deleteBookById_shouldSucceedForAdmin() {
+        mainService.loginUser("admin@mail.de", "admin");
+
+        MyList<Book> listBeforeDelete = mainService.getAllBooks();
+        int initialSize = listBeforeDelete.size();
+
+        boolean deleteResult = mainService.deleteBookById(2);
+
+        MyList<Book> listAfterDelete = mainService.getAllBooks();
+        int newSize = listAfterDelete.size();
+        assertTrue(deleteResult, "Метод удаления должен вернуть true");
+        assertEquals(initialSize - 1, newSize, "Размер списка должен уменьшиться на 1");
+        assertNull(bookRepository.getBookById(2), "Книга с id 2 должна быть удалена");
+
+
     }
 
     @Test
     void addBook() {
+        mainService.loginUser("admin@mail.de", "admin");
+
+        MyList<Book> listBeforeAdd = mainService.getAllBooks();
+        int initialSize = listBeforeAdd.size();
+
+        mainService.addBook("Три поросенка", "Михалков С.", 1933, 32, "сказка");
+        MyList<Book> listAfterAdd = mainService.getAllBooks();
+        int newSize = listAfterAdd.size();
+
+        assertEquals(initialSize + 1, newSize, "Размер списка книг должен увеличиться после добавления");
+
+        Book lastBook = listAfterAdd.get(newSize - 1);
+        assertEquals("Три поросенка", lastBook.getTitle(), "Название книги должно быть 'Три поросенка'");
+        assertEquals("Михалков С.", lastBook.getAuthor(), "Автор книги должен быть 'Михалков С.'");
+        assertEquals(1933, lastBook.getYear(), "Год выпуска должен быть 1933");
+        assertEquals(32, lastBook.getPages(), "Количество страниц должно быть 32");
+        assertEquals("сказка", lastBook.getGenre(), "Жанр книги должен быть 'сказка'");
     }
 
     @Test
@@ -225,7 +276,7 @@ class MainServiceImplTest1 {
         assertTrue(editResult, "Админ должен успешно редактировать книгу!");
 
         Book bookAfterEdit = bookRepository.getBookById(1);
-//        assertNotEquals(bookBeforeEdit, bookAfterEdit, "Админ может редактировать книги!");
+        assertNotEquals(bookBeforeEdit, bookAfterEdit, "Админ может редактировать книги!");
 
         assertEquals("Python", bookAfterEdit.getTitle(), "Название книги должно измениться");
         assertEquals("Author", bookAfterEdit.getAuthor(), "Автор книги должен измениться");
