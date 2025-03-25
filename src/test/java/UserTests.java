@@ -1,3 +1,4 @@
+import model.Book;
 import model.Role;
 import model.User;
 import org.junit.jupiter.api.Assertions;
@@ -88,17 +89,12 @@ public class UserTests {
     }
 
     @Test
-    void GetAllUsersShouldSuccessForAdmin() {
-
-    }
-
-    @Test
     void testGetAllReaders() {
-        assertTrue(service.getAllReaders().isEmpty());
-        assertEquals(0, service.getAllReaders().size());
-
-        service.borrowBook(1);
+        User user = service.getUserByEmail(email);
         assertEquals(1, service.getAllReaders().size());
+
+        service.borrowBook(user, 2);
+        assertEquals(2, service.getAllReaders().size());
     }
 
     @Test
@@ -183,15 +179,21 @@ public class UserTests {
     }
 
     @Test
-    @Disabled
     void testGetUserBooks() {
-
+        User user = service.getUserByEmail(email);
+        assertTrue(service.getUserBooks(user).isEmpty());
+        assertEquals(0, service.getUserBooks(user).size());
+        user.addUserBook(new Book(1, "book1", "author!", 1, 2, "genre"));
+        user.addUserBook(new Book(2, "book2", "author2!", 2, 3, "genre2"));
+        assertEquals(2, service.getUserBooks(user).size());
     }
 
     @Test
     @Disabled
     void testGetUserBooksShouldFailForUser() {
-
+        User user = service.getUserByEmail(email);
+        service.loginUser(email, password);
+        assertNull(service.getUserBooks(user));
     }
 
     @Test

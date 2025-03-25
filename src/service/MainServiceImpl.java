@@ -149,7 +149,7 @@ public class MainServiceImpl implements MainService {
     }
 
     public boolean changeUserRole(User user, Role role) {
-        if (!isSuperAdmin()) return false;
+        if (!isSuperAdmin() || user.getRole() == Role.SUPER_ADMIN) return false;
         if (role == Role.SUPER_ADMIN) {
             System.out.println("Супер администратор может быть в системе только один");
             return false;
