@@ -38,7 +38,7 @@ public class UserTests {
 
     @Test
     void createUser() {
-        User superAdmin = new User(emailSuper, passwordSuper);
+        User superAdmin = service.getUserByEmail(emailSuper);
         assertNotNull(superAdmin);
     }
 
@@ -70,7 +70,7 @@ public class UserTests {
         assertEquals(size + 1, allUsers.size());
 
         service.loginUser(emailSuper, passwordSuper);
-        User user = new User(email, password);
+        User user = service.getUserByEmail(email);
 
         service.deleteUser(user);
         assertEquals(size, allUsers.size());
@@ -122,19 +122,16 @@ public class UserTests {
 
     @Test
     void testBlockUser() {
-        User user = new User(email, password);
+        User user = service.getUserByEmail(email);
         assertFalse(user.isBlocked());
         service.blockUser(user);
-
-        // TODO как лучше?
         assertTrue(user.isBlocked());
-        assertTrue(service.getUserByEmail(email).isBlocked());
     }
 
     @Test
     void blockSuperAdminShouldFail() {
         service.loginUser(emailAdmin, passwordAdmin);
-        User userSuper = new User(emailSuper, passwordSuper);
+        User userSuper = service.getUserByEmail(emailSuper);
         assertFalse(userSuper.isBlocked());
         assertFalse(service.blockUser(userSuper), "Нельзя заблокировать Супер Админа!");
         assertFalse(userSuper.isBlocked());
@@ -144,7 +141,8 @@ public class UserTests {
     @Test
     void blockUserShouldFailForUser() {
         service.loginUser(email, password);
-        User userAdmin = new User(emailAdmin, passwordAdmin);
+        User userAdmin = service.getUserByEmail(emailAdmin);
+        System.out.println(userAdmin);
 
         assertFalse(userAdmin.isBlocked());
         assertFalse(service.blockUser(userAdmin));
