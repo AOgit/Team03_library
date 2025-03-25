@@ -214,13 +214,10 @@ class MainServiceImplTest1 {
         int newSize = listAfterDelete.size();
 
         assertFalse(deleteResult, "Метод удаления должен вернуть false");
-
         assertEquals(initialSize, newSize, "Размер списка не должен измениться");
-
-        assertNotNull(bookRepository.getBookById(2), "Книга с id 2 не должна быть удалена");
-
-
+        assertNotNull(bookRepository.getBookById(2), "Книга с id 2 НЕ должна быть удалена");
     }
+
     @Test
     void deleteBookById_shouldSucceedForAdmin() {
         mainService.loginUser("admin@mail.de", "admin");
@@ -235,6 +232,7 @@ class MainServiceImplTest1 {
         assertTrue(deleteResult, "Метод удаления должен вернуть true");
         assertEquals(initialSize - 1, newSize, "Размер списка должен уменьшиться на 1");
         assertNull(bookRepository.getBookById(2), "Книга с id 2 должна быть удалена");
+    }
 
 
         @Test
@@ -248,9 +246,9 @@ class MainServiceImplTest1 {
             MyList<Book> listAfterAdd = mainService.getAllBooks();
             int newSize1 = listAfterAdd.size();
 
-            assertEquals(initialSize + 1, newSize, "Размер списка книг должен увеличиться после добавления");
+            assertEquals(initialSize1 + 1, newSize1, "Размер списка книг должен увеличиться после добавления");
 
-            Book lastBook = listAfterAdd.get(newSize - 1);
+            Book lastBook = listAfterAdd.get(newSize1 - 1);
             assertEquals("Три поросенка", lastBook.getTitle(), "Название книги должно быть 'Три поросенка'");
             assertEquals("Михалков С.", lastBook.getAuthor(), "Автор книги должен быть 'Михалков С.'");
             assertEquals(1933, lastBook.getYear(), "Год выпуска должен быть 1933");
