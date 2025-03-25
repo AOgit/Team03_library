@@ -238,16 +238,15 @@ class MainServiceImplTest1 {
 
 
         @Test
-        @Disabled
-        void addBook() {
+        void addBook () {
             mainService.loginUser("admin@mail.de", "admin");
 
             MyList<Book> listBeforeAdd = mainService.getAllBooks();
-            int initialSize = listBeforeAdd.size();
+            int initialSize1 = listBeforeAdd.size();
 
             mainService.addBook("Три поросенка", "Михалков С.", 1933, 32, "сказка");
             MyList<Book> listAfterAdd = mainService.getAllBooks();
-            int newSize = listAfterAdd.size();
+            int newSize1 = listAfterAdd.size();
 
             assertEquals(initialSize + 1, newSize, "Размер списка книг должен увеличиться после добавления");
 
@@ -260,7 +259,7 @@ class MainServiceImplTest1 {
         }
 
         @Test
-        void editBook_shouldFailForUser() {
+        void editBook_shouldFailForUser () {
             Book bookBeforeEdit = bookRepository.getBookById(1);
             mainService.loginUser("user@mail.de", "user");
             mainService.editBook(1, "Python", "Author", 1999, 300, "IT");
@@ -271,7 +270,7 @@ class MainServiceImplTest1 {
         }
 
         @Test
-        void editBook_shouldSucceedForAdmin() {
+        void editBook_shouldSucceedForAdmin () {
             mainService.loginUser("admin@mail.de", "admin");
 
             Book bookBeforeEdit = bookRepository.getBookById(1);
@@ -289,7 +288,7 @@ class MainServiceImplTest1 {
         }
 
         @Test
-        void borrowBook_ShouldFailForNotRegisteredUser() {
+        void borrowBook_ShouldFailForNotRegisteredUser () {
             mainService.loginUser("user11@mail.de", "user");
             boolean result = mainService.borrowBook(1);
 
@@ -297,7 +296,7 @@ class MainServiceImplTest1 {
 
         }
         @Test
-        void borrowBook_ShouldFailForNonExistentBook() {
+        void borrowBook_ShouldFailForNonExistentBook () {
             mainService.loginUser("user@mail.de", "user");
 
             boolean result = mainService.borrowBook(999);
@@ -305,7 +304,7 @@ class MainServiceImplTest1 {
         }
 
         @Test
-        void borrowBook_ShouldSucceedWhenBookIsAvailable() {
+        void borrowBook_ShouldSucceedWhenBookIsAvailable () {
             mainService.loginUser("user@mail.de", "user");
             Book book = mainService.getBookById(2);
             // в демонстрационных целях в сервисе книги 1 и 3 уже взята пользователем reader
