@@ -1,8 +1,11 @@
+import model.Role;
 import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import repository.BookRepository;
 import repository.BookRepositoryImpl;
@@ -11,6 +14,8 @@ import repository.UserRepositoryImpl;
 import service.MainService;
 import service.MainServiceImpl;
 import utils.MyList;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -140,15 +145,108 @@ public class UserTests {
 
     @Test
     void blockUserShouldFailForUser() {
-        service.loginUser(email, password);
         User userAdmin = service.getUserByEmail(emailAdmin);
-        System.out.println(userAdmin);
+        service.loginUser(email, password);
 
         assertFalse(userAdmin.isBlocked());
         assertFalse(service.blockUser(userAdmin));
-
         assertFalse(userAdmin.isBlocked());
     }
 
+    @Test
+    void testUnBlockUser() {
+        User user = service.getUserByEmail(email);
+        service.blockUser(user);
+        assertTrue(user.isBlocked());
+        service.unblockUser(user);
+        assertFalse(user.isBlocked());
+    }
+
+    @Test
+    void unBlockSuperAdminShouldFail() {
+        service.loginUser(emailAdmin, passwordAdmin);
+        User userSuper = service.getUserByEmail(emailSuper);
+        userSuper.setBlocked(true);
+        assertFalse(service.unblockUser(userSuper));
+        assertTrue(userSuper.isBlocked());
+    }
+
+    @Test
+    void unBlockUserShouldFailForUser() {
+        User userAdmin = service.getUserByEmail(emailAdmin);
+        userAdmin.setBlocked(true);
+        service.loginUser(email, password);
+
+        assertTrue(userAdmin.isBlocked());
+        assertFalse(service.unblockUser(userAdmin));
+        assertTrue(userAdmin.isBlocked());
+    }
+
+    @Test
+    @Disabled
+    void testGetUserBooks() {
+
+    }
+
+    @Test
+    @Disabled
+    void testGetUserBooksShouldFailForUser() {
+
+    }
+
+    @Test
+    void testChangeUserRole() {
+        User user = service.getUserByEmail(email);
+        assertEquals(Role.USER, user.getRole());
+
+        service.changeUserRole(user, Role.USER);
+        assertEquals(Role.USER, user.getRole());
+
+        assertTrue(service.changeUserRole(user, Role.ADMIN));
+        assertEquals(Role.ADMIN, user.getRole());
+    }
+
+//    static Stream<Role> testDataRoles() {
+//        return Stream.of(Role.USER, Role.ADMIN, Role.SUPER_ADMIN);
+//    }
+
+    @Test
+    void ChangeRoleShouldFailForUser() {
+        User userAdmin = service.getUserByEmail(emailAdmin);
+        service.loginUser(email, password);
+        assertFalse(service.changeUserRole(userAdmin, Role.USER));
+        assertEquals(Role.ADMIN, userAdmin.getRole());
+    }
+
+    @Test
+    void ChangeSuperAdminRoleShouldFail() {
+        User userSuper = service.getUserByEmail(emailSuper);
+        assertEquals(Role.SUPER_ADMIN, userSuper.getRole());
+        assertFalse(service.changeUserRole(userSuper, Role.ADMIN), "Нельзя поменять роль у СуперАдмина!");
+        assertEquals(Role.SUPER_ADMIN, userSuper.getRole());
+    }
+
+    @Test
+    void testDeleteUser() {
+        User user = service.getUserByEmail(email);
+        assertTrue(service.deleteUser(user));
+        assertNull(service.getUserByEmail(email));
+    }
+
+    @Test
+    void deleteAdminShouldFailForUser() {
+        User userAdmin = service.getUserByEmail(emailAdmin);
+        service.loginUser(email, password);
+        assertFalse(service.deleteUser(userAdmin));
+        service.loginUser(emailSuper, passwordSuper);
+        assertNotNull(service.getUserByEmail(emailAdmin));
+    }
+
+    @Test
+    void deleteSuperAdminShouldFail() {
+        User userSuper = service.getUserByEmail(emailSuper);
+        assertFalse(service.deleteUser(userSuper));
+        assertNotNull(service.getUserByEmail(emailSuper));
+    }
 
 }
