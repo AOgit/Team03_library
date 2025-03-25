@@ -30,7 +30,7 @@ class BookTestTest {
     void testGetBookById() {
         Book book = mainService.getBookById(1);
         assertNotNull(book);
-        assertEquals("\"Java для чайников\"", book.getTitle());
+        assertEquals("Java для чайников", book.getTitle());
     }
 
 

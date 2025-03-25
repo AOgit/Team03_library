@@ -117,16 +117,20 @@ public class BookRepositoryImpl implements BookRepository {
         return matchingBooksByGenre;
     }
 
+//    @Override
+//    public boolean updateBook(Book book) {
+//        for (int i = 0; i < books.size(); i++) {
+//            Book bk = books.get(i);
+//            if (bk.getId() == book.getId()) {
+//                books.set(i, book); // Обновляем книгу по индексу
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
     @Override
     public boolean updateBook(Book book) {
-        for (int i = 0; i < books.size(); i++) {
-            Book bk = books.get(i);
-            if (bk.getId() == book.getId()) {
-                books.set(i, book); // Обновляем книгу по индексу
-                return true;
-            }
-        }
-        return false;
+        return this.books.update(book);
     }
 
     @Override

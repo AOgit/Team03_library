@@ -6,6 +6,7 @@ import model.User;
 import utils.MyArrayList;
 import utils.MyList;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -67,17 +68,22 @@ public class UserRepositoryImpl implements UserRepository {
 
 
 
-    @Override
-    public boolean update(User user) {
-        for (int i = 0; i < users.size(); i++) {
-            User us = users.get(i);
-            if (us.getEmail().equals(user.getEmail())) {
-                users.set(i, user); // Обновляем книгу по индексу
-                return true;
-            }
-        }
-        return false;
-    }
+//    @Override
+//    public boolean update(User user) {
+//        for (int i = 0; i < users.size(); i++) {
+//            User us = users.get(i);
+//            if (us.getEmail().equals(user.getEmail())) {
+//                users.set(i, user); // Обновляем книгу по индексу
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+   @Override
+   public boolean update(User user) {
+        return users.update(user);
+   }
 
 //
 //    @Override
