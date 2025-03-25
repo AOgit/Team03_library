@@ -1,5 +1,3 @@
-package service;
-
 import model.Book;
 import model.Role;
 import model.User;
@@ -10,6 +8,7 @@ import repository.BookRepository;
 import repository.BookRepositoryImpl;
 import repository.UserRepository;
 import repository.UserRepositoryImpl;
+import service.MainServiceImpl;
 import utils.MyList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -116,8 +115,23 @@ class MainServiceImplTest {
 
 
     @Test
-    @Disabled
-    void getBooksByTitle() {
+    void testGetBookById_succeed() {
+        Book book = mainService.getBookById(1);
+        assertNotNull(book);
+        assertEquals("Java для чайников", book.getTitle());
+        System.out.println(book);
+    }
+
+    @Test
+    void getBooksByTitle_succeed() {
+        MyList<Book> books = mainService.getBooksByTitle("Java");
+
+        assertNotNull(books, "Список книг не должен быть null");
+
+        Book book = books.get(0);
+
+        assertEquals("Java для чайников", book.getTitle(), "Название книги должно совпадать");
+        System.out.println(book);
     }
 
     @Test
