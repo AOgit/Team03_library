@@ -1,9 +1,5 @@
 package utils;
 
-/**
- * @author Sergey Bugaenko
- * {@code @date} 18.03.2025
- */
 
 public class UserValidation {
 
