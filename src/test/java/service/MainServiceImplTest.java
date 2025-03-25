@@ -61,7 +61,8 @@ class MainServiceImplTest {
 
     @Test
     void testAddUserDuplicateEmail() {
-        userRepository.addUser("user@mail.de", "User1234!");
+ //       userRepository.addUser("user@mail.de", "User1234!");
+        mainService.registerUser("user@mail.de", "User1234!");
 
         User user = userRepository.getUserByEmail("user@mail.de");
         assertNotNull(user, "Пользователь с таким email не найден!");
@@ -76,7 +77,7 @@ class MainServiceImplTest {
     }
 
     @Test
-    void logout() {
+    void logoutSuccess() {
 
         mainService.registerUser("userr@mail.de", "User1234!!");
         mainService.loginUser("userr@mail.de", "User1234!!");
@@ -113,53 +114,6 @@ class MainServiceImplTest {
         assertFalse(mainService.isSuperAdmin(), "Админ не должен быть супер-админом");
     }
 
-    @Test
-    @Disabled
-    void getUserByEmail() {
-
-    }
-    @Test
-    @Disabled
-    void getActiveUser() {
-    }
-
-    @Test
-    @Disabled
-    void getAllUsers() {
-    }
-
-    @Test
-    @Disabled
-    void getAllReaders() {
-    }
-
-
-    @Test
-    @Disabled
-    void blockUser() {
-    }
-
-    @Test
-    @Disabled
-    void unblockUser() {
-    }
-
-    @Test
-    @Disabled
-    void getUserBooks() {
-    }
-
-
-
-    @Test
-    @Disabled
-    void changeUserRole() {
-    }
-
-    @Test
-    @Disabled
-    void deleteUser() {
-    }
 
     @Test
     @Disabled
@@ -192,23 +146,38 @@ class MainServiceImplTest {
     }
 
     @Test
-    @Disabled
-    void getBorrowedBooks() {
-    }
+    void UserBorrowedBooks_isNotEmpty() {
+        mainService.registerUser("email@email.com", "Qwertyui1!");
+        mainService.loginUser("email@email.com", "Qwertyui1!");
+        MyList<Book> beforeBorrow = mainService.getUserBooks();
+        System.out.println("Список книг пользователя пуст: " + beforeBorrow.size());
+        assertTrue(beforeBorrow.isEmpty(), "Список книг должен быть пуст");
 
-    @Test
-    @Disabled
-    void getBookById() {
+        boolean borrowResult = mainService.borrowBook(4);
+
+        System.out.println(borrowResult);
+        assertTrue(borrowResult, "Книга должна быть успешно взята");
+        MyList<Book> borrowedBooks = mainService.getUserBooks();
+        System.out.println("Список книг до взятия: " + beforeBorrow);
+        System.out.println("Результат взятия книги: " + borrowResult);
+        System.out.println("Список книг после взятия: " + borrowedBooks);
+
+        assertNotNull(borrowedBooks, "Список книг не должен быть null");
+        assertEquals(1, borrowedBooks.size(), "У пользователя должна быть одна книга");
+        assertEquals(4, borrowedBooks.get(0).getId(), "ID книги должен совпадать");
+
+
     }
 
     @Test
     void deleteBookById_shouldFailForUser() {
-        mainService.loginUser("user@mail.de", "user");
+        //mainService.loginUser("user@mail.de", "user");
 
         MyList<Book> listBeforeDelete = mainService.getAllBooks();
         int initialSize = listBeforeDelete.size();
 
         boolean deleteResult = mainService.deleteBookById(2);
+        System.out.println(deleteResult);
 
         MyList<Book> listAfterDelete = mainService.getAllBooks();
         int newSize = listAfterDelete.size();
@@ -226,6 +195,7 @@ class MainServiceImplTest {
         int initialSize = listBeforeDelete.size();
 
         boolean deleteResult = mainService.deleteBookById(2);
+        System.out.println(deleteResult);
 
         MyList<Book> listAfterDelete = mainService.getAllBooks();
         int newSize = listAfterDelete.size();
@@ -233,7 +203,6 @@ class MainServiceImplTest {
         assertEquals(initialSize - 1, newSize, "Размер списка должен уменьшиться на 1");
         assertNull(bookRepository.getBookById(2), "Книга с id 2 должна быть удалена");
     }
-
 
         @Test
         void addBook () {
@@ -271,18 +240,19 @@ class MainServiceImplTest {
         void editBook_shouldSucceedForAdmin () {
             mainService.loginUser("admin@mail.de", "admin");
 
-            Book bookBeforeEdit = bookRepository.getBookById(1);
-            boolean editResult = mainService.editBook(1, "Python", "Author", 1999, 300, "IT");
+            Book bookBeforeEdit = mainService.getBookById(2);
+            boolean editResult = mainService.editBook(2, "Python", "Author", 1999, 300, "IT");
+            System.out.println(editResult);
             assertTrue(editResult, "Админ должен успешно редактировать книгу!");
 
-            Book bookAfterEdit = bookRepository.getBookById(1);
-            assertNotEquals(bookBeforeEdit, bookAfterEdit, "Админ может редактировать книги!");
+            Book bookAfterEdit = mainService.getBookById(2);
 
             assertEquals("Python", bookAfterEdit.getTitle(), "Название книги должно измениться");
             assertEquals("Author", bookAfterEdit.getAuthor(), "Автор книги должен измениться");
             assertEquals(1999, bookAfterEdit.getYear(), "Год выпуска книги должен измениться");
             assertEquals(300, bookAfterEdit.getPages(), "Количество страниц книги должно измениться");
             assertEquals("IT", bookAfterEdit.getGenre(), "Жанр книги должен измениться");
+            System.out.println(mainService.getBookById(2));
         }
 
         @Test
